@@ -1,0 +1,6 @@
+# Custom gitignore
+
+# IntelliJ project files
+.idea/
+*.iml
+
