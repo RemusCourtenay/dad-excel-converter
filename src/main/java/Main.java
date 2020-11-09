@@ -1,14 +1,6 @@
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import dosStuff.SettingsHandler;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -18,9 +10,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        ExcelReader reader = new ExcelReader();
-
-        reader.read();
+        new SettingsHandler().runSetup();
 
     }
+
+
 }

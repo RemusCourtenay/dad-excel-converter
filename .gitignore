@@ -7,3 +7,5 @@
 # Compiled files
 target/
 
+# Program files
+data/
