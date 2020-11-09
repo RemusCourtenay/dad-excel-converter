@@ -1,0 +1,4 @@
+# Ignoting all resource files
+*.xls
+*.xlsx
+*.csv
