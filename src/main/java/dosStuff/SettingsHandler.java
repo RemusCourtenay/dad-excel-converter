@@ -1,10 +1,13 @@
 package dosStuff;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.rmi.RemoteException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DOS interface that handles the creation of a data folder for storing program settings and data.
@@ -22,6 +25,7 @@ public class SettingsHandler extends SettingsInterface {
     public void runSetup() {
         setupDataFolder();
         setupSettingsFile();
+        setupHeadersFile();
     }
 
     /**
@@ -30,41 +34,76 @@ public class SettingsHandler extends SettingsInterface {
      */
     private void setupDataFolder() {
         String errorMessage = "IOException occurred when attempting to initialise program data folder: " + MAIN_FOLDER_NAME;
-        Process setupDataFolderProcess = makeProcess(MAKE_DATA_FOLDER_COMMAND, errorMessage);
+        List<String> makeMainFolderCommand = makeCommandList("mkdir", MAIN_FOLDER_NAME);
+        runProcess(errorMessage, makeMainFolderCommand);
     }
 
     /**
      * Handles the creation, exceptions and running of a DOS command that attempts to create a default settings file
      * inside the main data folder. Should preferentially be run after the data folder has been initialised.
      */
-    private void setupSettingsFile(){
-        String errorMessage = "IOException occurred when attempting to create default settings file:" + SETTINGS_FILE_NAME;
-        Process setupSettingsFileProcess = makeProcess(MAKE_SETTINGS_FILE_COMMAND, errorMessage);
+    private void setupSettingsFile() {
+        String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
+        List<String> makeSettingsFileCommand = makeCommandList("echo", SETTINGS_FILE_TEXT, ">", MAIN_FOLDER_NAME + "\\" + SETTINGS_FILE_NAME);
+        runProcess(errorMessage, makeSettingsFileCommand);
+    }
+
+    private void setupHeadersFile() {
+        String fileAddress = "data\\headers.txt";
+        if (!fileExists(fileAddress)) {
+            String errorMessage = "IOException occurred when attempting to create default headers file: " + HEADERS_FILE_NAME;
+
+            List<String> commandList;
+            for (String command : DEFAULT_HEADERS) {
+                commandList = makeCommandList("echo", command, ">>", fileAddress);
+                runProcess(errorMessage, commandList);
+            }
+        }
+    }
+
+    private boolean fileExists(String... address) {
+        StringBuilder addressBuilder = new StringBuilder();
+
+        for (String addressPart: address) {
+            addressBuilder.append(addressPart).append("\\");
+        }
+
+        String fullAddress = addressBuilder.substring(0, addressBuilder.length()-1);
+
+
+        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + "checkExists.bat", fullAddress);
+
+        return runProcess("TODO", commandList) == 0;
+    }
+
+    private List<String> makeCommandList(String... commands) {
+        return new ArrayList<>(Arrays.asList(commands));
     }
 
     /**
      * Helper method for creating DOS commands that throw IOExceptions.
      *
-     * @param commandArray : Array of commands to be added to the process.
      * @param ioExceptionErrorMessage : Error message to throw if an IOException occurs
      *
      * @return : A Process object that represents the running process
      */
 
-    private Process makeProcess(String[] commandArray, String ioExceptionErrorMessage) {
+    @SafeVarargs
+    private int runProcess(String ioExceptionErrorMessage, List<String>... commandLists) {
         // Converting inputted commands into a list to feed into the process builder
-        List<String> commandList = new ArrayList<>();
-        commandList.addAll(Arrays.asList(NEW_COMMAND_SHELL));
-        commandList.addAll(Arrays.asList(commandArray));
+        List<String> fullCommandList = new ArrayList<>(Arrays.asList(NEW_COMMAND_SHELL));
+        for (List<String> commandList: commandLists) {
+            fullCommandList.addAll(commandList);
+        }
 
         // Initialising process builder and inputting list of commands
         ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command(commandList);
-
+        processBuilder.command(fullCommandList);
         // Attempting to start the process
         try {
-            return processBuilder.start();
-        } catch(IOException exception) { // Catching exception and throwing runtime with inputted error message
+            Process process = processBuilder.start();
+            return process.waitFor();
+        } catch(IOException | InterruptedException exception) { // Catching exception and throwing runtime with inputted error message
             exception.printStackTrace();
             throw new RuntimeException(ioExceptionErrorMessage);
         }
