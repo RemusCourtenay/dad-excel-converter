@@ -1,5 +1,7 @@
 package dosStuff;
 
+import org.apache.poi.ss.usermodel.CellType;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +12,20 @@ import java.util.List;
  * @author Remus Courtenay - rcou199
  * @since 9/11/2020
  */
-public abstract class SettingsHandler {
+public interface SettingsHandler {
 
-    protected static final String MAIN_FOLDER_NAME = "data";
+    static final String MAIN_FOLDER_NAME = "data";
 
-    protected static final String SETTINGS_FILE_NAME = "settings.txt";
-    protected static final String SETTINGS_FILE_TEXT = "This is a settings file";
-
-    protected static final String HEADERS_FILE_NAME = "headers.txt";
-    protected static final String[] DEFAULT_HEADERS = {"Registration_ID", "Race_Number", "Last_Name", "First_Name", "Gender", "Age", "Finish_Result", "Event", "Rank_Overall", "Rank_Gender", "Division_Name"};
+    static final String SETTINGS_FILE_NAME = "settings.txt";
 
 
-    protected static final String[] NEW_COMMAND_SHELL = {"cmd", "/c"};
-    protected static final String BAT_FILES_LOCATION = "src\\main\\resources\\batFiles\\";
+    static final String HEADERS_FILE_NAME = "headers.txt";
+
+
+
+    static final String[] NEW_COMMAND_SHELL = {"cmd", "/c"};
+    static final String BAT_FILES_LOCATION = "src\\main\\resources\\batFiles\\";
+
+    static final String CHECK_EXISTS_BAT = "checkExists.bat";
+    static final String QUOTE_MARK_STRIPPER_BAT = "quoteMarkStripper.bat";
 }

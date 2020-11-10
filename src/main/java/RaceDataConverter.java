@@ -11,30 +11,30 @@ import java.util.Map;
  */
 public class RaceDataConverter {
 
-    private Map<ColumnType, Column> columns;
+//    private Map<String, Column> columns;
 
     public RaceDataConverter() {
         SettingsReader settingsReader = new SettingsReader();
 
-        this.columns = setupColumns(settingsReader);
+//        this.columns = setupColumns(settingsReader);
 
     }
 
 
-    private Map<ColumnType, Column> setupColumns(SettingsReader settingsReader) {
-
-        List<String> headerStrings = settingsReader.getHeaders();
-
-        Map<ColumnType, Column> columnsMap = new HashMap<>(headerStrings.size());
-
-        for (String headerString: headerStrings) {
-
-            ColumnType columnType = ColumnType.valueOf(headerString); // This is wrong
-            Column newColumn = new Column(headerString, columnType);
-
-            columnsMap.put(columnType, newColumn);
-        }
-
-        return columnsMap;
-    }
+//    private Map<String, Column> setupColumns(SettingsReader settingsReader) {
+//
+//        List<String> headerStrings = settingsReader.getHeaders();
+//
+//        Map<String, Column> columnsMap = new HashMap<>(headerStrings.size());
+//
+//        for (String headerString: headerStrings) {
+//
+//            String columnType = ColumnType.valueOf(headerString); // This is wrong, need to save header name and column type (I.E int, String, Date etc..)
+//            Column newColumn = new Column(headerString, columnType);
+//
+//            columnsMap.put(columnType, newColumn);
+//        }
+//
+//        return columnsMap;
+//    }
 }

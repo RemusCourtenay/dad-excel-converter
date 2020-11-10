@@ -1,7 +1,6 @@
-import dosStuff.SettingsSetup;
+import dosStuff.SettingsCreator;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -11,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        new SettingsSetup().runSetup();
+        new SettingsCreator().runSetup();
 
         new RaceDataConverter();
     }

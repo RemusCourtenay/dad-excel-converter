@@ -12,12 +12,11 @@ import java.util.List;
  * @author Remus Courtenay - rcou199
  * @since 9/11/2020
  */
-public class SettingsSetup extends SettingsHandler {
+public class SettingsCreator implements FileCreator {
 
     /**
      * Basic main method that ensures all methods are run in the correct order.
      */
-    @Override
     public void runSetup() {
         setupDataFolder();
         setupSettingsFile();
@@ -46,7 +45,7 @@ public class SettingsSetup extends SettingsHandler {
             String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
 
             // DOS command echoes the settings text into a new file placed at the file address
-            List<String> makeSettingsFileCommand = makeCommandList("echo", SETTINGS_FILE_TEXT, ">", fileAddress);
+            List<String> makeSettingsFileCommand = makeCommandList("echo" + SETTINGS_FILE_TEXT, ">", fileAddress);
             runProcess(errorMessage, makeSettingsFileCommand);
         }
     }
@@ -59,11 +58,15 @@ public class SettingsSetup extends SettingsHandler {
         String fileAddress = makeMainFileAddress(HEADERS_FILE_NAME);
         if (!fileExists(fileAddress)) {
             String errorMessage = "IOException occurred when attempting to create default headers file: " + HEADERS_FILE_NAME;
-
             List<String> commandList;
+
+            // Echoing the file comment to a new file
+            commandList = makeCommandList(BAT_FILES_LOCATION + QUOTE_MARK_STRIPPER_BAT, HEADERS_FILE_COMMENT, fileAddress);
+            runProcess(errorMessage, commandList);
+
             // Appending each header to the text file so that they appear on new lines
-            for (String command : DEFAULT_HEADERS) {
-                commandList = makeCommandList("echo", command, ">>", fileAddress);
+            for (String[] command : DEFAULT_HEADERS) {
+                commandList = makeCommandList("echo", command[0] + "," + command[1], ">>", fileAddress);
                 runProcess(errorMessage, commandList);
             }
         }
@@ -87,7 +90,7 @@ public class SettingsSetup extends SettingsHandler {
         String fullAddress = addressBuilder.substring(0, addressBuilder.length()-1);
 
         // Building command list that runs checkExists.bat with the inputted address as it's first input
-        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + "checkExists.bat", fullAddress);
+        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + CHECK_EXISTS_BAT, fullAddress);
 
         // Checking the exit value of the batch file
         return runProcess("TODO", commandList) == 0;
