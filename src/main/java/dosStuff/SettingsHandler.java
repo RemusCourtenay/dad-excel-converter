@@ -34,6 +34,8 @@ public class SettingsHandler extends SettingsInterface {
      */
     private void setupDataFolder() {
         String errorMessage = "IOException occurred when attempting to initialise program data folder: " + MAIN_FOLDER_NAME;
+
+        // DOS command makes a directory with the name of the main folder.
         List<String> makeMainFolderCommand = makeCommandList("mkdir", MAIN_FOLDER_NAME);
         runProcess(errorMessage, makeMainFolderCommand);
     }
@@ -46,17 +48,24 @@ public class SettingsHandler extends SettingsInterface {
         String fileAddress = makeMainFileAddress(SETTINGS_FILE_NAME);
         if(!fileExists(fileAddress)) {
             String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
+
+            // DOS command echoes the settings text into a new file placed at the file address
             List<String> makeSettingsFileCommand = makeCommandList("echo", SETTINGS_FILE_TEXT, ">", fileAddress);
             runProcess(errorMessage, makeSettingsFileCommand);
         }
     }
 
+    /**
+     * Handles the creation, exceptions and running of a DOS command that attempts to create a default headers file
+     * inside the main data folder. Should preferentially be run after the data folder has been initialised.
+     */
     private void setupHeadersFile() {
         String fileAddress = makeMainFileAddress(HEADERS_FILE_NAME);
         if (!fileExists(fileAddress)) {
             String errorMessage = "IOException occurred when attempting to create default headers file: " + HEADERS_FILE_NAME;
 
             List<String> commandList;
+            // Appending each header to the text file so that they appear on new lines
             for (String command : DEFAULT_HEADERS) {
                 commandList = makeCommandList("echo", command, ">>", fileAddress);
                 runProcess(errorMessage, commandList);
@@ -64,36 +73,55 @@ public class SettingsHandler extends SettingsInterface {
         }
     }
 
+    /**
+     * Helper method that calls a DOS script to check if a file already exists.
+     * @param address : A set of strings in order that correlate to a file path relative to the program's source root
+     *                that leads to where the possibly existing file should be.
+     * @return : True if the file exists, otherwise false.
+     */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean fileExists(String... address) {
         StringBuilder addressBuilder = new StringBuilder();
 
+        // Building file path from inputs
         for (String addressPart: address) {
             addressBuilder.append(addressPart).append("\\");
         }
-
+        // Removing final backslash
         String fullAddress = addressBuilder.substring(0, addressBuilder.length()-1);
 
-
+        // Building command list that runs checkExists.bat with the inputted address as it's first input
         List<String> commandList = makeCommandList(BAT_FILES_LOCATION + "checkExists.bat", fullAddress);
 
+        // Checking the exit value of the batch file
         return runProcess("TODO", commandList) == 0;
     }
 
+    /**
+     * Private helper method for building lists of strings.
+     * @param commands : Strings to place in the list, order is preserved.
+     * @return : The set of inputted Strings as a list.
+     */
     private List<String> makeCommandList(String... commands) {
         return new ArrayList<>(Arrays.asList(commands));
     }
+
+    /**
+     * Private helper method that makes a file address relative to the main data file.
+     * @param fileName : The name of the file within the data file.
+     * @return : The relative path from the program's source root to the inputted file.
+     */
 
     private String makeMainFileAddress(String fileName) {
         return MAIN_FOLDER_NAME + "\\" + fileName;
     }
 
     /**
-     * Helper method for creating DOS commands that throw IOExceptions.
-     *
-     * @param ioExceptionErrorMessage : Error message to throw if an IOException occurs
-     *
-     * @return : A Process object that represents the running process
+     * Helper method for creating DOS commands that throw IOExceptions. Forces the main thread to wait for the process
+     * to complete before continuing.
+     * @param ioExceptionErrorMessage : Error message to throw if an IOException occurs.
+     * @param commandLists : The lists of commands to be fed into the process builder.
+     * @return : The process' exit value.
      */
 
     @SafeVarargs
@@ -110,14 +138,12 @@ public class SettingsHandler extends SettingsInterface {
         // Attempting to start the process
         try {
             Process process = processBuilder.start();
-            return process.waitFor();
+            return process.waitFor(); // Waiting for thread to complete and returning it's exit value
         } catch(IOException | InterruptedException exception) { // Catching exception and throwing runtime with inputted error message
             exception.printStackTrace();
             throw new RuntimeException(ioExceptionErrorMessage);
         }
-
     }
-
 }
 
 
