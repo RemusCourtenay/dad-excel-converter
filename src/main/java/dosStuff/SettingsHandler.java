@@ -43,13 +43,16 @@ public class SettingsHandler extends SettingsInterface {
      * inside the main data folder. Should preferentially be run after the data folder has been initialised.
      */
     private void setupSettingsFile() {
-        String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
-        List<String> makeSettingsFileCommand = makeCommandList("echo", SETTINGS_FILE_TEXT, ">", MAIN_FOLDER_NAME + "\\" + SETTINGS_FILE_NAME);
-        runProcess(errorMessage, makeSettingsFileCommand);
+        String fileAddress = makeMainFileAddress(SETTINGS_FILE_NAME);
+        if(!fileExists(fileAddress)) {
+            String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
+            List<String> makeSettingsFileCommand = makeCommandList("echo", SETTINGS_FILE_TEXT, ">", fileAddress);
+            runProcess(errorMessage, makeSettingsFileCommand);
+        }
     }
 
     private void setupHeadersFile() {
-        String fileAddress = "data\\headers.txt";
+        String fileAddress = makeMainFileAddress(HEADERS_FILE_NAME);
         if (!fileExists(fileAddress)) {
             String errorMessage = "IOException occurred when attempting to create default headers file: " + HEADERS_FILE_NAME;
 
@@ -61,6 +64,7 @@ public class SettingsHandler extends SettingsInterface {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean fileExists(String... address) {
         StringBuilder addressBuilder = new StringBuilder();
 
@@ -78,6 +82,10 @@ public class SettingsHandler extends SettingsInterface {
 
     private List<String> makeCommandList(String... commands) {
         return new ArrayList<>(Arrays.asList(commands));
+    }
+
+    private String makeMainFileAddress(String fileName) {
+        return MAIN_FOLDER_NAME + "\\" + fileName;
     }
 
     /**
