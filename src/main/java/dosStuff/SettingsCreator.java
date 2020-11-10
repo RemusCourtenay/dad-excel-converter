@@ -33,8 +33,7 @@ public class SettingsCreator extends FileCreator {
             String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
 
             // DOS command echoes the settings text into a new file placed at the file address
-            List<String> makeSettingsFileCommand = makeCommandList("echo" + SETTINGS_FILE_TEXT, ">", fileAddress);
-            runProcess(errorMessage, makeSettingsFileCommand);
+            appendToFileWithoutQuotes(SETTINGS_FILE_TEXT, fileAddress);
         }
     }
 

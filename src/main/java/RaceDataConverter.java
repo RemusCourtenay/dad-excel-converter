@@ -1,9 +1,4 @@
-import dosStuff.SettingsHandler;
 import dosStuff.SettingsReader;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Remus Courtenay - rcou199

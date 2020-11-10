@@ -48,13 +48,11 @@ public class HeaderCreator extends FileCreator {
             List<String> commandList;
 
             // Echoing the file comment to a new file
-            commandList = makeCommandList(BAT_FILES_LOCATION + QUOTE_MARK_STRIPPER_BAT, HEADERS_FILE_COMMENT, fileAddress);
-            runProcess(errorMessage, commandList);
+            checkReturnValue(appendToFileWithoutQuotes(HEADERS_FILE_COMMENT, fileAddress), "append header comment to header.txt without quote marks");
 
             // Appending each header to the text file so that they appear on new lines
             for (String[] command : DEFAULT_HEADERS) {
-                commandList = makeCommandList("echo", command[0] + "," + command[1], ">>", fileAddress);
-                runProcess(errorMessage, commandList);
+                checkReturnValue(appendToFileWithoutQuotes("\"" + command[0] + "," + command[1] + "\"", fileAddress), "append default headers to header.txt without quote marks");
             }
         }
     }

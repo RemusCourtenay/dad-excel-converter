@@ -1,7 +1,5 @@
 package dosStuff;
 
-import org.apache.poi.ss.usermodel.CellType;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +9,16 @@ import java.util.List;
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public abstract class FileCreator implements SettingsHandler {
+public abstract class FileCreator extends FileHandler {
 
     public abstract void runSetup();
+
+    protected int appendToFileWithoutQuotes(String textToAppend, String fileLocation) {
+        String errorMessage = "IOException occurred when attempting to append:" + textToAppend + " to " + fileLocation;
+
+        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + QUOTE_MARK_STRIPPER_BAT, textToAppend, fileLocation);
+        return runProcess(errorMessage, commandList);
+    }
 
     /**
      * Private helper method for building lists of strings.
@@ -87,4 +92,6 @@ public abstract class FileCreator implements SettingsHandler {
             throw new RuntimeException(ioExceptionErrorMessage);
         }
     }
+
+
 }
