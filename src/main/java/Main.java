@@ -1,4 +1,4 @@
-import dosStuff.SettingsHandler;
+import dosStuff.SettingsSetup;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        new SettingsHandler().runSetup();
+        new SettingsSetup().runSetup();
 
     }
 
