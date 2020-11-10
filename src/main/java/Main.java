@@ -1,6 +1,7 @@
 import dosStuff.SettingsSetup;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -12,6 +13,7 @@ public class Main {
 
         new SettingsSetup().runSetup();
 
+        new RaceDataConverter();
     }
 
 
