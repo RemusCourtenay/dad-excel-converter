@@ -2,37 +2,89 @@ package dosStuff;
 
 import org.apache.poi.ss.usermodel.CellType;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public interface FileCreator extends SettingsHandler {
+public abstract class FileCreator implements SettingsHandler {
 
-    static final String SETTINGS_FILE_TEXT = "This is a settings file";
+    public abstract void runSetup();
 
-    static final String HEADERS_FILE_COMMENT =
-            "Add new headers on a new line with the format: (name),(column type) with no spaces. Valid column types are: " // Don't use <> characters
-            + CellType.STRING.toString() + ", "
-            + CellType.NUMERIC.toString() + ", "
-            + CellType.BOOLEAN.toString() + ", "
-            + CellType.FORMULA.toString() + " and "
-            + CellType.BLANK.toString() + ".";
+    /**
+     * Private helper method for building lists of strings.
+     * @param commands : Strings to place in the list, order is preserved.
+     * @return : The set of inputted Strings as a list.
+     */
+    protected List<String> makeCommandList(String... commands) {
+        return new ArrayList<>(Arrays.asList(commands));
+    }
 
-    static final String[][] DEFAULT_HEADERS = {
-            {"Registration_ID", CellType.NUMERIC.toString()},
-            {"Race_Number", CellType.NUMERIC.toString()},
-            {"Last_Name", CellType.STRING.toString()},
-            {"First_Name", CellType.STRING.toString()},
-            {"Gender", CellType.STRING.toString()},
-            {"Age", CellType.NUMERIC.toString()},
-            {"Finish_Result", CellType.NUMERIC.toString()}, // String?
-            {"Event", CellType.STRING.toString()},
-            {"Rank_Overall", CellType.NUMERIC.toString()},
-            {"Rank_Gender", CellType.NUMERIC.toString()},
-            {"Division_Name", CellType.STRING.toString()}
-    };
+    /**
+     * Helper method that calls a DOS script to check if a file already exists.
+     * @param address : A set of strings in order that correlate to a file path relative to the program's source root
+     *                that leads to where the possibly existing file should be.
+     * @return : True if the file exists, otherwise false.
+     */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    protected boolean fileExists(String... address) {
+        StringBuilder addressBuilder = new StringBuilder();
+
+        // Building file path from inputs
+        for (String addressPart: address) {
+            addressBuilder.append(addressPart).append("\\");
+        }
+        // Removing final backslash
+        String fullAddress = addressBuilder.substring(0, addressBuilder.length()-1);
+
+        // Building command list that runs checkExists.bat with the inputted address as it's first input
+        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + CHECK_EXISTS_BAT, fullAddress);
+
+        // Checking the exit value of the batch file
+        return runProcess("TODO", commandList) == 0;
+    }
+
+    /**
+     * Private helper method that makes a file address relative to the main data file.
+     * @param fileName : The name of the file within the data file.
+     * @return : The relative path from the program's source root to the inputted file.
+     */
+
+    protected String makeMainFileAddress(String fileName) {
+        return MAIN_FOLDER_NAME + "\\" + fileName;
+    }
 
 
+    /**
+     * Helper method for creating DOS commands that throw IOExceptions. Forces the main thread to wait for the process
+     * to complete before continuing.
+     * @param ioExceptionErrorMessage : Error message to throw if an IOException occurs.
+     * @param commandLists : The lists of commands to be fed into the process builder.
+     * @return : The process' exit value.
+     */
 
+    @SafeVarargs // Don't know why I need this but IDE says so
+    protected final int runProcess(String ioExceptionErrorMessage, List<String>... commandLists) {
+        // Converting inputted commands into a list to feed into the process builder
+        List<String> fullCommandList = new ArrayList<>(Arrays.asList(NEW_COMMAND_SHELL));
+        for (List<String> commandList: commandLists) {
+            fullCommandList.addAll(commandList);
+        }
 
+        // Initialising process builder and inputting list of commands
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command(fullCommandList);
+        // Attempting to start the process
+        try {
+            Process process = processBuilder.start();
+            return process.waitFor(); // Waiting for thread to complete and returning it's exit value
+        } catch(IOException | InterruptedException exception) { // Catching exception and throwing runtime with inputted error message
+            exception.printStackTrace();
+            throw new RuntimeException(ioExceptionErrorMessage);
+        }
+    }
 }
