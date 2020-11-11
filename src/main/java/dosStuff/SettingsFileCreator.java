@@ -1,20 +1,19 @@
 package dosStuff;
 
-import java.util.List;
-
 /**
- * DOS interface that handles the creation of a data folder for storing program settings and data.
- * If a folder already exists, these commands shouldn't override it.
+ * Extension of abstract FileCreator class that specifically creates the settings file. Methods only creates settings
+ * file if the file does not already exist.
  *
  * @author Remus Courtenay - rcou199
  * @since 9/11/2020
  */
 public class SettingsFileCreator extends FileCreator {
 
+    // Placeholder text to add to file
     private static final String SETTINGS_FILE_TEXT = "This is a settings file";
 
     /**
-     * Basic main method that ensures all methods are run in the correct order.
+     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
      */
     @Override
     public void runSetup() {
@@ -30,22 +29,10 @@ public class SettingsFileCreator extends FileCreator {
     private void setupSettingsFile() {
         String fileAddress = makeMainFileAddress(SETTINGS_FILE_NAME);
         if(!fileExists(fileAddress)) {
-            String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
-
             // DOS command echoes the settings text into a new file placed at the file address
             checkReturnValue(appendToFileWithoutQuotes(SETTINGS_FILE_TEXT, fileAddress), "append settings text to file: " + SETTINGS_FILE_NAME + " without quote marks");
         }
     }
-
-
-
-
-
-
-
-
-
-
 }
 
 
