@@ -1,6 +1,6 @@
-import dosStuff.SettingsHandler;
+import dosStuff.FileCreatorType;
 
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -8,10 +8,23 @@ import java.io.IOException;
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        new SettingsHandler().runSetup();
+        runFileSetup();
 
+        new RaceDataConverter();
+    }
+
+    private static void runFileSetup() {
+        for (FileCreatorType creatorType: FileCreatorType.values()) {
+            try {
+                creatorType.getFileCreatorClass().getConstructor().newInstance().runSetup();
+            } catch(NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
+                exception.printStackTrace();
+                throw new RuntimeException("FileCreatorType Enum value: " + creatorType.toString() + " not setup correctly");
+            }
+
+        }
     }
 
 
