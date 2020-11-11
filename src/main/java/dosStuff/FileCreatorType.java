@@ -6,8 +6,8 @@ package dosStuff;
  */
 public enum FileCreatorType {
     MAIN_FILE_CREATOR(MainFileCreator.class),
-    HEADER_CREATOR(HeaderCreator.class),
-    SETTINGS_CREATOR(SettingsCreator.class);
+    HEADER_CREATOR(HeaderFileCreator.class),
+    SETTINGS_CREATOR(SettingsFileCreator.class);
 
     private final Class<? extends FileCreator> fileCreatorClass;
 

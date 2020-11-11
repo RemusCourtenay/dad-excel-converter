@@ -1,4 +1,4 @@
-import dosStuff.SettingsReader;
+import dosStuff.SettingsFileReader;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -9,7 +9,7 @@ public class RaceDataConverter {
 //    private Map<String, Column> columns;
 
     public RaceDataConverter() {
-        SettingsReader settingsReader = new SettingsReader();
+        SettingsFileReader settingsFileReader = new SettingsFileReader();
 
 //        this.columns = setupColumns(settingsReader);
 

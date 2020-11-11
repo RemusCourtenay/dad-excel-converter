@@ -2,22 +2,26 @@ package dosStuff;
 
 import org.apache.poi.ss.usermodel.CellType;
 
-import java.util.List;
-
 /**
+ * Extension of abstract FileCreator class that specifically creates the headers text file. Methods only change header
+ * file if the file does not already exist.
+ *
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public class HeaderCreator extends FileCreator {
+public class HeaderFileCreator extends FileCreator {
 
+    // Top level comment in header file explaining how to edit it.
     private static final String HEADERS_FILE_COMMENT =
             "Add new headers on a new line with the format: (name),(column type) with no spaces. Valid column types are: " // Don't use <> characters
                     + CellType.STRING.toString() + ", "
                     + CellType.NUMERIC.toString() + ", "
                     + CellType.BOOLEAN.toString() + ", "
                     + CellType.FORMULA.toString() + " and "
-                    + CellType.BLANK.toString() + ".";
+                    + CellType.BLANK.toString() + "."
+                    + " If you make a change to this file, you will need to restart the program for it to take effect.";
 
+    // List of default headers, only gets applied to header file if it doesn't already exist.
     private static final String[][] DEFAULT_HEADERS = {
             {"Registration_ID", CellType.NUMERIC.toString()},
             {"Race_Number", CellType.NUMERIC.toString()},
@@ -32,6 +36,9 @@ public class HeaderCreator extends FileCreator {
             {"Division_Name", CellType.STRING.toString()}
     };
 
+    /**
+     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
+     */
     @Override
     public void runSetup() {
         setupHeadersFile();
@@ -44,12 +51,9 @@ public class HeaderCreator extends FileCreator {
     private void setupHeadersFile() {
         String fileAddress = makeMainFileAddress(HEADERS_FILE_NAME);
         if (!fileExists(fileAddress)) {
-            String errorMessage = "IOException occurred when attempting to create default headers file: " + HEADERS_FILE_NAME;
-            List<String> commandList;
 
             // Echoing the file comment to a new file
             checkReturnValue(appendToFileWithoutQuotes(HEADERS_FILE_COMMENT, fileAddress), "append header comment to header.txt without quote marks");
-
             // Appending each header to the text file so that they appear on new lines
             for (String[] command : DEFAULT_HEADERS) {
                 checkReturnValue(appendToFileWithoutQuotes("\"" + command[0] + "," + command[1] + "\"", fileAddress), "append default headers to header.txt without quote marks");

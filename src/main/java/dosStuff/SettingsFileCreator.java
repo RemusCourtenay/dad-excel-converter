@@ -9,7 +9,7 @@ import java.util.List;
  * @author Remus Courtenay - rcou199
  * @since 9/11/2020
  */
-public class SettingsCreator extends FileCreator {
+public class SettingsFileCreator extends FileCreator {
 
     private static final String SETTINGS_FILE_TEXT = "This is a settings file";
 
@@ -33,7 +33,7 @@ public class SettingsCreator extends FileCreator {
             String errorMessage = "IOException occurred when attempting to create default settings file: " + SETTINGS_FILE_NAME;
 
             // DOS command echoes the settings text into a new file placed at the file address
-            appendToFileWithoutQuotes(SETTINGS_FILE_TEXT, fileAddress);
+            checkReturnValue(appendToFileWithoutQuotes(SETTINGS_FILE_TEXT, fileAddress), "append settings text to file: " + SETTINGS_FILE_NAME + " without quote marks");
         }
     }
 

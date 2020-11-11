@@ -1,5 +1,4 @@
 import dosStuff.FileCreatorType;
-import dosStuff.SettingsCreator;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         runFileSetup();
 
