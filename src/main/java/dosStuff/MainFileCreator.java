@@ -3,11 +3,17 @@ package dosStuff;
 import java.util.List;
 
 /**
+ * Extension of abstract FileCreator class that specifically creates the main data folder. Methods only creates main
+ * folder if the folder does not already exist.
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
 public class MainFileCreator extends FileCreator {
 
+
+    /**
+     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
+     */
     @Override
     public void runSetup() {
         setupDataFolder();

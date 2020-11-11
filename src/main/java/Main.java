@@ -1,6 +1,5 @@
 import dosStuff.FileCreatorType;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
