@@ -6,13 +6,26 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Abstract class that contains methods shared by all classes that create files. Abstract method runSetup allows for the
+ * initialisation of all FileCreator extensions via the FileCreatorType enum.
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
 public abstract class FileCreator extends FileHandler {
 
+    /**
+     * Abstract method for running all methods that are needed during the setup process.
+     */
     public abstract void runSetup();
 
+    /* -------------------------------- Helper Methods -------------------------------- */
+
+    /**
+     * Private helper method that calls the Quote Mark Stripper batch file with given inputs.
+     * @param textToAppend : The text to be passed to the Quote Mark Stripper batch file and then sent to the file.
+     * @param fileLocation : The location of the file to append the stripped text to.
+     * @return : The return value of the batch file.
+     */
     protected int appendToFileWithoutQuotes(String textToAppend, String fileLocation) {
         String errorMessage = "IOException occurred when attempting to append:" + textToAppend + " to " + fileLocation;
 
