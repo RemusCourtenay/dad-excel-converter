@@ -1,7 +1,6 @@
 package dosStuff;
 
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,13 +15,39 @@ import java.util.List;
  */
 public abstract class FileCreator extends FileHandler {
 
-    protected final static String STRING = CellType.STRING.toString();
-    protected final static String NUMERIC = CellType.NUMERIC.toString();
-    protected final static String BOOLEAN = CellType.BOOLEAN.toString();
-    protected final static String FORMULA = CellType.FORMULA.toString();
-    protected final static String BLANK = CellType.BLANK.toString();
+    // Kinda cursed ngl
 
-    protected final static DataFormat format = null;
+    protected final static String STRING                    = CellType.STRING.name();
+    protected final static String NUMERIC                   = CellType.NUMERIC.name();
+    protected final static String BOOLEAN                   = CellType.BOOLEAN.name();
+    protected final static String FORMULA                   = CellType.FORMULA.name();
+    protected final static String BLANK                     = CellType.BLANK.name();
+
+    protected final static String TEXT                      = DefaultFormatTypes.TEXT.name();
+    protected final static String ADDRESS                   = DefaultFormatTypes.ADDRESS.name();
+    protected final static String POST_CODE                 = DefaultFormatTypes.POST_CODE.name();
+    protected final static String EMAIL                     = DefaultFormatTypes.EMAIL.name();
+    protected final static String PHONE_NUMBER              = DefaultFormatTypes.PHONE_NUMBER.name();
+    protected final static String GENDER                    = DefaultFormatTypes.GENDER.name();
+    protected final static String ID_NUMBER                 = DefaultFormatTypes.ID_NUMBER.name();
+    protected final static String TAG_NUMBER                = DefaultFormatTypes.TAG_NUMBER.name();
+    protected final static String TIME                      = DefaultFormatTypes.TIME.name();
+    protected final static String DISTANCE                  = DefaultFormatTypes.DISTANCE.name();
+    protected final static String DATE                      = DefaultFormatTypes.DATE.name();
+    protected final static String EVENT                     = DefaultFormatTypes.EVENT.name();
+
+    protected final static String NONE                      = DefaultConditionalFormatTypes.NONE.name();
+    protected final static String PROPER                    = DefaultConditionalFormatTypes.PROPER.name();
+    protected final static String UPPERCASE                 = DefaultConditionalFormatTypes.UPPERCASE.name();
+    protected final static String DISTANCE_UNIT             = DefaultConditionalFormatTypes.DISTANCE_UNIT.name();
+    protected final static String VALID_POSTCODE            = DefaultConditionalFormatTypes.VALID_POSTCODE.name();
+    protected final static String VALID_EMAIL               = DefaultConditionalFormatTypes.VALID_EMAIL.name();
+    protected final static String VALID_PHONE               = DefaultConditionalFormatTypes.VALID_PHONE.name();
+    protected final static String VALID_REGISTRATION_ID     = DefaultConditionalFormatTypes.VALID_REGISTRATION_ID.name();
+    protected final static String VALID_RACE_NUMBER         = DefaultConditionalFormatTypes.VALID_RACE_NUMBER.name();
+    protected final static String VALID_TAG_NUMBER          = DefaultConditionalFormatTypes.VALID_TAG_NUMBER.name();
+
+
 
     /**
      * Abstract method for running all methods that are needed during the setup process.
