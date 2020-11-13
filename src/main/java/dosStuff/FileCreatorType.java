@@ -9,9 +9,11 @@ package dosStuff;
  */
 public enum FileCreatorType {
     // All extensions of the abstract FileCreator class. Values MUST BE placed in the order they need to be initialised in
-    MAIN_FILE_CREATOR(MainFileCreator.class),
+    MAIN_FILE_CREATOR(MainFileCreator.class), // Must go first
+    SETTINGS_CREATOR(SettingsFileCreator.class),
     HEADER_CREATOR(HeaderFileCreator.class),
-    SETTINGS_CREATOR(SettingsFileCreator.class);
+    MASTER_SHEET_LAYOUT_CREATOR(MasterSheetLayoutFileCreator.class);
+
 
     // Storing class objects to give to the automated constructor
     private final Class<? extends FileCreator> fileCreatorClass;
