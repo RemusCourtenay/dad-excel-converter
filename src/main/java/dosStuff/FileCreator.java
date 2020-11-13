@@ -1,5 +1,8 @@
 package dosStuff;
 
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormat;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +15,14 @@ import java.util.List;
  * @since 11/11/2020
  */
 public abstract class FileCreator extends FileHandler {
+
+    protected final static String STRING = CellType.STRING.toString();
+    protected final static String NUMERIC = CellType.NUMERIC.toString();
+    protected final static String BOOLEAN = CellType.BOOLEAN.toString();
+    protected final static String FORMULA = CellType.FORMULA.toString();
+    protected final static String BLANK = CellType.BLANK.toString();
+
+    protected final static DataFormat format = DataFormat
 
     /**
      * Abstract method for running all methods that are needed during the setup process.
