@@ -22,7 +22,7 @@ public abstract class FileCreator extends FileHandler {
     protected final static String FORMULA = CellType.FORMULA.toString();
     protected final static String BLANK = CellType.BLANK.toString();
 
-    protected final static DataFormat format = DataFormat
+    protected final static DataFormat format = null;
 
     /**
      * Abstract method for running all methods that are needed during the setup process.
