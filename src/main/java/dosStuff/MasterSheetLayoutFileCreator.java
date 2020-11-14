@@ -1,13 +1,29 @@
 package dosStuff;
 
+import org.apache.poi.ss.usermodel.CellType;
+
 /**
+ * Extension of abstract FileCreator class that specifically creates the master sheet layout file. Methods only change
+ * file if the file does not already exist.
+ *
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
 public class MasterSheetLayoutFileCreator extends FileCreator {
 
-    private static final String MASTER_SHEET_LAYOUT_FILE_COMMENT = "Defines the layout of the generated Master sheet.";
+    // Top level comment in file explaining how to edit
+    private static final String MASTER_SHEET_LAYOUT_FILE_COMMENT =
+            "Defines the layout of the generated Master sheet. Add new columns or edit existing following the format: (Header Text),(Cell Type),(Column Styling),(Column Conditional Formatting) with no spaces. Valid Cell types are: "
+                    + STRING + ", "
+                    + NUMERIC + ", "
+                    + BOOLEAN + ", "
+                    + FORMULA + " and "
+                    + BLANK + ". "
+                    + "Valid Cell Formatting and Conditional Cell Formatting values can be found in their respective files. "
+                    + "If changes are made to this file, you will need to restart the program for it to take effect."
+            ;
 
+    // List of default layout values, gets used if the file does not already exist
     private static final String[][] MASTER_SHEET_LAYOUT_DEFAULT_HEADERS = {
             // <Header text>, <Cell Type>, <Cell Formatting>, <Conditional Cell Formatting>
             {"First_Name",              STRING,     TEXT,           PROPER},
@@ -49,18 +65,28 @@ public class MasterSheetLayoutFileCreator extends FileCreator {
             {"Athlete3_Last_Name",      STRING,     TEXT,           PROPER} // Not used
     };
 
+    /**
+     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
+     */
     @Override
     public void runSetup() {
         setupMasterSheetLayoutFile();
     }
 
+    /**
+     * Handles the creation, exceptions and running of a DOS command that attempts to create a default master sheet
+     * layout file inside the main data folder. Should preferentially be run after the data folder has been initialised.
+     */
     private void setupMasterSheetLayoutFile() {
         String fileAddress = makeMainFileAddress(MASTER_SHEET_LAYOUT_FILE_NAME);
 
+        // Checking if file already exists
         if(!fileExists(fileAddress)) {
 
+            // Echoing comment to top line of file
             checkReturnValue(appendToFileWithoutQuotes(MASTER_SHEET_LAYOUT_FILE_COMMENT, fileAddress), "append header comment to " + MASTER_SHEET_LAYOUT_FILE_NAME + " without quote marks");
 
+            // Echoing each set of values to a new line in the file
             for (String[] dataLine: MASTER_SHEET_LAYOUT_DEFAULT_HEADERS) {
                 checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(dataLine), fileAddress), "append default columns to " + MASTER_SHEET_LAYOUT_FILE_NAME + " without quote marks");
             }

@@ -19,7 +19,8 @@ public class HeaderFileCreator extends FileCreator {
                     + CellType.BOOLEAN.toString() + ", "
                     + CellType.FORMULA.toString() + " and "
                     + CellType.BLANK.toString() + "."
-                    + " If you make a change to this file, you will need to restart the program for it to take effect.";
+                    + " If you make a change to this file, you will need to restart the program for it to take effect."
+            ;
 
     // List of default headers, only gets applied to header file if it doesn't already exist.
     private static final String[][] DEFAULT_HEADERS = {
@@ -50,10 +51,13 @@ public class HeaderFileCreator extends FileCreator {
      */
     private void setupHeadersFile() {
         String fileAddress = makeMainFileAddress(HEADERS_FILE_NAME);
+
+        // Checking if file already exists
         if (!fileExists(fileAddress)) {
 
             // Echoing the file comment to a new file
             checkReturnValue(appendToFileWithoutQuotes(HEADERS_FILE_COMMENT, fileAddress), "append header comment to " + HEADERS_FILE_NAME + " without quote marks");
+
             // Appending each header to the text file so that they appear on new lines
             for (String[] command : DEFAULT_HEADERS) {
                 checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(command), fileAddress), "append default headers to " + HEADERS_FILE_NAME + " without quote marks");
