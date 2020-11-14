@@ -8,20 +8,24 @@ package dosStuff;
  */
 public abstract class FileHandler {
 
-    // File/folder names
-    static final String MAIN_FOLDER_NAME = "data";
-    static final String SETTINGS_FILE_NAME = "settings.txt";
-    static final String HEADERS_FILE_NAME = "headers.txt";
-    static final String MASTER_SHEET_LAYOUT_FILE_NAME = "master-layout.txt";
+    // Character(s) that specify the boundary between data values in the saved data
+    protected static final String DATA_FILE_DELIMITER = ",";
 
-    // Batch file names
-    static final String CHECK_EXISTS_BAT = "checkExists.bat";
-    static final String QUOTE_MARK_STRIPPER_BAT = "quoteMarkStripper.bat";
+    // File/folder names
+    protected static final String MAIN_FOLDER_NAME = "data";
+    protected static final String SETTINGS_FILE_NAME = "settings.txt";
+    protected static final String HEADERS_FILE_NAME = "headers.txt";
+    protected static final String MASTER_SHEET_LAYOUT_FILE_NAME = "master-layout.txt";
+
     // Batch files location
-    static final String BAT_FILES_LOCATION = "src\\main\\resources\\batFiles\\";
+    protected static final String BAT_FILES_LOCATION = "src\\main\\resources\\batFiles\\";
+    // Batch file names
+    protected static final String CHECK_EXISTS_BAT = "checkExists.bat";
+    protected static final String QUOTE_MARK_STRIPPER_BAT = "quoteMarkStripper.bat";
+
 
     // Standard command for running DOS by giving string inputs
-    static final String[] NEW_COMMAND_SHELL = {"cmd", "/c"};
+    protected static final String[] NEW_COMMAND_SHELL = {"cmd", "/c"};
 
 
     /* -------------------------------- Helper Methods -------------------------------- */

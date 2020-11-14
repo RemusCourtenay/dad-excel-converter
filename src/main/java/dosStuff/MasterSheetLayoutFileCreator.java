@@ -46,10 +46,10 @@ public class MasterSheetLayoutFileCreator extends FileCreator {
             {"Age",                     NUMERIC,    NONE,           NONE}, // Not used
             {"Team",                    STRING,     TEXT,           NONE}, // Not used
             {"Reg/Licence_No",          NUMERIC,    NONE,           NONE}, // Not used
-            {"UCI No",                  NUMERIC,    NONE,           NONE}, // Not used
+            {"UCI_No",                  NUMERIC,    NONE,           NONE}, // Not used
             {"Relay_Team",              STRING,     TEXT,           NONE}, // Not used
-            {"Race No",                 NUMERIC,    ID_NUMBER,      VALID_RACE_NUMBER}, // Race number
-            {"Tag No",                  STRING,     TAG_NUMBER,     VALID_TAG_NUMBER},
+            {"Race_No",                 NUMERIC,    ID_NUMBER,      VALID_RACE_NUMBER}, // Race number
+            {"Tag_No",                  STRING,     TAG_NUMBER,     VALID_TAG_NUMBER},
             {"Event",                   STRING,     EVENT,          NONE}, // Name of sub-event, maybe put check?
             {"Division",                STRING,     TEXT,           NONE}, // Not used
             {"Wave",                    STRING,     TEXT,           NONE}, // Not used

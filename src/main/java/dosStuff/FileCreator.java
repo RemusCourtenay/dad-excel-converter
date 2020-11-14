@@ -112,16 +112,32 @@ public abstract class FileCreator extends FileHandler {
         return MAIN_FOLDER_NAME + "\\" + fileName;
     }
 
+    /**
+     * Private helper method that generates a String in the correct save data format from an array of values.
+     * @param saveData : The data that is being saved as a line in a text file.
+     * @return : The data formatted as a single string in the correct format
+     */
     protected String makeSaveDataLine(String[] saveData) {
         StringBuilder dataLineBuilder = new StringBuilder();
 
-        dataLineBuilder.append("\"");
-
+        // Adding each data chunk and separating with delimiter
         for (String dataChunk: saveData) {
-            dataLineBuilder.append(dataChunk).append(",");
+            // Checking for illegal characters
+            if (dataChunk.contains(DATA_FILE_DELIMITER)) {
+                throw new RuntimeException(dataChunk + " in " + Arrays.toString(saveData) + " contains illegal character: " + DATA_FILE_DELIMITER);
+            } else if (dataChunk.contains(" ") || dataChunk.contains("\t") || dataChunk.contains("\n")){
+                throw new RuntimeException(dataChunk + " in " + Arrays.toString(saveData) + " contains illegal whitespace character, please replace with underscore");
+            } else {
+                dataLineBuilder.append(dataChunk).append(DATA_FILE_DELIMITER);
+            }
         }
-        dataLineBuilder.deleteCharAt(dataLineBuilder.length()-1);
 
+        // Removing unnecessary final delimiter
+        int lastIndexOfDelimiter = dataLineBuilder.lastIndexOf(DATA_FILE_DELIMITER);
+        dataLineBuilder.delete(lastIndexOfDelimiter, lastIndexOfDelimiter+DATA_FILE_DELIMITER.length());
+
+        // Adding quote marks to ensure DOS command doesn't incorrectly split input string
+        dataLineBuilder.insert(0, "\"");
         dataLineBuilder.append("\"");
         return dataLineBuilder.toString();
     }
