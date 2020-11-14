@@ -12,7 +12,7 @@ public abstract class FileHandler {
     static final String MAIN_FOLDER_NAME = "data";
     static final String SETTINGS_FILE_NAME = "settings.txt";
     static final String HEADERS_FILE_NAME = "headers.txt";
-    static final String MASTER_LAYOUT_FILE_NAME = "master-layout.txt";
+    static final String MASTER_SHEET_LAYOUT_FILE_NAME = "master-layout.txt";
 
     // Batch file names
     static final String CHECK_EXISTS_BAT = "checkExists.bat";

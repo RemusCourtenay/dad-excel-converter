@@ -112,6 +112,19 @@ public abstract class FileCreator extends FileHandler {
         return MAIN_FOLDER_NAME + "\\" + fileName;
     }
 
+    protected String makeSaveDataLine(String[] saveData) {
+        StringBuilder dataLineBuilder = new StringBuilder();
+
+        dataLineBuilder.append("\"");
+
+        for (String dataChunk: saveData) {
+            dataLineBuilder.append(dataChunk).append(",");
+        }
+        dataLineBuilder.deleteCharAt(dataLineBuilder.length()-1);
+
+        dataLineBuilder.append("\"");
+        return dataLineBuilder.toString();
+    }
 
     /**
      * Helper method for creating DOS commands that throw IOExceptions. Forces the main thread to wait for the process

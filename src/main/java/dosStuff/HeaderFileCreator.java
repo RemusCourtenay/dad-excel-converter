@@ -53,10 +53,10 @@ public class HeaderFileCreator extends FileCreator {
         if (!fileExists(fileAddress)) {
 
             // Echoing the file comment to a new file
-            checkReturnValue(appendToFileWithoutQuotes(HEADERS_FILE_COMMENT, fileAddress), "append header comment to header.txt without quote marks");
+            checkReturnValue(appendToFileWithoutQuotes(HEADERS_FILE_COMMENT, fileAddress), "append header comment to " + HEADERS_FILE_NAME + " without quote marks");
             // Appending each header to the text file so that they appear on new lines
             for (String[] command : DEFAULT_HEADERS) {
-                checkReturnValue(appendToFileWithoutQuotes("\"" + command[0] + "," + command[1] + "\"", fileAddress), "append default headers to header.txt without quote marks");
+                checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(command), fileAddress), "append default headers to " + HEADERS_FILE_NAME + " without quote marks");
             }
         }
     }

@@ -51,6 +51,19 @@ public class MasterSheetLayoutFileCreator extends FileCreator {
 
     @Override
     public void runSetup() {
+        setupMasterSheetLayoutFile();
+    }
 
+    private void setupMasterSheetLayoutFile() {
+        String fileAddress = makeMainFileAddress(MASTER_SHEET_LAYOUT_FILE_NAME);
+
+        if(!fileExists(fileAddress)) {
+
+            checkReturnValue(appendToFileWithoutQuotes(MASTER_SHEET_LAYOUT_FILE_COMMENT, fileAddress), "append header comment to " + MASTER_SHEET_LAYOUT_FILE_NAME + " without quote marks");
+
+            for (String[] dataLine: MASTER_SHEET_LAYOUT_DEFAULT_HEADERS) {
+                checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(dataLine), fileAddress), "append default columns to " + MASTER_SHEET_LAYOUT_FILE_NAME + " without quote marks");
+            }
+        }
     }
 }
