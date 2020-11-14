@@ -1,4 +1,4 @@
-import dosStuff.SettingsFileReader;
+import dosStuff.fileReaders.SettingsFileReader;
 
 /**
  * @author Remus Courtenay - rcou199

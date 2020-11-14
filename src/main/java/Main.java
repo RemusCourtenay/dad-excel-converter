@@ -1,4 +1,4 @@
-import dosStuff.FileCreatorType;
+import dosStuff.fileCreators.FileCreatorType;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -1,4 +1,4 @@
-package dosStuff;
+package dosStuff.fileCreators;
 
 /**
  * Enum with values that represent all extensions of the FileCreator class. Used to initialise all the FileCreator

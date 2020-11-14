@@ -1,4 +1,6 @@
-package dosStuff;
+package dosStuff.fileCreators;
+
+import dosStuff.fileCreators.FileCreator;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the settings file. Methods only creates settings

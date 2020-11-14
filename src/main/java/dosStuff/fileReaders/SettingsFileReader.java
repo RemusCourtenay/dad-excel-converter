@@ -1,4 +1,6 @@
-package dosStuff;
+package dosStuff.fileReaders;
+
+import dosStuff.FileHandler;
 
 import java.util.List;
 

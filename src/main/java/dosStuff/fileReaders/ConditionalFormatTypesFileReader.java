@@ -1,4 +1,4 @@
-package dosStuff;
+package dosStuff.fileReaders;
 
 /**
  * @author Remus Courtenay - rcou199

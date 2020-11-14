@@ -1,4 +1,4 @@
-package dosStuff;
+package dosStuff.fileCreators;
 
 /**
  * @author Remus Courtenay - rcou199

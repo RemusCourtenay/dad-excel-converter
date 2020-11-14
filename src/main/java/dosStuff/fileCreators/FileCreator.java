@@ -1,5 +1,6 @@
-package dosStuff;
+package dosStuff.fileCreators;
 
+import dosStuff.FileHandler;
 import org.apache.poi.ss.usermodel.CellType;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package dosStuff;
+package dosStuff.fileCreators;
 
-import org.apache.poi.ss.usermodel.CellType;
+import dosStuff.fileCreators.FileCreator;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the master sheet layout file. Methods only change

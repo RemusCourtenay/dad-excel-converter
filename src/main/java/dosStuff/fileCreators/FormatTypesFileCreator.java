@@ -1,4 +1,6 @@
-package dosStuff;
+package dosStuff.fileCreators;
+
+import dosStuff.fileCreators.FileCreator;
 
 /**
  * @author Remus Courtenay - rcou199
