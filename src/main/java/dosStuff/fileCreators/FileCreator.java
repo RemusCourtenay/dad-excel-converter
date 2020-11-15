@@ -37,16 +37,16 @@ public abstract class FileCreator extends FileHandler {
     protected final static String DATE                      = DefaultFormatTypes.DATE.name();
     protected final static String EVENT                     = DefaultFormatTypes.EVENT.name();
 
-    protected final static String NONE                      = DefaultConditionalFormatTypes.NONE.name();
-    protected final static String PROPER                    = DefaultConditionalFormatTypes.PROPER.name();
-    protected final static String UPPERCASE                 = DefaultConditionalFormatTypes.UPPERCASE.name();
-    protected final static String DISTANCE_UNIT             = DefaultConditionalFormatTypes.DISTANCE_UNIT.name();
-    protected final static String VALID_POSTCODE            = DefaultConditionalFormatTypes.VALID_POSTCODE.name();
-    protected final static String VALID_EMAIL               = DefaultConditionalFormatTypes.VALID_EMAIL.name();
-    protected final static String VALID_PHONE               = DefaultConditionalFormatTypes.VALID_PHONE.name();
-    protected final static String VALID_REGISTRATION_ID     = DefaultConditionalFormatTypes.VALID_REGISTRATION_ID.name();
-    protected final static String VALID_RACE_NUMBER         = DefaultConditionalFormatTypes.VALID_RACE_NUMBER.name();
-    protected final static String VALID_TAG_NUMBER          = DefaultConditionalFormatTypes.VALID_TAG_NUMBER.name();
+    protected final static String NONE                      = DefaultConditionalCellFormatTypes.NONE.name();
+    protected final static String PROPER                    = DefaultConditionalCellFormatTypes.PROPER.name();
+    protected final static String UPPERCASE                 = DefaultConditionalCellFormatTypes.UPPERCASE.name();
+    protected final static String DISTANCE_UNIT             = DefaultConditionalCellFormatTypes.DISTANCE_UNIT.name();
+    protected final static String VALID_POSTCODE            = DefaultConditionalCellFormatTypes.VALID_POSTCODE.name();
+    protected final static String VALID_EMAIL               = DefaultConditionalCellFormatTypes.VALID_EMAIL.name();
+    protected final static String VALID_PHONE               = DefaultConditionalCellFormatTypes.VALID_PHONE.name();
+    protected final static String VALID_REGISTRATION_ID     = DefaultConditionalCellFormatTypes.VALID_REGISTRATION_ID.name();
+    protected final static String VALID_RACE_NUMBER         = DefaultConditionalCellFormatTypes.VALID_RACE_NUMBER.name();
+    protected final static String VALID_TAG_NUMBER          = DefaultConditionalCellFormatTypes.VALID_TAG_NUMBER.name();
 
 
 

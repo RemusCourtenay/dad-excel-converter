@@ -13,7 +13,8 @@ public enum FileCreatorType {
     SETTINGS_CREATOR(SettingsFileCreator.class),
     HEADER_CREATOR(HeaderFileCreator.class),
     MASTER_SHEET_LAYOUT_CREATOR(MasterSheetLayoutFileCreator.class),
-    CELL_FORMATS_FILE_CREATOR(CellFormatsFileCreator.class);
+    CELL_FORMATS_FILE_CREATOR(CellFormatsFileCreator.class),
+    CONDITIONAL_CELL_FORMATS_FILE_CREATOR(ConditionalCellFormatsFileCreator.class);
 
 
     // Storing class objects to give to the automated constructor

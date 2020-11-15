@@ -16,7 +16,8 @@ public abstract class FileHandler {
     protected static final String SETTINGS_FILE_NAME = "settings.txt";
     protected static final String HEADERS_FILE_NAME = "headers.txt";
     protected static final String MASTER_SHEET_LAYOUT_FILE_NAME = "master-layout.txt";
-    protected static final String CELL_FORMATS_FILE_NAME = "column-formats.txt";
+    protected static final String CELL_FORMATS_FILE_NAME = "cell-formats.txt";
+    protected static final String CONDITIONAL_CELL_FORMATS_FILE_NAME = "conditional-cell-formats.txt";
 
     // Batch files location
     protected static final String BAT_FILES_LOCATION = "src\\main\\resources\\batFiles\\";
