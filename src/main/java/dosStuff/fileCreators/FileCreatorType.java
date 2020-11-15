@@ -12,7 +12,8 @@ public enum FileCreatorType {
     MAIN_FILE_CREATOR(MainFileCreator.class), // Must go first
     SETTINGS_CREATOR(SettingsFileCreator.class),
     HEADER_CREATOR(HeaderFileCreator.class),
-    MASTER_SHEET_LAYOUT_CREATOR(MasterSheetLayoutFileCreator.class);
+    MASTER_SHEET_LAYOUT_CREATOR(MasterSheetLayoutFileCreator.class),
+    CELL_FORMATS_FILE_CREATOR(CellFormatsFileCreator.class);
 
 
     // Storing class objects to give to the automated constructor
