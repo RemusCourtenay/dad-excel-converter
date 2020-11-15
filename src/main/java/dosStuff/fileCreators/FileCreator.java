@@ -57,6 +57,25 @@ public abstract class FileCreator extends FileHandler {
 
     /* -------------------------------- Helper Methods -------------------------------- */
 
+    protected void createFileWithCommentLine(String fileName, String comment, String[][] dataLines) {
+
+        // Making address relative to source root
+        String fileAddress = makeMainFileAddress(fileName);
+
+        // Checking if file already exists
+        if(!fileExists(fileAddress)) {
+
+            // Echoing comment to top line of file
+            checkReturnValue(appendToFileWithoutQuotes(comment, fileAddress), "append header comment to " + fileAddress + " without quote marks");
+
+            // Echoing each set of values to a new line in the file
+            for (String[] dataLine: dataLines) {
+                checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(dataLine), fileAddress), "append default values to " + fileAddress + " without quote marks");
+            }
+        }
+
+    }
+
     /**
      * Private helper method that calls the Quote Mark Stripper batch file with given inputs.
      * @param textToAppend : The text to be passed to the Quote Mark Stripper batch file and then sent to the file.

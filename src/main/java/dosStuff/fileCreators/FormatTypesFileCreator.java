@@ -1,7 +1,5 @@
 package dosStuff.fileCreators;
 
-import dosStuff.fileCreators.FileCreator;
-
 /**
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
@@ -28,8 +26,14 @@ public class FormatTypesFileCreator extends FileCreator {
             {EVENT,         GENERAL_FORMAT}
     };
 
+    /**
+     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
+     * Handles the creation, exceptions and running of a DOS command that attempts to create a data format types file
+     * inside the main data folder. Should preferentially be run after the data folder has been initialised.
+     */
     @Override
     public void runSetup() {
-
+        // Using helper method to create file
+        createFileWithCommentLine(DATA_TYPES_FILE_NAME, DATA_TYPES_FILE_COMMENT, DEFAULT_FORMAT_TYPES);
     }
 }
