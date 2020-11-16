@@ -40,29 +40,12 @@ public class HeaderFileCreator extends FileCreator {
 
     /**
      * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
-     */
-    @Override
-    public void runSetup() {
-        setupHeadersFile();
-    }
-
-    /**
      * Handles the creation, exceptions and running of a DOS command that attempts to create a default headers file
      * inside the main data folder. Should preferentially be run after the data folder has been initialised.
      */
-    private void setupHeadersFile() {
-        String fileAddress = makeMainFileAddress(HEADERS_FILE_NAME);
-
-        // Checking if file already exists
-        if (!fileExists(fileAddress)) {
-
-            // Echoing the file comment to a new file
-            checkReturnValue(appendToFileWithoutQuotes(HEADERS_FILE_COMMENT, fileAddress), "append header comment to " + HEADERS_FILE_NAME + " without quote marks");
-
-            // Appending each header to the text file so that they appear on new lines
-            for (String[] command : DEFAULT_HEADERS) {
-                checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(command), fileAddress), "append default headers to " + HEADERS_FILE_NAME + " without quote marks");
-            }
-        }
+    @Override
+    public void runSetup() {
+        // Using helper method to make file with comment
+        makeFileWithCommentLine(HEADERS_FILE_NAME, HEADERS_FILE_COMMENT, DEFAULT_HEADERS);
     }
 }

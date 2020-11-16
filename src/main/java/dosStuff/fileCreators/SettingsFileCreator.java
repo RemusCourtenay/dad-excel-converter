@@ -23,7 +23,6 @@ public class SettingsFileCreator extends FileCreator {
     }
 
 
-
     /**
      * Handles the creation, exceptions and running of a DOS command that attempts to create a default settings file
      * inside the main data folder. Should preferentially be run after the data folder has been initialised.

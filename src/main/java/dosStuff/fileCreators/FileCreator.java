@@ -58,7 +58,7 @@ public abstract class FileCreator extends FileHandler {
 
     /* -------------------------------- Helper Methods -------------------------------- */
 
-    protected void createFileWithCommentLine(String fileName, String comment, String[][] dataLines) {
+    protected void makeFileWithCommentLine(String fileName, String comment, String[][] dataLines) {
 
         // Making address relative to source root
         String fileAddress = makeMainFileAddress(fileName);

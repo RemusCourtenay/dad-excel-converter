@@ -69,8 +69,8 @@ public class MasterSheetLayoutFileCreator extends FileCreator {
 
     @Override
     public void runSetup() {
-        // Using helper method to create file
-        createFileWithCommentLine(MASTER_SHEET_LAYOUT_FILE_NAME, MASTER_SHEET_LAYOUT_FILE_COMMENT, MASTER_SHEET_LAYOUT_DEFAULT_HEADERS);
+        // Using helper method to create file with comment line
+        makeFileWithCommentLine(MASTER_SHEET_LAYOUT_FILE_NAME, MASTER_SHEET_LAYOUT_FILE_COMMENT, MASTER_SHEET_LAYOUT_DEFAULT_HEADERS);
     }
 }
 

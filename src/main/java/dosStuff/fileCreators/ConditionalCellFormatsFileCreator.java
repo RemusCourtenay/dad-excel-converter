@@ -34,6 +34,6 @@ public class ConditionalCellFormatsFileCreator extends FileCreator {
     @Override
     public void runSetup() {
         // Using helper method to create file with comment header line
-        createFileWithCommentLine(CONDITIONAL_CELL_FORMATS_FILE_NAME, CONDITIONAL_CELL_FORMATS_FILE_COMMENT, DEFAULT_CONDITION_CELL_FORMATS);
+        makeFileWithCommentLine(CONDITIONAL_CELL_FORMATS_FILE_NAME, CONDITIONAL_CELL_FORMATS_FILE_COMMENT, DEFAULT_CONDITION_CELL_FORMATS);
     }
 }
