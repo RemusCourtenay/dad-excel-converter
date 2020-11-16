@@ -3,7 +3,7 @@ package dosStuff.fileCreators;
 import static dosStuff.fileCreators.FileCreator.*;
 
 /**
- * Enum representation of each default header for use in setting up files
+ * Enum representation of each default header.
  * @author Remus Courtenay - rcou199
  * @since 16/11/2020
  */
@@ -67,7 +67,8 @@ public enum DefaultHeaderTypes {
 
         }
 
-        // Returning the data as a string array
+        /* -------------------------------- Getter Methods -------------------------------- */
+
         public String[] getSaveData() {
                 return new String[] {title, cellType, cellFormat, conditionalCellFormat};
         }
