@@ -5,24 +5,32 @@ package dosStuff.fileCreators;
  * @since 13/11/2020
  */
 public enum DefaultConditionalCellFormatTypes {
-    NONE(""),
-    PROPER("=NOT(EXACT([CELL].PROPER([CELL])))"),
-    UPPERCASE("=NOT(EXACT([CELL].UPPER([CELL])))"),
-    DISTANCE_UNIT("=NOT(OR(EXACT([CELL].\"KM\").EXACT([CELL].\"MI\")))"),
-    VALID_POSTCODE("=LEN([CELL])=4"),
-    VALID_EMAIL("=NOT(ISNUMBER(MATCH(\"*@*\\.*\".[CELL].0)))"),
-    VALID_PHONE("=NOT(LEN([CELL])>6)"),
-    VALID_REGISTRATION_ID("=NOT(AND(LEN([CELL])=9.ISNUMBER([CELL])))"),
-    VALID_RACE_NUMBER("=NOT(AND(LEN([CELL])>2.LEN([CELL])<5.ISNUMBER([CELL])))"),
-    VALID_TAG_NUMBER("=NOT(LEN([CELL]=12)");
+    NONE("none",""),
+    PROPER("proper","=NOT(EXACT([CELL].PROPER([CELL])))"),
+    UPPERCASE("uppercase","=NOT(EXACT([CELL].UPPER([CELL])))"),
+    DISTANCE_UNIT("distanceUnit","=NOT(OR(EXACT([CELL].\"KM\").EXACT([CELL].\"MI\")))"),
+    VALID_POSTCODE("postcode","=LEN([CELL])=4"),
+    VALID_EMAIL("email","=NOT(ISNUMBER(MATCH(\"*@*\\.*\".[CELL].0)))"),
+    VALID_PHONE("phone","=NOT(LEN([CELL])>6)"),
+    VALID_REGISTRATION_ID("id","=NOT(AND(LEN([CELL])=9.ISNUMBER([CELL])))"),
+    VALID_RACE_NUMBER("raceNum","=NOT(AND(LEN([CELL])>2.LEN([CELL])<5.ISNUMBER([CELL])))"),
+    VALID_TAG_NUMBER("tagNum","=NOT(LEN([CELL]=12)");
 
+    private final String name;
     private final String format;
 
-    DefaultConditionalCellFormatTypes(String format) {
+    DefaultConditionalCellFormatTypes(String name, String format) {
+        this.name = name;
         this.format = format;
     }
 
+    /* -------------------------------- Getter methods -------------------------------- */
+
     public String[] getSaveData() {
-        return new String[] {this.name(), this.format};
+        return new String[] {this.name, this.format};
+    }
+
+    public String getName() {
+        return name;
     }
 }
