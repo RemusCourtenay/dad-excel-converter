@@ -4,7 +4,7 @@ package dosStuff.fileCreators;
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
-public enum DefaultFormatTypes {
+public enum DefaultCellFormatTypes {
     NONE,
     TEXT,
     ADDRESS,

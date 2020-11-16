@@ -14,7 +14,7 @@ public class CellFormatsFileCreator extends FileCreator {
 
     // Default cell formats used if the file does not already exist
     private static final String[][] DEFAULT_FORMAT_TYPES = {
-            {NONE,          GENERAL_FORMAT},
+            {NONE_CONDITIONAL,          GENERAL_FORMAT},
             {TEXT,          GENERAL_FORMAT},
             {ADDRESS,       GENERAL_FORMAT},
             {POST_CODE,     GENERAL_FORMAT},

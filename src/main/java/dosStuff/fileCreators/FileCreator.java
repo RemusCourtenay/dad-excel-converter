@@ -18,35 +18,36 @@ public abstract class FileCreator extends FileHandler {
 
     // Kinda cursed ngl
 
-    protected final static String STRING                    = CellType.STRING.name();
-    protected final static String NUMERIC                   = CellType.NUMERIC.name();
-    protected final static String BOOLEAN                   = CellType.BOOLEAN.name();
-    protected final static String FORMULA                   = CellType.FORMULA.name();
-    protected final static String BLANK                     = CellType.BLANK.name();
+    protected final static String STRING_CELL   = CellType.STRING.name();
+    protected final static String NUMERIC_CELL  = CellType.NUMERIC.name();
+    protected final static String BOOLEAN_CELL  = CellType.BOOLEAN.name();
+    protected final static String FORMULA_CELL  = CellType.FORMULA.name();
+    protected final static String BLANK_CELL    = CellType.BLANK.name();
 
-    protected final static String TEXT                      = DefaultFormatTypes.TEXT.name();
-    protected final static String ADDRESS                   = DefaultFormatTypes.ADDRESS.name();
-    protected final static String POST_CODE                 = DefaultFormatTypes.POST_CODE.name();
-    protected final static String EMAIL                     = DefaultFormatTypes.EMAIL.name();
-    protected final static String PHONE_NUMBER              = DefaultFormatTypes.PHONE_NUMBER.name();
-    protected final static String GENDER                    = DefaultFormatTypes.GENDER.name();
-    protected final static String ID_NUMBER                 = DefaultFormatTypes.ID_NUMBER.name();
-    protected final static String TAG_NUMBER                = DefaultFormatTypes.TAG_NUMBER.name();
-    protected final static String TIME                      = DefaultFormatTypes.TIME.name();
-    protected final static String DISTANCE                  = DefaultFormatTypes.DISTANCE.name();
-    protected final static String DATE                      = DefaultFormatTypes.DATE.name();
-    protected final static String EVENT                     = DefaultFormatTypes.EVENT.name();
+    protected final static String NONE_FORMAT                       = DefaultCellFormatTypes.NONE.name();
+    protected final static String TEXT_FORMAT                       = DefaultCellFormatTypes.TEXT.name();
+    protected final static String ADDRESS_FORMAT                    = DefaultCellFormatTypes.ADDRESS.name();
+    protected final static String POST_CODE_FORMAT                  = DefaultCellFormatTypes.POST_CODE.name();
+    protected final static String EMAIL_FORMAT                      = DefaultCellFormatTypes.EMAIL.name();
+    protected final static String PHONE_NUMBER_FORMAT               = DefaultCellFormatTypes.PHONE_NUMBER.name();
+    protected final static String GENDER_FORMAT                     = DefaultCellFormatTypes.GENDER.name();
+    protected final static String ID_NUMBER_FORMAT                  = DefaultCellFormatTypes.ID_NUMBER.name();
+    protected final static String TAG_NUMBER_FORMAT                 = DefaultCellFormatTypes.TAG_NUMBER.name();
+    protected final static String TIME_FORMAT                       = DefaultCellFormatTypes.TIME.name();
+    protected final static String DISTANCE_FORMAT                   = DefaultCellFormatTypes.DISTANCE.name();
+    protected final static String DATE_FORMAT                       = DefaultCellFormatTypes.DATE.name();
+    protected final static String EVENT_FORMAT                      = DefaultCellFormatTypes.EVENT.name();
 
-    protected final static String NONE                      = DefaultConditionalCellFormatTypes.NONE.name();
-    protected final static String PROPER                    = DefaultConditionalCellFormatTypes.PROPER.name();
-    protected final static String UPPERCASE                 = DefaultConditionalCellFormatTypes.UPPERCASE.name();
-    protected final static String DISTANCE_UNIT             = DefaultConditionalCellFormatTypes.DISTANCE_UNIT.name();
-    protected final static String VALID_POSTCODE            = DefaultConditionalCellFormatTypes.VALID_POSTCODE.name();
-    protected final static String VALID_EMAIL               = DefaultConditionalCellFormatTypes.VALID_EMAIL.name();
-    protected final static String VALID_PHONE               = DefaultConditionalCellFormatTypes.VALID_PHONE.name();
-    protected final static String VALID_REGISTRATION_ID     = DefaultConditionalCellFormatTypes.VALID_REGISTRATION_ID.name();
-    protected final static String VALID_RACE_NUMBER         = DefaultConditionalCellFormatTypes.VALID_RACE_NUMBER.name();
-    protected final static String VALID_TAG_NUMBER          = DefaultConditionalCellFormatTypes.VALID_TAG_NUMBER.name();
+    protected final static String NONE_CONDITIONAL                  = DefaultConditionalCellFormatTypes.NONE.name();
+    protected final static String PROPER_CONDITIONAL                = DefaultConditionalCellFormatTypes.PROPER.name();
+    protected final static String UPPERCASE_CONDITIONAL             = DefaultConditionalCellFormatTypes.UPPERCASE.name();
+    protected final static String DISTANCE_UNIT_CONDITIONAL         = DefaultConditionalCellFormatTypes.DISTANCE_UNIT.name();
+    protected final static String VALID_POSTCODE_CONDITIONAL        = DefaultConditionalCellFormatTypes.VALID_POSTCODE.name();
+    protected final static String VALID_EMAIL_CONDITIONAL           = DefaultConditionalCellFormatTypes.VALID_EMAIL.name();
+    protected final static String VALID_PHONE_CONDITIONAL           = DefaultConditionalCellFormatTypes.VALID_PHONE.name();
+    protected final static String VALID_REGISTRATION_ID_CONDITIONAL = DefaultConditionalCellFormatTypes.VALID_REGISTRATION_ID.name();
+    protected final static String VALID_RACE_NUMBER_CONDITIONAL     = DefaultConditionalCellFormatTypes.VALID_RACE_NUMBER.name();
+    protected final static String VALID_TAG_NUMBER_CONDITIONAL      = DefaultConditionalCellFormatTypes.VALID_TAG_NUMBER.name();
 
 
 

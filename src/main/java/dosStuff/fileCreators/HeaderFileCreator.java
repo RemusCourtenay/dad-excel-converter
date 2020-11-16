@@ -1,6 +1,5 @@
 package dosStuff.fileCreators;
 
-import dosStuff.fileCreators.FileCreator;
 import org.apache.poi.ss.usermodel.CellType;
 
 /**
@@ -15,27 +14,28 @@ public class HeaderFileCreator extends FileCreator {
     // Top level comment in header file explaining how to edit it.
     private static final String HEADERS_FILE_COMMENT =
             "Add new headers on a new line with the format: (name),(column type) with no spaces. Valid column types are: " // Don't use <> characters
-                    + CellType.STRING.toString() + ", "
-                    + CellType.NUMERIC.toString() + ", "
-                    + CellType.BOOLEAN.toString() + ", "
-                    + CellType.FORMULA.toString() + " and "
-                    + CellType.BLANK.toString() + "."
+                    + STRING_CELL + ", "
+                    + NUMERIC_CELL + ", "
+                    + BOOLEAN_CELL + ", "
+                    + FORMULA_CELL + " and "
+                    + BLANK_CELL + "."
                     + " If you make a change to this file, you will need to restart the program for it to take effect."
             ;
 
     // List of default headers, only gets applied to header file if it doesn't already exist.
     private static final String[][] DEFAULT_HEADERS = {
-            {"Registration_ID", CellType.NUMERIC.toString()},
-            {"Race_Number", CellType.NUMERIC.toString()},
-            {"Last_Name", CellType.STRING.toString()},
-            {"First_Name", CellType.STRING.toString()},
-            {"Gender", CellType.STRING.toString()},
-            {"Age", CellType.NUMERIC.toString()},
-            {"Finish_Result", CellType.NUMERIC.toString()}, // String?
-            {"Event", CellType.STRING.toString()},
-            {"Rank_Overall", CellType.NUMERIC.toString()},
-            {"Rank_Gender", CellType.NUMERIC.toString()},
-            {"Division_Name", CellType.STRING.toString()}
+            DefaultHeaderTypes.REGISTRATION_ID.getSaveData(),
+            DefaultHeaderTypes.RACE_NUMBER.getSaveData(),
+            DefaultHeaderTypes.LAST_NAME.getSaveData(),
+            DefaultHeaderTypes.FIRST_NAME.getSaveData(),
+            DefaultHeaderTypes.GENDER.getSaveData(),
+            DefaultHeaderTypes.AGE.getSaveData(),
+            DefaultHeaderTypes.FINISH_RESULT.getSaveData(), // String?
+            DefaultHeaderTypes.EVENT.getSaveData(),
+            DefaultHeaderTypes.RANK_OVERALL.getSaveData(),
+            DefaultHeaderTypes.RANK_GENDER.getSaveData(),
+            DefaultHeaderTypes.DIVISION.getSaveData(),
+            DefaultHeaderTypes.CITY.getSaveData()
     };
 
     /**
