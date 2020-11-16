@@ -1,6 +1,6 @@
 package dosStuff.fileCreators;
 
-import dosStuff.fileCreators.FileCreator;
+import dosStuff.FileIOThreadManager;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the settings file. Methods only creates settings
@@ -9,31 +9,17 @@ import dosStuff.fileCreators.FileCreator;
  * @author Remus Courtenay - rcou199
  * @since 9/11/2020
  */
-public class SettingsFileCreator extends FileCreator {
+public class SettingsFileCreator implements FileCreator {
+
+    private static final String SETTINGS_FILE_COMMENT = "This is a comment";
 
     // Placeholder text to add to file
-    private static final String SETTINGS_FILE_TEXT = "This is a settings file";
+    private static final String SETTINGS_FILE_TEXT = "This_is_a_settings_file";
 
-    /**
-     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
-     */
-    @Override
-    public void runSetup() {
-        setupSettingsFile();
+    public SettingsFileCreator(FileIOThreadManager fileIOThreadManager) {
+        fileIOThreadManager.writeToFileWithComment(SETTINGS_FILE_COMMENT, new String[][] {{SETTINGS_FILE_TEXT}});
     }
 
-
-    /**
-     * Handles the creation, exceptions and running of a DOS command that attempts to create a default settings file
-     * inside the main data folder. Should preferentially be run after the data folder has been initialised.
-     */
-    private void setupSettingsFile() {
-        String fileAddress = makeMainFileAddress(SETTINGS_FILE_NAME);
-        if(!fileExists(fileAddress)) {
-            // DOS command echoes the settings text into a new file placed at the file address
-            checkReturnValue(appendToFileWithoutQuotes(SETTINGS_FILE_TEXT, fileAddress), "append settings text to file: " + SETTINGS_FILE_NAME + " without quote marks");
-        }
-    }
 }
 
 

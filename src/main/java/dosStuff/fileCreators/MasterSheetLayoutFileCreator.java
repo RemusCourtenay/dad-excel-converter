@@ -1,5 +1,7 @@
 package dosStuff.fileCreators;
 
+import dosStuff.FileIOThreadManager;
+
 /**
  * Extension of abstract FileCreator class that specifically creates the master sheet layout file. Methods only change
  * file if the file does not already exist.
@@ -7,7 +9,7 @@ package dosStuff.fileCreators;
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
-public class MasterSheetLayoutFileCreator extends FileCreator {
+public class MasterSheetLayoutFileCreator implements FileCreator {
 
     // Top level comment in file explaining how to edit
     private static final String MASTER_SHEET_LAYOUT_FILE_COMMENT =
@@ -61,17 +63,10 @@ public class MasterSheetLayoutFileCreator extends FileCreator {
             DefaultHeaderTypes.ATHLETE_3_LAST_NAME          .getSaveData()  // Not used
     };
 
-    /**
-     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
-     * Handles the creation, exceptions and running of a DOS command that attempts to create a default master sheet
-     * layout file inside the main data folder. Should preferentially be run after the data folder has been initialised.
-     */
-
-    @Override
-    public void runSetup() {
-        // Using helper method to create file with comment line
-        makeFileWithCommentLine(MASTER_SHEET_LAYOUT_FILE_NAME, MASTER_SHEET_LAYOUT_FILE_COMMENT, MASTER_SHEET_LAYOUT_DEFAULT_HEADERS);
+    public MasterSheetLayoutFileCreator(FileIOThreadManager fileIOThreadManager) {
+        fileIOThreadManager.writeToFileWithComment(MASTER_SHEET_LAYOUT_FILE_COMMENT, MASTER_SHEET_LAYOUT_DEFAULT_HEADERS);
     }
+
 }
 
 

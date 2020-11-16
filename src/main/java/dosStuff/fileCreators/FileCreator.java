@@ -1,12 +1,6 @@
 package dosStuff.fileCreators;
 
-import dosStuff.FileHandler;
 import org.apache.poi.ss.usermodel.CellType;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Abstract class that contains methods shared by all classes that create files. Abstract method runSetup allows for the
@@ -14,183 +8,39 @@ import java.util.List;
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public abstract class FileCreator extends FileHandler {
+public interface FileCreator {
 
     // Kinda cursed ngl
 
-    protected final static String STRING_CELL                       = CellType.STRING.name();
-    protected final static String NUMERIC_CELL                      = CellType.NUMERIC.name();
-    protected final static String BOOLEAN_CELL                      = CellType.BOOLEAN.name();
-    protected final static String FORMULA_CELL                      = CellType.FORMULA.name();
-    protected final static String BLANK_CELL                        = CellType.BLANK.name();
+    String STRING_CELL                       = CellType.STRING.name();
+    String NUMERIC_CELL                      = CellType.NUMERIC.name();
+    String BOOLEAN_CELL                      = CellType.BOOLEAN.name();
+    String FORMULA_CELL                      = CellType.FORMULA.name();
+    String BLANK_CELL                        = CellType.BLANK.name();
 
-    protected final static String NONE_FORMAT                       = DefaultCellFormatTypes.NONE.getName();
-    protected final static String TEXT_FORMAT                       = DefaultCellFormatTypes.TEXT.getName();
-    protected final static String ADDRESS_FORMAT                    = DefaultCellFormatTypes.ADDRESS.getName();
-    protected final static String POST_CODE_FORMAT                  = DefaultCellFormatTypes.POST_CODE.getName();
-    protected final static String EMAIL_FORMAT                      = DefaultCellFormatTypes.EMAIL.getName();
-    protected final static String PHONE_NUMBER_FORMAT               = DefaultCellFormatTypes.PHONE_NUMBER.getName();
-    protected final static String GENDER_FORMAT                     = DefaultCellFormatTypes.GENDER.getName();
-    protected final static String ID_NUMBER_FORMAT                  = DefaultCellFormatTypes.ID_NUMBER.getName();
-    protected final static String TAG_NUMBER_FORMAT                 = DefaultCellFormatTypes.TAG_NUMBER.getName();
-    protected final static String TIME_FORMAT                       = DefaultCellFormatTypes.TIME.getName();
-    protected final static String DISTANCE_FORMAT                   = DefaultCellFormatTypes.DISTANCE.getName();
-    protected final static String DATE_FORMAT                       = DefaultCellFormatTypes.DATE.getName();
-    protected final static String EVENT_FORMAT                      = DefaultCellFormatTypes.EVENT.getName();
+    String NONE_FORMAT                       = DefaultCellFormatTypes.NONE.getName();
+    String TEXT_FORMAT                       = DefaultCellFormatTypes.TEXT.getName();
+    String ADDRESS_FORMAT                    = DefaultCellFormatTypes.ADDRESS.getName();
+    String POST_CODE_FORMAT                  = DefaultCellFormatTypes.POST_CODE.getName();
+    String EMAIL_FORMAT                      = DefaultCellFormatTypes.EMAIL.getName();
+    String PHONE_NUMBER_FORMAT               = DefaultCellFormatTypes.PHONE_NUMBER.getName();
+    String GENDER_FORMAT                     = DefaultCellFormatTypes.GENDER.getName();
+    String ID_NUMBER_FORMAT                  = DefaultCellFormatTypes.ID_NUMBER.getName();
+    String TAG_NUMBER_FORMAT                 = DefaultCellFormatTypes.TAG_NUMBER.getName();
+    String TIME_FORMAT                       = DefaultCellFormatTypes.TIME.getName();
+    String DISTANCE_FORMAT                   = DefaultCellFormatTypes.DISTANCE.getName();
+    String DATE_FORMAT                       = DefaultCellFormatTypes.DATE.getName();
+    String EVENT_FORMAT                      = DefaultCellFormatTypes.EVENT.getName();
 
-    protected final static String NONE_CONDITIONAL                  = DefaultConditionalCellFormatTypes.NONE.getName();
-    protected final static String PROPER_CONDITIONAL                = DefaultConditionalCellFormatTypes.PROPER.getName();
-    protected final static String UPPERCASE_CONDITIONAL             = DefaultConditionalCellFormatTypes.UPPERCASE.getName();
-    protected final static String DISTANCE_UNIT_CONDITIONAL         = DefaultConditionalCellFormatTypes.DISTANCE_UNIT.getName();
-    protected final static String VALID_POSTCODE_CONDITIONAL        = DefaultConditionalCellFormatTypes.VALID_POSTCODE.getName();
-    protected final static String VALID_EMAIL_CONDITIONAL           = DefaultConditionalCellFormatTypes.VALID_EMAIL.getName();
-    protected final static String VALID_PHONE_CONDITIONAL           = DefaultConditionalCellFormatTypes.VALID_PHONE.getName();
-    protected final static String VALID_REGISTRATION_ID_CONDITIONAL = DefaultConditionalCellFormatTypes.VALID_REGISTRATION_ID.getName();
-    protected final static String VALID_RACE_NUMBER_CONDITIONAL     = DefaultConditionalCellFormatTypes.VALID_RACE_NUMBER.getName();
-    protected final static String VALID_TAG_NUMBER_CONDITIONAL      = DefaultConditionalCellFormatTypes.VALID_TAG_NUMBER.getName();
-
-
-
-    /**
-     * Abstract method for running all methods that are needed during the setup process.
-     */
-    public abstract void runSetup();
-
-    /* -------------------------------- Helper Methods -------------------------------- */
-
-    protected void makeFileWithCommentLine(String fileName, String comment, String[][] dataLines) {
-
-        // Making address relative to source root
-        String fileAddress = makeMainFileAddress(fileName);
-
-        // Checking if file already exists
-        if(!fileExists(fileAddress)) {
-
-            // Echoing comment to top line of file
-            checkReturnValue(appendToFileWithoutQuotes(comment, fileAddress), "append header comment to " + fileAddress + " without quote marks");
-
-            // Echoing each set of values to a new line in the file
-            for (String[] dataLine: dataLines) {
-                checkReturnValue(appendToFileWithoutQuotes(makeSaveDataLine(dataLine), fileAddress), "append default values to " + fileAddress + " without quote marks");
-            }
-        }
-
-    }
-
-    /**
-     * Private helper method that calls the Quote Mark Stripper batch file with given inputs.
-     * @param textToAppend : The text to be passed to the Quote Mark Stripper batch file and then sent to the file.
-     * @param fileLocation : The location of the file to append the stripped text to.
-     * @return : The return value of the batch file.
-     */
-    protected int appendToFileWithoutQuotes(String textToAppend, String fileLocation) {
-        String errorMessage = "IOException occurred when attempting to append:" + textToAppend + " to " + fileLocation;
-
-        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + QUOTE_MARK_STRIPPER_BAT, textToAppend, fileLocation);
-        return runProcess(errorMessage, commandList);
-    }
-
-    /**
-     * Private helper method for building lists of strings.
-     * @param commands : Strings to place in the list, order is preserved.
-     * @return : The set of inputted Strings as a list.
-     */
-    protected List<String> makeCommandList(String... commands) {
-        return new ArrayList<>(Arrays.asList(commands));
-    }
-
-    /**
-     * Helper method that calls a DOS script to check if a file already exists.
-     * @param address : A set of strings in order that correlate to a file path relative to the program's source root
-     *                that leads to where the possibly existing file should be.
-     * @return : True if the file exists, otherwise false.
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    protected boolean fileExists(String... address) {
-        StringBuilder addressBuilder = new StringBuilder();
-
-        // Building file path from inputs
-        for (String addressPart: address) {
-            addressBuilder.append(addressPart).append("\\");
-        }
-        // Removing final backslash
-        String fullAddress = addressBuilder.substring(0, addressBuilder.length()-1);
-
-        // Building command list that runs checkExists.bat with the inputted address as it's first input
-        List<String> commandList = makeCommandList(BAT_FILES_LOCATION + CHECK_EXISTS_BAT, fullAddress);
-
-        // Checking the exit value of the batch file
-        return runProcess("TODO", commandList) == 0;
-    }
-
-    /**
-     * Private helper method that makes a file address relative to the main data file.
-     * @param fileName : The name of the file within the data file.
-     * @return : The relative path from the program's source root to the inputted file.
-     */
-
-    protected String makeMainFileAddress(String fileName) {
-        return MAIN_FOLDER_NAME + "\\" + fileName;
-    }
-
-    /**
-     * Private helper method that generates a String in the correct save data format from an array of values.
-     * @param saveData : The data that is being saved as a line in a text file.
-     * @return : The data formatted as a single string in the correct format
-     */
-    protected String makeSaveDataLine(String[] saveData) {
-        StringBuilder dataLineBuilder = new StringBuilder();
-
-        // Adding each data chunk and separating with delimiter
-        for (String dataChunk: saveData) {
-            // Checking for illegal characters
-            if (dataChunk.contains(DATA_FILE_DELIMITER)) {
-                throw new RuntimeException(dataChunk + " in " + Arrays.toString(saveData) + " contains illegal character: " + DATA_FILE_DELIMITER);
-            } else if (dataChunk.contains(" ") || dataChunk.contains("\t") || dataChunk.contains("\n")){
-                throw new RuntimeException(dataChunk + " in " + Arrays.toString(saveData) + " contains illegal whitespace character, please replace with underscore");
-            } else {
-                dataLineBuilder.append(dataChunk).append(DATA_FILE_DELIMITER);
-            }
-        }
-
-        // Removing unnecessary final delimiter
-        int lastIndexOfDelimiter = dataLineBuilder.lastIndexOf(DATA_FILE_DELIMITER);
-        dataLineBuilder.delete(lastIndexOfDelimiter, lastIndexOfDelimiter+DATA_FILE_DELIMITER.length());
-
-        // Adding quote marks to ensure DOS command doesn't incorrectly split input string
-        dataLineBuilder.insert(0, "\"");
-        dataLineBuilder.append("\"");
-        return dataLineBuilder.toString();
-    }
-
-    /**
-     * Helper method for creating DOS commands that throw IOExceptions. Forces the main thread to wait for the process
-     * to complete before continuing.
-     * @param ioExceptionErrorMessage : Error message to throw if an IOException occurs.
-     * @param commandLists : The lists of commands to be fed into the process builder.
-     * @return : The process' exit value.
-     */
-
-    @SafeVarargs // Don't know why I need this but IDE says so
-    protected final int runProcess(String ioExceptionErrorMessage, List<String>... commandLists) {
-        // Converting inputted commands into a list to feed into the process builder
-        List<String> fullCommandList = new ArrayList<>(Arrays.asList(NEW_COMMAND_SHELL));
-        for (List<String> commandList: commandLists) {
-            fullCommandList.addAll(commandList);
-        }
-
-        // Initialising process builder and inputting list of commands
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command(fullCommandList);
-        // Attempting to start the process
-        try {
-            Process process = processBuilder.start();
-            return process.waitFor(); // Waiting for thread to complete and returning it's exit value
-        } catch(IOException | InterruptedException exception) { // Catching exception and throwing runtime with inputted error message
-            exception.printStackTrace();
-            throw new RuntimeException(ioExceptionErrorMessage);
-        }
-    }
-
+    String NONE_CONDITIONAL                  = DefaultConditionalCellFormatTypes.NONE.getName();
+    String PROPER_CONDITIONAL                = DefaultConditionalCellFormatTypes.PROPER.getName();
+    String UPPERCASE_CONDITIONAL             = DefaultConditionalCellFormatTypes.UPPERCASE.getName();
+    String DISTANCE_UNIT_CONDITIONAL         = DefaultConditionalCellFormatTypes.DISTANCE_UNIT.getName();
+    String VALID_POSTCODE_CONDITIONAL        = DefaultConditionalCellFormatTypes.VALID_POSTCODE.getName();
+    String VALID_EMAIL_CONDITIONAL           = DefaultConditionalCellFormatTypes.VALID_EMAIL.getName();
+    String VALID_PHONE_CONDITIONAL           = DefaultConditionalCellFormatTypes.VALID_PHONE.getName();
+    String VALID_REGISTRATION_ID_CONDITIONAL = DefaultConditionalCellFormatTypes.VALID_REGISTRATION_ID.getName();
+    String VALID_RACE_NUMBER_CONDITIONAL     = DefaultConditionalCellFormatTypes.VALID_RACE_NUMBER.getName();
+    String VALID_TAG_NUMBER_CONDITIONAL      = DefaultConditionalCellFormatTypes.VALID_TAG_NUMBER.getName();
 
 }

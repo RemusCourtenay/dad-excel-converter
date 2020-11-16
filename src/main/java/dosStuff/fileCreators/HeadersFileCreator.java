@@ -1,6 +1,6 @@
 package dosStuff.fileCreators;
 
-import org.apache.poi.ss.usermodel.CellType;
+import dosStuff.FileIOThreadManager;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the headers text file. Methods only change header
@@ -9,7 +9,7 @@ import org.apache.poi.ss.usermodel.CellType;
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public class HeaderFileCreator extends FileCreator {
+public class HeadersFileCreator implements FileCreator {
 
     // Top level comment in header file explaining how to edit it.
     private static final String HEADERS_FILE_COMMENT =
@@ -38,14 +38,7 @@ public class HeaderFileCreator extends FileCreator {
             DefaultHeaderTypes.CITY.getSaveData()
     };
 
-    /**
-     * Implementation of abstract runSetup method to allow for this class to be initialised via the FileCreatorType enum.
-     * Handles the creation, exceptions and running of a DOS command that attempts to create a default headers file
-     * inside the main data folder. Should preferentially be run after the data folder has been initialised.
-     */
-    @Override
-    public void runSetup() {
-        // Using helper method to make file with comment
-        makeFileWithCommentLine(HEADERS_FILE_NAME, HEADERS_FILE_COMMENT, DEFAULT_HEADERS);
+    public HeadersFileCreator(FileIOThreadManager fileIOThreadManager) {
+        fileIOThreadManager.writeToFileWithComment(HEADERS_FILE_COMMENT, DEFAULT_HEADERS);
     }
 }
