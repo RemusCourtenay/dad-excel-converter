@@ -1,6 +1,7 @@
 package dosStuff.fileCreators;
 
 /**
+ * Enum representation of each default cell format.
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
@@ -35,6 +36,8 @@ public enum DefaultCellFormatTypes {
         this.name = name;
         this.format = GENERAL_FORMAT;
     }
+
+    /* -------------------------------- Getter methods -------------------------------- */
 
     public String[] getSaveData() {
         return new String[]{name, format};

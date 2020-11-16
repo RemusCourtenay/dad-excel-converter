@@ -1,6 +1,7 @@
 package dosStuff.fileCreators;
 
 /**
+ * Enum representation of each default conditional cell format.
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
