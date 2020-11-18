@@ -1,5 +1,7 @@
 package dosStuff;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -16,12 +18,17 @@ public class FileIOThreadManager {
     // Character(s) that specify the boundary between data values in the saved data
     private static final String DATA_FILE_DELIMITER = ",";
 
+    private static final int NUM_COMMENT_LINES = 1;
+
     private final String fileAddress;
     private final ExecutorService commandExecutor;
+
+    private int currentLine;
 
     public FileIOThreadManager(String fileAddress) {
         this.fileAddress = fileAddress;
         this.commandExecutor = Executors.newSingleThreadExecutor();
+        this.currentLine = NUM_COMMENT_LINES;
     }
 
     public synchronized void writeToFileWithComment(String comment, String[][] dataLines) {
@@ -50,8 +57,23 @@ public class FileIOThreadManager {
         }
     }
 
-    public synchronized String[][] readFromFile() {
-        return null;
+    public synchronized String[] readLineFromFile() {
+        if (!BatchFileHandler.fileExists(fileAddress)) {
+
+            final String[] dataLine = new String[1];
+
+            commandExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    dataLine[0] = BatchFileHandler.readFileLine(fileAddress, currentLine);
+                    currentLine++;
+                }
+            });
+
+            return convertLineToArray(dataLine[0]);
+        } else {
+            throw new RuntimeException("File: " + fileAddress + "hasn't been initialised");
+        }
     }
 
     /**
@@ -85,4 +107,20 @@ public class FileIOThreadManager {
         return dataLineBuilder.toString();
     }
 
+    private String[] convertLineToArray(String dataLine) {
+
+        StringBuilder stringBuilder = new StringBuilder(dataLine);
+
+        int i;
+        while (dataLine.contains("_")) {
+            i = dataLine.indexOf("_", 1);
+            if (dataLine.charAt(i-1) != '\\') {
+                stringBuilder.replace(i,i+1,"_");
+            }
+
+        }
+
+        return stringBuilder.toString().split(",");
+
+    }
 }

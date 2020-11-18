@@ -30,6 +30,10 @@ public class BatchFileHandler {
         return runProcess(errorMessage, commandList);
     }
 
+    protected static String readFileLine(String fileAddress, int i) {
+        return null;
+    }
+
 
     /**
      * Helper method that calls a DOS script to check if a file already exists.
