@@ -16,6 +16,7 @@ public class BatchFileHandler {
     // Batch file names
     protected static final String CHECK_EXISTS_BAT = "checkExists.bat";
     protected static final String QUOTE_MARK_STRIPPER_BAT = "quoteMarkStripper.bat";
+    protected static final String READ_LINE_BAT = "readLineFromFile.bat";
 
     /**
      * Private helper method that calls the Quote Mark Stripper batch file with given inputs.
@@ -28,10 +29,6 @@ public class BatchFileHandler {
 
         List<String> commandList = makeCommandList(BAT_FILES_LOCATION + QUOTE_MARK_STRIPPER_BAT, textToAppend, fileLocation);
         return runProcess(errorMessage, commandList);
-    }
-
-    protected static String readFileLine(String fileAddress, int i) {
-        return null;
     }
 
 

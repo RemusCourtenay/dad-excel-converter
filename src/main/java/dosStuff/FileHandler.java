@@ -1,6 +1,10 @@
 package dosStuff;
 
 import dosStuff.fileCreators.*;
+import dosStuff.fileReaders.CellFormatsReader;
+import dosStuff.fileReaders.FileReader;
+
+import java.util.Arrays;
 
 /**
  * Abstract class that represents all classes that interact with the program files. Stores file locations/names and
@@ -26,11 +30,20 @@ public class FileHandler {
 
         makeMainDataFolder();
 
-        new SettingsFileCreator(new FileIOThreadManager(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME));
-        new HeadersFileCreator(new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME));
-        new MasterSheetLayoutFileCreator(new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME));
-        new CellFormatsFileCreator(new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME));
-        new ConditionalCellFormatsFileCreator(new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME));
+        FileIOThreadManager settingsFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME);
+        FileIOThreadManager headersFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME);
+        FileIOThreadManager masterSheetLayoutFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME);
+        FileIOThreadManager cellFormatsFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME);
+        FileIOThreadManager conditionalCellFormatsThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME);
+
+        new SettingsFileCreator(settingsFileThreadManager);
+        new HeadersFileCreator(headersFileThreadManager);
+        new MasterSheetLayoutFileCreator(masterSheetLayoutFileThreadManager);
+        new CellFormatsFileCreator(cellFormatsFileThreadManager);
+        new ConditionalCellFormatsFileCreator(conditionalCellFormatsThreadManager);
+
+        FileReader cellFormatsReader = new CellFormatsReader(cellFormatsFileThreadManager);
+        System.out.println(cellFormatsReader.readFile());
 
     }
 

@@ -1,11 +1,13 @@
 package dosStuff;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static dosStuff.BatchFileHandler.appendToFileWithoutQuotes;
 
@@ -23,12 +25,10 @@ public class FileIOThreadManager {
     private final String fileAddress;
     private final ExecutorService commandExecutor;
 
-    private int currentLine;
 
     public FileIOThreadManager(String fileAddress) {
         this.fileAddress = fileAddress;
         this.commandExecutor = Executors.newSingleThreadExecutor();
-        this.currentLine = NUM_COMMENT_LINES;
     }
 
     public synchronized void writeToFileWithComment(String comment, String[][] dataLines) {
@@ -53,26 +53,46 @@ public class FileIOThreadManager {
                     }
                 });
             }
-            commandExecutor.shutdown();
         }
     }
 
-    public synchronized String[] readLineFromFile() {
-        if (!BatchFileHandler.fileExists(fileAddress)) {
+    public synchronized List<String> readFromFile() throws FileNotFoundException {
+        if (BatchFileHandler.fileExists(fileAddress)) {
 
-            final String[] dataLine = new String[1];
+            File file = new File(fileAddress);
+            List<String> dataLines = new ArrayList<>();
+            BufferedReader dataReader = new BufferedReader(new FileReader(file));
 
             commandExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    dataLine[0] = BatchFileHandler.readFileLine(fileAddress, currentLine);
-                    currentLine++;
+                    String data;
+                    while (true) {
+                        try {
+                            if ((data = dataReader.readLine()) == null) break;
+                        } catch (IOException e) {
+                            throw new RuntimeException("IOException occurred when trying to read line from file: " + fileAddress);
+                        }
+                        System.out.println(data);
+                        dataLines.add(data);
+                    }
                 }
             });
-
-            return convertLineToArray(dataLine[0]);
+            commandExecutor.shutdown();
+            try {
+                System.out.println("attempting executor shutdown");
+                if(!commandExecutor.awaitTermination(3,TimeUnit.SECONDS)) {
+                    commandExecutor.shutdownNow();
+                    System.out.println("executor forced shutdown");
+                } else {
+                    System.out.println("executor has shutdown");
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException();
+            }
+            return dataLines;
         } else {
-            throw new RuntimeException("File: " + fileAddress + "hasn't been initialised");
+            throw new RuntimeException("File: " + fileAddress + " hasn't been initialised");
         }
     }
 
@@ -105,22 +125,5 @@ public class FileIOThreadManager {
         dataLineBuilder.insert(0, "\"");
         dataLineBuilder.append("\"");
         return dataLineBuilder.toString();
-    }
-
-    private String[] convertLineToArray(String dataLine) {
-
-        StringBuilder stringBuilder = new StringBuilder(dataLine);
-
-        int i;
-        while (dataLine.contains("_")) {
-            i = dataLine.indexOf("_", 1);
-            if (dataLine.charAt(i-1) != '\\') {
-                stringBuilder.replace(i,i+1,"_");
-            }
-
-        }
-
-        return stringBuilder.toString().split(",");
-
     }
 }

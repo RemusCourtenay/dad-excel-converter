@@ -3,6 +3,8 @@ package dosStuff.fileReaders;
 import dosStuff.FileIOThreadManager;
 
 import java.io.File;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +25,40 @@ public class CellFormatsReader implements FileReader {
     @Override
     public List<String[]> readFile() {
 
-        List<String[]> data = new ArrayList<>();
-        String[] dataLine;
+        List<String> dataStrings;
+        List<String[]> dataArrays;
 
-        while ((dataLine = fileIOThreadManager.readLineFromFile()) != null) {
-            data.add(dataLine);
+        try {
+            dataStrings = fileIOThreadManager.readFromFile();
+            dataArrays = new ArrayList<>(dataStrings.size());
+        } catch (IOException e) {
+            throw new RuntimeException("IOException occurred when attempting to read from file");
         }
 
-        return data;
+        for (String dataLine: dataStrings) {
+            dataArrays.add(convertLineToArray(dataLine));
+        }
+        return dataArrays;
+    }
+
+
+    private String[] convertLineToArray(String dataLine) {
+
+        StringBuilder stringBuilder = new StringBuilder(dataLine);
+
+        List<Integer> underscores = new ArrayList<>();
+
+        int i;
+        while (dataLine.contains("_")) {
+            i = dataLine.indexOf("_", 1);
+            if (dataLine.charAt(i-1) != '\\') {
+                underscores.add(i);
+            }
+            dataLine = stringBuilder.toString().substring(i+1);
+
+        }
+
+        return stringBuilder.toString().split(",");
+
     }
 }
