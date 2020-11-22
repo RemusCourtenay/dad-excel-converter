@@ -5,6 +5,7 @@ import dosStuff.fileReaders.CellFormatsReader;
 import dosStuff.fileReaders.FileReader;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Abstract class that represents all classes that interact with the program files. Stores file locations/names and
@@ -43,8 +44,17 @@ public class FileHandler {
         new ConditionalCellFormatsFileCreator(conditionalCellFormatsThreadManager);
 
         FileReader cellFormatsReader = new CellFormatsReader(cellFormatsFileThreadManager);
-        System.out.println(cellFormatsReader.readFile());
+        printData(cellFormatsReader.readFile());
 
+    }
+
+    private void printData(List<String[]> fileOutput) {
+        for (String[] dataLine: fileOutput) {
+            for (String data: dataLine) {
+                System.out.print(data + " ");
+            }
+            System.out.println("");
+        }
     }
 
     private void makeMainDataFolder() {

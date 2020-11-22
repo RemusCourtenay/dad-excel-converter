@@ -81,7 +81,7 @@ public class FileIOThreadManager {
             commandExecutor.shutdown();
             try {
                 System.out.println("attempting executor shutdown");
-                if(!commandExecutor.awaitTermination(3,TimeUnit.SECONDS)) {
+                if(!commandExecutor.awaitTermination(60,TimeUnit.SECONDS)) {
                     commandExecutor.shutdownNow();
                     System.out.println("executor forced shutdown");
                 } else {

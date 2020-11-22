@@ -46,6 +46,7 @@ public class CellFormatsReader implements FileReader {
 
         StringBuilder stringBuilder = new StringBuilder(dataLine);
 
+        // TODO.. implement
         List<Integer> underscores = new ArrayList<>();
 
         int i;
@@ -54,7 +55,7 @@ public class CellFormatsReader implements FileReader {
             if (dataLine.charAt(i-1) != '\\') {
                 underscores.add(i);
             }
-            dataLine = stringBuilder.toString().substring(i+1);
+            dataLine = stringBuilder.substring(i+1);
 
         }
 
