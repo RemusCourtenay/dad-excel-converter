@@ -4,8 +4,12 @@ import dosStuff.fileCreators.*;
 import dosStuff.fileReaders.CellFormatsReader;
 import dosStuff.fileReaders.FileReader;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract class that represents all classes that interact with the program files. Stores file locations/names and
@@ -37,15 +41,44 @@ public class FileHandler {
         FileIOThreadManager cellFormatsFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME);
         FileIOThreadManager conditionalCellFormatsThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME);
 
-        new SettingsFileCreator(settingsFileThreadManager);
-        new HeadersFileCreator(headersFileThreadManager);
-        new MasterSheetLayoutFileCreator(masterSheetLayoutFileThreadManager);
-        new CellFormatsFileCreator(cellFormatsFileThreadManager);
-        new ConditionalCellFormatsFileCreator(conditionalCellFormatsThreadManager);
+        ExecutorService setupExecutor = Executors.newCachedThreadPool();
+
+        setupExecutor.submit(makeAsTask(SettingsFileCreator.class, settingsFileThreadManager));
+        setupExecutor.submit(makeAsTask(HeadersFileCreator.class, headersFileThreadManager));
+        setupExecutor.submit(makeAsTask(MasterSheetLayoutFileCreator.class, masterSheetLayoutFileThreadManager));
+        setupExecutor.submit(makeAsTask(CellFormatsFileCreator.class, cellFormatsFileThreadManager));
+        setupExecutor.submit(makeAsTask(ConditionalCellFormatsFileCreator.class, conditionalCellFormatsThreadManager));
+
+        setupExecutor.shutdown();
+
+        try {
+            if(!setupExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
+              setupExecutor.shutdownNow();
+              throw new RuntimeException("File setup timed out");
+            }
+        } catch(InterruptedException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException("File setup interrupted");
+        }
 
         FileReader cellFormatsReader = new CellFormatsReader(cellFormatsFileThreadManager);
         printData(cellFormatsReader.readFile());
 
+    }
+
+    private Runnable makeAsTask(Class<? extends FileCreator> fileCreatorClass, FileIOThreadManager threadManager) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    fileCreatorClass.getConstructor(FileIOThreadManager.class).newInstance(threadManager);
+                    System.out.println("Constructed " + fileCreatorClass.getName());
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("File creator: " + fileCreatorClass.getName() + " threw exception during instantiation");
+                }
+            }
+        };
     }
 
     private void printData(List<String[]> fileOutput) {
