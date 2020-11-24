@@ -73,19 +73,15 @@ public class FileIOThreadManager {
                         } catch (IOException e) {
                             throw new RuntimeException("IOException occurred when trying to read line from file: " + fileAddress);
                         }
-                        System.out.println(data);
                         dataLines.add(data);
                     }
                 }
             });
             commandExecutor.shutdown();
             try {
-                System.out.println("attempting executor shutdown");
                 if(!commandExecutor.awaitTermination(60,TimeUnit.SECONDS)) {
                     commandExecutor.shutdownNow();
-                    System.out.println("executor forced shutdown");
-                } else {
-                    System.out.println("executor has shutdown");
+                    throw new RuntimeException("Executor timed out while attempting to read from file");
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException();

@@ -32,6 +32,7 @@ public class CellFormatsReader implements FileReader {
             dataStrings = fileIOThreadManager.readFromFile();
             dataArrays = new ArrayList<>(dataStrings.size());
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("IOException occurred when attempting to read from file");
         }
 

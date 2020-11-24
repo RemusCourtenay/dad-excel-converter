@@ -3,6 +3,7 @@ package dosStuff;
 import dosStuff.fileCreators.*;
 import dosStuff.fileReaders.CellFormatsReader;
 import dosStuff.fileReaders.FileReader;
+import dosStuff.fileReaders.SettingsFileReader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -49,6 +50,8 @@ public class FileHandler {
         setupExecutor.submit(makeAsTask(CellFormatsFileCreator.class, cellFormatsFileThreadManager));
         setupExecutor.submit(makeAsTask(ConditionalCellFormatsFileCreator.class, conditionalCellFormatsThreadManager));
 
+        setupExecutor.submit(makeAsTask(cellFormatsFileThreadManager, CellFormatsReader.class));
+
         setupExecutor.shutdown();
 
         try {
@@ -60,9 +63,6 @@ public class FileHandler {
             exception.printStackTrace();
             throw new RuntimeException("File setup interrupted");
         }
-
-        FileReader cellFormatsReader = new CellFormatsReader(cellFormatsFileThreadManager);
-        printData(cellFormatsReader.readFile());
 
     }
 
@@ -76,6 +76,20 @@ public class FileHandler {
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     e.printStackTrace();
                     throw new RuntimeException("File creator: " + fileCreatorClass.getName() + " threw exception during instantiation");
+                }
+            }
+        };
+    }
+
+    private Runnable makeAsTask(FileIOThreadManager fileIOThreadManager, Class<? extends FileReader> fileReaderClass) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    printData(fileReaderClass.getConstructor(FileIOThreadManager.class).newInstance(fileIOThreadManager).readFile());
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("File reader " + fileReaderClass.getName() + " threw exception during data reading");
                 }
             }
         };
