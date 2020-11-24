@@ -2,6 +2,7 @@ package dosStuff;
 
 import dosStuff.fileCreators.*;
 import dosStuff.fileReaders.CellFormatsReader;
+import dosStuff.fileReaders.ConditionalFormatTypesFileReader;
 import dosStuff.fileReaders.FileReader;
 import dosStuff.fileReaders.SettingsFileReader;
 
@@ -51,6 +52,7 @@ public class FileHandler {
         setupExecutor.submit(makeAsTask(ConditionalCellFormatsFileCreator.class, conditionalCellFormatsThreadManager));
 
         setupExecutor.submit(makeAsTask(cellFormatsFileThreadManager, CellFormatsReader.class));
+        setupExecutor.submit(makeAsTask(conditionalCellFormatsThreadManager, ConditionalFormatTypesFileReader.class));
 
         setupExecutor.shutdown();
 
