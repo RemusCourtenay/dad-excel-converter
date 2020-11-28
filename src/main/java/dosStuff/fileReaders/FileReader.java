@@ -4,6 +4,8 @@ import dosStuff.FileIOThreadManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -40,22 +42,27 @@ public abstract class FileReader {
 
     private String[] convertLineToArray(String dataLine) {
 
-        StringBuilder stringBuilder = new StringBuilder(dataLine);
+        StringBuilder dataBuilder = new StringBuilder(dataLine);
 
-        // TODO.. implement
-        List<Integer> underscores = new ArrayList<>();
-
-        int i;
-        while (dataLine.contains("_")) {
-            i = dataLine.indexOf("_", 1);
-            if (dataLine.charAt(i-1) != '\\') {
-                underscores.add(i);
+        for (int i = 0; i< dataBuilder.capacity(); i++) {
+            if (dataBuilder.charAt(i) == '_' && notEscaped(dataBuilder, i)) {
+                dataBuilder.setCharAt(i, ' ');
             }
-            dataLine = stringBuilder.substring(i+1);
-
         }
 
-        return stringBuilder.toString().split(",");
+        return dataBuilder.toString().split(",");
+    }
+
+    private boolean notEscaped(StringBuilder dataBuilder, int i) {
+        if (i == 0) {
+            return true;
+        } else {
+            if (dataBuilder.charAt(i-1) == '\\' && notEscaped(dataBuilder, i-1)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
 }

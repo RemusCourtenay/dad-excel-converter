@@ -89,6 +89,7 @@ public class FileHandler {
             public void run() {
                 try {
                     printData(fileReaderClass.getConstructor(FileIOThreadManager.class).newInstance(fileIOThreadManager).readFile());
+                    System.out.println("Constructed " + fileReaderClass.getName());
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     e.printStackTrace();
                     throw new RuntimeException("File reader " + fileReaderClass.getName() + " threw exception during data reading");
