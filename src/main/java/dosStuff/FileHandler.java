@@ -1,10 +1,7 @@
 package dosStuff;
 
 import dosStuff.fileCreators.*;
-import dosStuff.fileReaders.CellFormatsReader;
-import dosStuff.fileReaders.ConditionalFormatTypesFileReader;
-import dosStuff.fileReaders.FileReader;
-import dosStuff.fileReaders.SettingsFileReader;
+import dosStuff.fileReaders.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -53,6 +50,7 @@ public class FileHandler {
 
         setupExecutor.submit(makeAsTask(cellFormatsFileThreadManager, CellFormatsReader.class));
         setupExecutor.submit(makeAsTask(conditionalCellFormatsThreadManager, ConditionalFormatTypesFileReader.class));
+        setupExecutor.submit(makeAsTask(masterSheetLayoutFileThreadManager, MasterLayoutFileReader.class));
 
         setupExecutor.shutdown();
 

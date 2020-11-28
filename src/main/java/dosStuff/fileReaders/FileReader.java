@@ -42,27 +42,28 @@ public abstract class FileReader {
 
     private String[] convertLineToArray(String dataLine) {
 
-        StringBuilder dataBuilder = new StringBuilder(dataLine);
+        StringBuilder dataBuilder = new StringBuilder();
+        char[] dataArray = dataLine.toCharArray();
 
-        for (int i = 0; i< dataBuilder.capacity(); i++) {
-            if (dataBuilder.charAt(i) == '_' && notEscaped(dataBuilder, i)) {
-                dataBuilder.setCharAt(i, ' ');
+        for (int i = 0; i<dataLine.length() - 1; i++) { // -1 as final character can't be escape char
+            if (dataArray[i] == '\\') {
+                if (dataArray[i+1] == '\\') { // Escaped slash
+                    dataBuilder.append('\\');
+                    i++;
+                } else if (dataArray[i+1] == '_') { // Escaped underscore
+                    dataBuilder.append('_');
+                    i++;
+                } else {
+                    dataBuilder.append('\\'); // Non-escape slash
+                }
+            } else if (dataArray[i] == '_') { // Non-escaped underscore converts to space
+                dataBuilder.append(' ');
+            } else {
+                dataBuilder.append(dataArray[i]);
             }
         }
 
         return dataBuilder.toString().split(",");
-    }
-
-    private boolean notEscaped(StringBuilder dataBuilder, int i) {
-        if (i == 0) {
-            return true;
-        } else {
-            if (dataBuilder.charAt(i-1) == '\\' && notEscaped(dataBuilder, i-1)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
     }
 
 }
