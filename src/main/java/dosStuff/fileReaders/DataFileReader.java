@@ -1,41 +1,53 @@
 package dosStuff.fileReaders;
 
-import dosStuff.FileIOThreadManager;
-
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * @author Remus Courtenay - rcou199
  * @since 19/11/2020
  */
-public abstract class FileReader {
+public abstract class DataFileReader {
 
-    protected final FileIOThreadManager fileIOThreadManager;
-
-    public FileReader(FileIOThreadManager fileIOThreadManager) {
-        this.fileIOThreadManager = fileIOThreadManager;
+    public DataFileReader() {
     }
 
-    public List<String[]> readFile() {
+    public List<String[]> readFromFile(String fileAddress)  {
 
-        List<String> dataStrings;
-        List<String[]> dataArrays;
+        File file = new File(fileAddress);
+        List<String> dataLines = new ArrayList<>();
+        BufferedReader dataReader;
 
         try {
-            dataStrings = fileIOThreadManager.readFromFile();
-            dataArrays = new ArrayList<>(dataStrings.size());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("IOException occurred when attempting to read from file");
+            dataReader = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException("File: " + fileAddress + " not found");
         }
 
-        for (String dataLine: dataStrings) {
+        String data;
+        while (true) {
+            try {
+                if ((data = dataReader.readLine()) == null) {
+                    break;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("IOException occurred when trying to read line from file: " + fileAddress);
+            }
+            dataLines.add(data);
+        }
+
+        return convertToArrays(dataLines);
+    }
+
+    private List<String[]> convertToArrays(List<String> dataLines) {
+        List<String[]> dataArrays = new ArrayList<>(dataLines.size());
+
+        for (String dataLine: dataLines) {
             dataArrays.add(convertLineToArray(dataLine));
         }
+
         return dataArrays;
     }
 

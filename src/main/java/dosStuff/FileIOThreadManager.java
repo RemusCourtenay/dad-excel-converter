@@ -1,15 +1,13 @@
 package dosStuff;
 
-import java.io.*;
+import dosStuff.fileCreators.FileCreator;
+import dosStuff.fileReaders.DataFileReader;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import static dosStuff.BatchFileHandler.appendToFileWithoutQuotes;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -17,109 +15,65 @@ import static dosStuff.BatchFileHandler.appendToFileWithoutQuotes;
  */
 public class FileIOThreadManager {
 
-    // Character(s) that specify the boundary between data values in the saved data
-    private static final String DATA_FILE_DELIMITER = ",";
-
     private static final int NUM_COMMENT_LINES = 1;
 
     private final String fileAddress;
     private final ExecutorService commandExecutor;
+    private final DataFileReader dataFileReader;
+    private final FileCreator fileCreator;
 
 
-    public FileIOThreadManager(String fileAddress) {
+    public FileIOThreadManager(String fileAddress, DataFileReader dataFileReader, FileCreator fileCreator) {
         this.fileAddress = fileAddress;
         this.commandExecutor = Executors.newSingleThreadExecutor();
+        this.dataFileReader = dataFileReader;
+        this.fileCreator = fileCreator;
     }
 
-    public synchronized void writeToFileWithComment(String comment, String[][] dataLines) {
-
-        // Checking if file already exists
-        if(!BatchFileHandler.fileExists(fileAddress)) {
-
-            commandExecutor.execute(new Runnable() {
+    public synchronized void setupFile() {
+        if (!BatchFileHandler.fileExists(fileAddress)) {
+            commandExecutor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    appendToFileWithoutQuotes(comment, fileAddress);
+                    fileCreator.createDefaultFile(fileAddress);
                 }
             });
-
-            // Echoing each set of values to a new line in the file
-            for (String[] dataLine: dataLines) {
-
-                commandExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        appendToFileWithoutQuotes(makeSaveDataLine(dataLine), fileAddress);
-                    }
-                });
-            }
         }
     }
 
-    public synchronized List<String> readFromFile() throws FileNotFoundException {
+
+    public synchronized List<String[]> readFile() {
+
         if (BatchFileHandler.fileExists(fileAddress)) {
+            List<String[]> dataArrays = new ArrayList<>();
 
-            File file = new File(fileAddress);
-            List<String> dataLines = new ArrayList<>();
-            BufferedReader dataReader = new BufferedReader(new FileReader(file));
-
-            commandExecutor.execute(new Runnable() {
+            commandExecutor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    String data;
-                    while (true) {
-                        try {
-                            if ((data = dataReader.readLine()) == null) break;
-                        } catch (IOException e) {
-                            throw new RuntimeException("IOException occurred when trying to read line from file: " + fileAddress);
-                        }
-                        dataLines.add(data);
-                    }
+                    dataArrays.addAll(dataFileReader.readFromFile(fileAddress));
                 }
             });
             commandExecutor.shutdown();
+
             try {
-                if(!commandExecutor.awaitTermination(60,TimeUnit.SECONDS)) {
+                if (!commandExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
                     commandExecutor.shutdownNow();
-                    throw new RuntimeException("Executor timed out while attempting to read from file");
+                    throw new RuntimeException("Executor timed out trying to read file: " + fileAddress);
                 }
-            } catch (InterruptedException e) {
-                throw new RuntimeException();
+            } catch (InterruptedException exception) {
+                exception.printStackTrace();
+                throw new RuntimeException("Executor was interrupted while trying to read file: " + fileAddress);
             }
-            return dataLines;
+            return dataArrays;
         } else {
-            throw new RuntimeException("File: " + fileAddress + " hasn't been initialised");
-        }
-    }
-
-    /**
-     * Private helper method that generates a String in the correct save data format from an array of values.
-     * @param saveData : The data that is being saved as a line in a text file.
-     * @return : The data formatted as a single string in the correct format
-     */
-    private String makeSaveDataLine(String[] saveData) {
-
-        StringBuilder dataLineBuilder = new StringBuilder();
-
-        // Adding each data chunk and separating with delimiter
-        for (String dataChunk: saveData) {
-            // Checking for illegal characters
-            if (dataChunk.contains(DATA_FILE_DELIMITER)) {
-                throw new RuntimeException(dataChunk + " in " + Arrays.toString(saveData) + " contains illegal character: " + DATA_FILE_DELIMITER);
-            } else if (dataChunk.contains(" ") || dataChunk.contains("\t") || dataChunk.contains("\n")){
-                throw new RuntimeException(dataChunk + " in " + Arrays.toString(saveData) + " contains illegal whitespace character, please replace with underscore");
-            } else {
-                dataLineBuilder.append(dataChunk).append(DATA_FILE_DELIMITER);
-            }
+            throw new RuntimeException("Attempting to read file: " + fileAddress + " before it has been created");
         }
 
-        // Removing unnecessary final delimiter
-        int lastIndexOfDelimiter = dataLineBuilder.lastIndexOf(DATA_FILE_DELIMITER);
-        dataLineBuilder.delete(lastIndexOfDelimiter, lastIndexOfDelimiter+DATA_FILE_DELIMITER.length());
 
-        // Adding quote marks to ensure DOS command doesn't incorrectly split input string
-        dataLineBuilder.insert(0, "\"");
-        dataLineBuilder.append("\"");
-        return dataLineBuilder.toString();
     }
+
+
+
 }
+
+

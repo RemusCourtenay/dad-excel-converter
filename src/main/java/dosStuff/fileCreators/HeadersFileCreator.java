@@ -9,7 +9,7 @@ import dosStuff.FileIOThreadManager;
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public class HeadersFileCreator implements FileCreator {
+public class HeadersFileCreator extends FileCreator {
 
     // Top level comment in header file explaining how to edit it.
     private static final String HEADERS_FILE_COMMENT =
@@ -38,7 +38,10 @@ public class HeadersFileCreator implements FileCreator {
             DefaultHeaderTypes.CITY.getSaveData()
     };
 
-    public HeadersFileCreator(FileIOThreadManager fileIOThreadManager) {
-        fileIOThreadManager.writeToFileWithComment(HEADERS_FILE_COMMENT, DEFAULT_HEADERS);
+    public HeadersFileCreator() {}
+
+    @Override
+    public void createDefaultFile(String fileAddress) {
+        writeToFileWithComment(HEADERS_FILE_COMMENT, DEFAULT_HEADERS, fileAddress);
     }
 }

@@ -9,7 +9,7 @@ import dosStuff.FileIOThreadManager;
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
-public class MasterSheetLayoutFileCreator implements FileCreator {
+public class MasterSheetLayoutFileCreator extends FileCreator {
 
     // Top level comment in file explaining how to edit
     private static final String MASTER_SHEET_LAYOUT_FILE_COMMENT =
@@ -63,10 +63,10 @@ public class MasterSheetLayoutFileCreator implements FileCreator {
             DefaultHeaderTypes.ATHLETE_3_LAST_NAME          .getSaveData()  // Not used
     };
 
-    public MasterSheetLayoutFileCreator(FileIOThreadManager fileIOThreadManager) {
-        fileIOThreadManager.writeToFileWithComment(MASTER_SHEET_LAYOUT_FILE_COMMENT, MASTER_SHEET_LAYOUT_DEFAULT_HEADERS);
+    @Override
+    public void createDefaultFile(String fileAddress) {
+        writeToFileWithComment(MASTER_SHEET_LAYOUT_FILE_COMMENT, MASTER_SHEET_LAYOUT_DEFAULT_HEADERS, fileAddress);
     }
-
 }
 
 

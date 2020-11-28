@@ -3,8 +3,8 @@ package dosStuff;
 import dosStuff.fileCreators.*;
 import dosStuff.fileReaders.*;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,24 +33,53 @@ public class FileHandler {
     private void runFileSetup() {
 
         makeMainDataFolder();
-
-        FileIOThreadManager settingsFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME);
-        FileIOThreadManager headersFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME);
-        FileIOThreadManager masterSheetLayoutFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME);
-        FileIOThreadManager cellFormatsFileThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME);
-        FileIOThreadManager conditionalCellFormatsThreadManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME);
-
         ExecutorService setupExecutor = Executors.newCachedThreadPool();
 
-        setupExecutor.submit(makeAsTask(SettingsFileCreator.class, settingsFileThreadManager));
-        setupExecutor.submit(makeAsTask(HeadersFileCreator.class, headersFileThreadManager));
-        setupExecutor.submit(makeAsTask(MasterSheetLayoutFileCreator.class, masterSheetLayoutFileThreadManager));
-        setupExecutor.submit(makeAsTask(CellFormatsFileCreator.class, cellFormatsFileThreadManager));
-        setupExecutor.submit(makeAsTask(ConditionalCellFormatsFileCreator.class, conditionalCellFormatsThreadManager));
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager settingsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME, new SettingsFileReader(), new SettingsFileCreator());
+                settingsFileIOManager.setupFile();
+                printData(settingsFileIOManager.readFile());
+            }
+        });
 
-        setupExecutor.submit(makeAsTask(cellFormatsFileThreadManager, CellFormatsReader.class));
-        setupExecutor.submit(makeAsTask(conditionalCellFormatsThreadManager, ConditionalFormatTypesFileReader.class));
-        setupExecutor.submit(makeAsTask(masterSheetLayoutFileThreadManager, MasterLayoutFileReader.class));
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager headerFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME, new HeadersFileReader(), new HeadersFileCreator());
+                headerFileIOManager.setupFile();
+                printData(headerFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager masterSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME, new MasterLayoutDataFileReader(), new MasterSheetLayoutFileCreator());
+                masterSheetLayoutFileIOManager.setupFile();
+                printData(masterSheetLayoutFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager cellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME, new CellFormatsReader(), new CellFormatsFileCreator());
+                cellFormatsFileIOManager.setupFile();
+                printData(cellFormatsFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalFormatTypesDataFileReader(), new ConditionalCellFormatsFileCreator());
+                conditionalCellFormatsFileIOManager.setupFile();
+                printData(conditionalCellFormatsFileIOManager.readFile());
+            }
+        });
+
 
         setupExecutor.shutdown();
 
@@ -64,36 +93,6 @@ public class FileHandler {
             throw new RuntimeException("File setup interrupted");
         }
 
-    }
-
-    private Runnable makeAsTask(Class<? extends FileCreator> fileCreatorClass, FileIOThreadManager threadManager) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    fileCreatorClass.getConstructor(FileIOThreadManager.class).newInstance(threadManager);
-                    System.out.println("Constructed " + fileCreatorClass.getName());
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("File creator: " + fileCreatorClass.getName() + " threw exception during instantiation");
-                }
-            }
-        };
-    }
-
-    private Runnable makeAsTask(FileIOThreadManager fileIOThreadManager, Class<? extends FileReader> fileReaderClass) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    printData(fileReaderClass.getConstructor(FileIOThreadManager.class).newInstance(fileIOThreadManager).readFile());
-                    System.out.println("Constructed " + fileReaderClass.getName());
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("File reader " + fileReaderClass.getName() + " threw exception during data reading");
-                }
-            }
-        };
     }
 
     private void printData(List<String[]> fileOutput) {

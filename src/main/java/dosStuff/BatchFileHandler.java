@@ -24,7 +24,7 @@ public class BatchFileHandler {
      * @param fileLocation : The location of the file to append the stripped text to.
      * @return : The return value of the batch file.
      */
-    protected static int appendToFileWithoutQuotes(String textToAppend, String fileLocation) {
+    public static int appendToFileWithoutQuotes(String textToAppend, String fileLocation) {
         String errorMessage = "IOException occurred when attempting to append:" + textToAppend + " to " + fileLocation;
 
         List<String> commandList = makeCommandList(BAT_FILES_LOCATION + QUOTE_MARK_STRIPPER_BAT, textToAppend, fileLocation);
