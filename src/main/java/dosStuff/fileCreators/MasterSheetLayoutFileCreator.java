@@ -13,7 +13,7 @@ public class MasterSheetLayoutFileCreator extends FileCreator {
 
     // Top level comment in file explaining how to edit
     private static final String MASTER_SHEET_LAYOUT_FILE_COMMENT =
-            "Defines the layout of the generated Master sheet. Add new columns or edit existing following the format: (Header Text),(Cell Type),(Column Styling),(Column Conditional Formatting) with no spaces. Valid Cell types are: "
+            "Defines the layout of the generated Master sheet. Add new columns or edit existing following the format: (Header Text),(Cell Type),(Column Format),(Column Conditional Formatting) with no spaces. Valid Cell types are: "
                     + STRING_CELL + ", "
                     + NUMERIC_CELL + ", "
                     + BOOLEAN_CELL + ", "

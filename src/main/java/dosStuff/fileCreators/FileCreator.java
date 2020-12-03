@@ -19,6 +19,9 @@ public abstract class FileCreator {
     // Character(s) that specify the boundary between data values in the saved data
     private static final String DATA_FILE_DELIMITER = ",";
 
+    // Character(s) that specify that a line is a comment, comments not on the first line not currently supported
+    protected static final String COMMENT_TAG = "# ";
+
     // Kinda cursed ngl
     protected final static String STRING_CELL                       = CellType.STRING.name();
     protected final static String NUMERIC_CELL                      = CellType.NUMERIC.name();
@@ -59,7 +62,7 @@ public abstract class FileCreator {
 
     public void writeToFileWithComment(String comment, String[][] dataLines, String fileAddress) {
 
-            BatchFileHandler.appendToFileWithoutQuotes(comment, fileAddress);
+            BatchFileHandler.appendToFileWithoutQuotes(COMMENT_TAG + comment, fileAddress);
 
             // Echoing each set of values to a new line in the file
             for (String[] dataLine: dataLines) {
