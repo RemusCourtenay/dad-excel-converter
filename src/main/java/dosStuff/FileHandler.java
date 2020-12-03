@@ -1,39 +1,114 @@
 package dosStuff;
 
+import dosStuff.fileCreators.*;
+import dosStuff.fileReaders.*;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Abstract class that represents all classes that interact with the program files. Stores file locations/names and
  * methods used by all file handling classes.
  * @author Remus Courtenay - rcou199
  * @since 9/11/2020
  */
-public abstract class FileHandler {
+public class FileHandler {
 
     // File/folder names
-    static final String MAIN_FOLDER_NAME = "data";
-    static final String SETTINGS_FILE_NAME = "settings.txt";
-    static final String HEADERS_FILE_NAME = "headers.txt";
+    protected static final String MAIN_DATA_FOLDER = "data\\";
+    protected static final String SETTINGS_FILE_NAME = "settings.txt";
+    protected static final String HEADERS_FILE_NAME = "headers.txt";
+    protected static final String MASTER_SHEET_LAYOUT_FILE_NAME = "master-layout.txt";
+    protected static final String CELL_FORMATS_FILE_NAME = "cell-formats.txt";
+    protected static final String CONDITIONAL_CELL_FORMATS_FILE_NAME = "conditional-cell-formats.txt";
 
-    // Batch file names
-    static final String CHECK_EXISTS_BAT = "checkExists.bat";
-    static final String QUOTE_MARK_STRIPPER_BAT = "quoteMarkStripper.bat";
-    // Batch files location
-    static final String BAT_FILES_LOCATION = "src\\main\\resources\\batFiles\\";
+    public FileHandler() {
+        runFileSetup();
+    }
 
-    // Standard command for running DOS by giving string inputs
-    static final String[] NEW_COMMAND_SHELL = {"cmd", "/c"};
+    private void runFileSetup() {
+
+        makeMainDataFolder();
+        ExecutorService setupExecutor = Executors.newCachedThreadPool();
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager settingsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME, new SettingsFileReader(), new SettingsFileCreator());
+                settingsFileIOManager.setupFile();
+                printData(settingsFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager headerFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME, new HeadersFileReader(), new HeadersFileCreator());
+                headerFileIOManager.setupFile();
+                printData(headerFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager masterSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME, new MasterLayoutDataFileReader(), new MasterSheetLayoutFileCreator());
+                masterSheetLayoutFileIOManager.setupFile();
+                printData(masterSheetLayoutFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager cellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME, new CellFormatsReader(), new CellFormatsFileCreator());
+                cellFormatsFileIOManager.setupFile();
+                printData(cellFormatsFileIOManager.readFile());
+            }
+        });
+
+        setupExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalFormatTypesDataFileReader(), new ConditionalCellFormatsFileCreator());
+                conditionalCellFormatsFileIOManager.setupFile();
+                printData(conditionalCellFormatsFileIOManager.readFile());
+            }
+        });
 
 
-    /* -------------------------------- Helper Methods -------------------------------- */
+        setupExecutor.shutdown();
 
-    /**
-     * Helper method that error checks the running of the batch files by ensuring their return value was zero.
-     * @param returnValue : The return value of the DOS command/ Batch file.
-     * @param errorMessage : Explanation of what was occurring when the error occurred.
-     */
-    protected void checkReturnValue(int returnValue, String errorMessage) {
-        // Zero is the return value passed when the command/batch files finish with no errors
-        if (returnValue != 0) {
-            throw new RuntimeException("Batch file returned non-zero return value for: " + errorMessage);
+        try {
+            if(!setupExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
+              setupExecutor.shutdownNow();
+              throw new RuntimeException("File setup timed out");
+            }
+        } catch(InterruptedException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException("File setup interrupted");
+        }
+
+    }
+
+    private void printData(List<String[]> fileOutput) {
+        for (String[] dataLine: fileOutput) {
+            for (String data: dataLine) {
+                System.out.print(data + " ");
+            }
+            System.out.println("");
         }
     }
+
+    private void makeMainDataFolder() {
+        DOSCommandHandler.runProcess(
+                "Error Attempting to initialise main data folder: " + MAIN_DATA_FOLDER,
+                DOSCommandHandler.makeCommandList("mkdir", MAIN_DATA_FOLDER)
+        );
+    }
+
 }

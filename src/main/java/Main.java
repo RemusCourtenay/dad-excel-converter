@@ -1,4 +1,6 @@
-import dosStuff.FileCreatorType;
+
+
+import dosStuff.FileHandler;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -10,21 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        runFileSetup();
-
-        new RaceDataConverter();
-    }
-
-    private static void runFileSetup() {
-        for (FileCreatorType creatorType: FileCreatorType.values()) {
-            try {
-                creatorType.getFileCreatorClass().getConstructor().newInstance().runSetup();
-            } catch(NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
-                exception.printStackTrace();
-                throw new RuntimeException("FileCreatorType Enum value: " + creatorType.toString() + " not setup correctly");
-            }
-
-        }
+        new FileHandler();
     }
 
 

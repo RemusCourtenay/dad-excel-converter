@@ -1,5 +1,5 @@
 # Custom gitignore
-
+.gitignore
 # IntelliJ project files
 .idea/
 *.iml
