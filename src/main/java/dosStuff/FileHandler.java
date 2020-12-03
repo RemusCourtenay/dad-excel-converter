@@ -30,6 +30,12 @@ public class FileHandler {
         runFileSetup();
     }
 
+    public File getFile(DataFileType dataFileType) {
+        return null; // TODO...
+    }
+
+
+
     private void runFileSetup() {
 
         makeMainDataFolder();

@@ -1,5 +1,6 @@
 
 
+import dosStuff.DataFileType;
 import dosStuff.FileHandler;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +16,7 @@ public class Main {
 
         FileHandler fileHandler = new FileHandler();
 
-        List<Column> masterSheetColumns = ColumnBuilder.fromDataFile(fileHandler.getFile(DataFileType.MasterSheetLayout));
+        List<Column> masterSheetColumns = ColumnBuilder.fromDataFile(fileHandler.getFile(DataFileType.MASTER_SHEET_LAYOUT));
     }
 
 
