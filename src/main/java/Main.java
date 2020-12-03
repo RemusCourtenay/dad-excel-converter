@@ -3,7 +3,6 @@
 import dosStuff.DataFileType;
 import dosStuff.FileHandler;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class Main {
 
         FileHandler fileHandler = new FileHandler();
 
-        List<Column> masterSheetColumns = ColumnBuilder.fromDataFile(fileHandler.getFile(DataFileType.MASTER_SHEET_LAYOUT));
+        List<Column> masterSheetColumns = ColumnBuilder.fromDataFile(fileHandler.getFileManager(DataFileType.MASTER_SHEET_LAYOUT));
     }
 
 
