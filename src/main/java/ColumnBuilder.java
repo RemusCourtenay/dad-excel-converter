@@ -3,6 +3,7 @@ import org.apache.poi.ss.format.CellFormat;
 import org.apache.poi.ss.usermodel.CellType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ColumnBuilder {
@@ -22,7 +23,7 @@ public class ColumnBuilder {
         for (String[] dataSet: fileData) {
 
             if (dataSet.length != NUM_COLUMN_FIELDS) {
-                throw new RuntimeException("File data line: " + dataSet + " does not have " + NUM_COLUMN_FIELDS + " values. Data may be corrupted or incorrectly setup.");
+                throw new RuntimeException("File data line: " + Arrays.toString(dataSet) + " does not have " + NUM_COLUMN_FIELDS + " values. Data may be corrupted or incorrectly setup.");
             }
 
             headerText = dataSet[0];
@@ -47,7 +48,9 @@ public class ColumnBuilder {
                 exception.printStackTrace();
                 throw new RuntimeException("Value: " + dataSet[2] + " is not a valid ColumnConditionalFormat");
             }
+
+            columns.add(new Column(headerText, cellType, columnFormat, columnConditionalFormat));
         }
-        return null; //todo..
+        return columns;
     }
 }

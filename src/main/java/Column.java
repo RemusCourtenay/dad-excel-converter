@@ -8,15 +8,15 @@ public class Column {
 
     private String headerText;
     private CellType cellType;
-    private ColumnFormats columnFormats;
-    private ColumnConditionalFormats columnConditionalFormats;
+    private ColumnFormat columnFormat;
+    private ColumnConditionalFormat columnConditionalFormat;
 
-    public Column(String headerText, CellType cellType, ColumnFormats columnFormats, ColumnConditionalFormats columnConditionalFormats) {
+    public Column(String headerText, CellType cellType, ColumnFormat columnFormat, ColumnConditionalFormat columnConditionalFormat) {
 
         this.headerText = headerText;
         this.cellType = cellType;
-        this.columnFormats = columnFormats;
-        this.columnConditionalFormats = columnConditionalFormats;
+        this.columnFormat = columnFormat;
+        this.columnConditionalFormat = columnConditionalFormat;
 
 
     }
