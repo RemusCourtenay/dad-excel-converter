@@ -49,7 +49,7 @@ public class FileHandler {
         // FileIOThreadManager headerFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME, new HeadersFileReader(), new HeadersFileCreator());
         // FileIOThreadManager masterSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME, new MasterLayoutDataFileReader(), new MasterSheetLayoutFileCreator());
         FileIOThreadManager cellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME, new CellFormatsReader(), new CellFormatsFileCreator());
-        // FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalFormatTypesDataFileReader(), new ConditionalCellFormatsFileCreator());
+        FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalFormatTypesDataFileReader(), new ConditionalCellFormatsFileCreator());
 
         Map<DataFileType, FileIOThreadManager> fileManagers = new HashMap<>(DataFileType.getNumOfFiles());
 
@@ -57,14 +57,14 @@ public class FileHandler {
 //        fileManagers.put(DataFileType.HEADERS_SHEET_LAYOUT, headerFileIOManager);
 //        fileManagers.put(DataFileType.MASTER_SHEET_LAYOUT, masterSheetLayoutFileIOManager);
         fileManagers.put(DataFileType.CELL_FORMATS, cellFormatsFileIOManager);
-//        fileManagers.put(DataFileType.CONDITIONAL_CELL_FORMATS, conditionalCellFormatsFileIOManager);
+        fileManagers.put(DataFileType.CONDITIONAL_CELL_FORMATS, conditionalCellFormatsFileIOManager);
 
         ExecutorService setupExecutor = Executors.newCachedThreadPool();
 //        setupExecutor.submit(fileSetupAsTask(settingsFileIOManager));
 //        setupExecutor.submit(fileSetupAsTask(headerFileIOManager));
 //        setupExecutor.submit(fileSetupAsTask(masterSheetLayoutFileIOManager));
         setupExecutor.submit(fileSetupAsTask(cellFormatsFileIOManager));
-//        setupExecutor.submit(fileSetupAsTask(conditionalCellFormatsFileIOManager));
+        setupExecutor.submit(fileSetupAsTask(conditionalCellFormatsFileIOManager));
 
         setupExecutor.shutdown();
 
