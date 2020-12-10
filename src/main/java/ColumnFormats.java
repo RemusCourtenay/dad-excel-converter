@@ -24,6 +24,13 @@ public class ColumnFormats extends FakeEnum {
         return ((ColumnFormat) valueOf(enumValues, enumValue));
     }
 
+    public static void printAll() {
+        System.out.println("Column Formats:");
+        for (String valueName: enumValues.keySet()) {
+            System.out.println(valueName);
+        }
+    }
+
     private Map<String, FakeEnumValue> convertDataToMap(List<String[]> columnFormatsData) {
 
         Map<String, FakeEnumValue> enumValues = new HashMap<>(columnFormatsData.size());

@@ -95,9 +95,6 @@ public abstract class FileCreator {
         int lastIndexOfDelimiter = dataLineBuilder.lastIndexOf(DATA_FILE_DELIMITER);
         dataLineBuilder.delete(lastIndexOfDelimiter, lastIndexOfDelimiter+DATA_FILE_DELIMITER.length());
 
-        // Adding quote marks to ensure DOS command doesn't incorrectly split input string
-        dataLineBuilder.insert(0, "\"");
-        dataLineBuilder.append("\"");
         return dataLineBuilder.toString();
     }
 }

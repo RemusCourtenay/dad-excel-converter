@@ -12,9 +12,9 @@ public enum DefaultConditionalCellFormatTypes {
     DISTANCE_UNIT(          "distanceUnit", "=NOT(OR(EXACT([CELL].\"KM\").EXACT([CELL].\"MI\")))"),
     VALID_POSTCODE(         "postcode",     "=LEN([CELL])=4"),
     VALID_EMAIL(            "email",        "=NOT(ISNUMBER(MATCH(\"*@*\\.*\".[CELL].0)))"),
-    VALID_PHONE(            "phone",        "=NOT(LEN([CELL])>6)"),
+    VALID_PHONE(            "phone",        "=NOT(LEN([CELL])^>6)"),
     VALID_REGISTRATION_ID(  "id",           "=NOT(AND(LEN([CELL])=9.ISNUMBER([CELL])))"),
-    VALID_RACE_NUMBER(      "raceNum",      "=NOT(AND(LEN([CELL])>2.LEN([CELL])<5.ISNUMBER([CELL])))"),
+    VALID_RACE_NUMBER(      "raceNum",      "=NOT(AND(LEN([CELL])^>2.LEN([CELL])<5.ISNUMBER([CELL])))"),
     VALID_TAG_NUMBER(       "tagNum",       "=NOT(LEN([CELL]=12)");
 
     private final String name;

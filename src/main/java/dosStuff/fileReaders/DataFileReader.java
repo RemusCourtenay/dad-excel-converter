@@ -37,15 +37,15 @@ public abstract class DataFileReader {
             }
             dataLines.add(data);
         }
-
-        return convertToArrays(dataLines);
+        // removing comment header
+        return convertToArrays(dataLines.subList(1,dataLines.size()));
     }
 
     private List<String[]> convertToArrays(List<String> dataLines) {
         List<String[]> dataArrays = new ArrayList<>(dataLines.size());
 
         for (String dataLine: dataLines) {
-            dataArrays.add(convertLineToArray(dataLine));
+            dataArrays.add(convertLineToArray(dataLine.strip()));
         }
 
         return dataArrays;
@@ -57,7 +57,7 @@ public abstract class DataFileReader {
         StringBuilder dataBuilder = new StringBuilder();
         char[] dataArray = dataLine.toCharArray();
 
-        for (int i = 0; i<dataLine.length() - 1; i++) { // -1 as final character can't be escape char
+        for (int i = 0; i<dataLine.length(); i++) {
             if (dataArray[i] == '\\') {
                 if (dataArray[i+1] == '\\') { // Escaped slash
                     dataBuilder.append('\\');

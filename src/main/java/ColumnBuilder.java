@@ -46,7 +46,7 @@ public class ColumnBuilder {
                 columnConditionalFormat = ColumnConditionalFormats.valueOf(dataSet[3]);
             } catch (IllegalArgumentException exception) {
                 exception.printStackTrace();
-                throw new RuntimeException("Value: " + dataSet[2] + " is not a valid ColumnConditionalFormat");
+                throw new RuntimeException("Value: " + dataSet[3] + " in line: " + Arrays.toString(dataSet) + " is not a valid ColumnConditionalFormat");
             }
 
             columns.add(new Column(headerText, cellType, columnFormat, columnConditionalFormat));

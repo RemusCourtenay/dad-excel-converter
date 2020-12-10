@@ -21,5 +21,9 @@ public class Column {
 
     }
 
+    public String getHeaderText() {
+        return headerText;
+    }
+
 
 }

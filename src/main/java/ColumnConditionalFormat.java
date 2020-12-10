@@ -15,6 +15,10 @@ public class ColumnConditionalFormat implements FakeEnumValue {
     private static final String DEFAULT_COLOR_SCALE_FORMATTING = null;
     private static final String DEFAULT_DATA_BAR_FORMATTING = null;
 
+    public ColumnConditionalFormat() {
+        this(DEFAULT_PATTERN_FORMATTING);
+    }
+
     public ColumnConditionalFormat(String patternFormat) {
         this(patternFormat, DEFAULT_BORDER_FORMATTING);
     }
