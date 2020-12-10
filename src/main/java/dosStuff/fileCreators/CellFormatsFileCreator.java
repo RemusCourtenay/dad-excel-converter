@@ -60,7 +60,5 @@ public class CellFormatsFileCreator extends FileCreator {
             e.printStackTrace();
             throw new RuntimeException();
         }
-
-        // writeToFileWithComment(CELL_FORMATS_FILE_COMMENT, DEFAULT_FORMAT_TYPES, fileAddress);
     }
 }

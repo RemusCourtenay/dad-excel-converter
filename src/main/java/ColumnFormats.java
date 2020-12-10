@@ -1,6 +1,8 @@
 import org.apache.poi.ss.format.CellFormat;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +14,9 @@ public class ColumnFormats extends FakeEnum {
 
     private static Map<String, FakeEnumValue> enumValues;
 
-    public ColumnFormats(List<String[]> columnFormatsData) {
+    public ColumnFormats(Iterator<Cell> cellIterator) {
         if (enumValues == null) {
-            enumValues = convertDataToMap(columnFormatsData);
+            enumValues = convertDataToMap(cellIterator);
         } else {
             throw new RuntimeException("ColumnFormat fake enum has already been instantiated");
         }
@@ -31,12 +33,14 @@ public class ColumnFormats extends FakeEnum {
         }
     }
 
-    private Map<String, FakeEnumValue> convertDataToMap(List<String[]> columnFormatsData) {
+    private Map<String, FakeEnumValue> convertDataToMap(Iterator<Cell> cellIterator) {
 
-        Map<String, FakeEnumValue> enumValues = new HashMap<>(columnFormatsData.size());
+        Map<String, FakeEnumValue> enumValues = new HashMap<>();
 
-        for (String[] columnFormatData: columnFormatsData) {
-            enumValues.put(columnFormatData[0], new ColumnFormat(columnFormatData[1]));
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            String styleName = cell.getStringCellValue();
+            enumValues.put(styleName, new ColumnFormat(styleName, cell.getCellStyle()));
         }
 
         return enumValues;

@@ -3,11 +3,14 @@ package dosStuff;
 import dosStuff.fileCreators.FileCreator;
 import dosStuff.fileReaders.DataFileReader;
 
+import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author Remus Courtenay - rcou199
@@ -18,13 +21,11 @@ public class FileIOThreadManager {
     private static final int NUM_COMMENT_LINES = 1;
 
     private final String fileAddress;
-    private final DataFileReader dataFileReader;
     private final FileCreator fileCreator;
 
 
-    public FileIOThreadManager(String fileAddress, DataFileReader dataFileReader, FileCreator fileCreator) {
+    public FileIOThreadManager(String fileAddress, FileCreator fileCreator) {
         this.fileAddress = fileAddress;
-        this.dataFileReader = dataFileReader;
         this.fileCreator = fileCreator;
     }
 
@@ -35,16 +36,23 @@ public class FileIOThreadManager {
     }
 
 
-    public synchronized List<String[]> readFile() {
+    public synchronized File getFile() {
 
-        if (BatchFileHandler.fileExists(fileAddress)) {
+        try {
 
-            return new ArrayList<>(dataFileReader.readFromFile(fileAddress));
-        } else {
-            throw new RuntimeException("Attempting to read file: " + fileAddress + " before it has been created");
+            Path saveDataFilePath = Path.of(fileAddress);
+            Path tempFilePath = Files.createTempFile(null, null);
+
+            Files.copy(saveDataFilePath, tempFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+            File tempFile = tempFilePath.toFile();
+            tempFile.deleteOnExit();
+
+            return tempFile;
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException(); // TODO...
         }
-
-
     }
 
 

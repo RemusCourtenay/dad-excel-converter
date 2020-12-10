@@ -1,16 +1,23 @@
 import org.apache.poi.ss.format.CellFormat;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 public class ColumnFormat implements FakeEnumValue {
 
-    private final CellFormat cellFormat;
+    private final String name;
+    private final CellStyle cellStyle;
 
-    public ColumnFormat(String cellFormatData) {
-        this.cellFormat = CellFormat.getInstance(cellFormatData);
+    public ColumnFormat(String name, CellStyle cellStyle) { // TODO... Comment
+        this.name = name;
+        this.cellStyle = cellStyle;
     }
 
-    public CellFormat getFormat() {
-        return this.cellFormat;
+    public CellStyle getStyle() {
+        return this.cellStyle;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
 }

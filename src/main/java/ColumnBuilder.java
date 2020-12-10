@@ -12,7 +12,7 @@ public class ColumnBuilder {
 
 
     protected static List<Column> fromDataFile(FileIOThreadManager fileManager) {
-        List<String[]> fileData = fileManager.readFile();
+        List<String[]> fileData = null;
         List<Column> columns = new ArrayList<>(fileData.size());
 
         String headerText;
