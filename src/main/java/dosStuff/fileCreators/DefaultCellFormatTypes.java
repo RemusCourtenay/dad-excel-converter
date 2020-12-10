@@ -1,5 +1,11 @@
 package dosStuff.fileCreators;
 
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.xssf.model.StylesTable;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+
 /**
  * Enum representation of each default cell format.
  * @author Remus Courtenay - rcou199
@@ -23,28 +29,32 @@ public enum DefaultCellFormatTypes {
     private static final String GENERAL_FORMAT = "General";
 
     private final String name;
-    private final String format;
+    private final CellStyle cellStyle;
+    private final StylesTable stylesTable;
 
     DefaultCellFormatTypes(String name, String format) {
 
         this.name = name;
-        this.format = format;
+        this.stylesTable = new StylesTable();
+        this.cellStyle = stylesTable.createCellStyle();
+
+        short index = 0;
+        stylesTable.putNumberFormat(index, format);
+        this.cellStyle.setDataFormat(index);
 
     }
 
     DefaultCellFormatTypes(String name) {
-        this.name = name;
-        this.format = GENERAL_FORMAT;
+        this(name, GENERAL_FORMAT);
     }
 
     /* -------------------------------- Getter methods -------------------------------- */
-
-    public String[] getSaveData() {
-        return new String[]{name, format};
-    }
 
     public String getName() {
         return name;
     }
 
+    public CellStyle getCellStyle() {
+        return cellStyle;
+    }
 }
