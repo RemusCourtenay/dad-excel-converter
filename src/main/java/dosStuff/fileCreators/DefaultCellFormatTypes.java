@@ -15,7 +15,7 @@ public enum DefaultCellFormatTypes {
     GENDER(         "gender"),
     ID_NUMBER(      "id"),
     TAG_NUMBER(     "tag"),
-    TIME(           "time", "dd-mm-yyyy_h:ss"),
+    TIME(           "time", "dd-mm-yyyy h:ss"),
     DISTANCE(       "distance"),
     DATE(           "date", "dd-mm-yyyy"),
     EVENT(          "event");
