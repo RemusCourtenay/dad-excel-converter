@@ -1,11 +1,14 @@
 package dosStuff.fileCreators;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+
 /**
  * Enum representation of each default conditional cell format.
  * @author Remus Courtenay - rcou199
  * @since 13/11/2020
  */
-public enum DefaultConditionalCellFormatTypes {
+public enum DefaultConditionalCellFormatTypes { // TODO... Comments
     NONE(                   "none",         "=FALSE"),
     PROPER(                 "proper",       "=NOT(EXACT([CELL],PROPER([CELL])))"),
     UPPERCASE(              "uppercase",    "=NOT(EXACT([CELL],UPPER([CELL])))"),
@@ -37,7 +40,31 @@ public enum DefaultConditionalCellFormatTypes {
         return name;
     }
 
-    public static String getSpecificCellStandIn() {
-        return specificCellStandIn;
+    public void setupSaveDataCell(Cell saveDataCell, SheetConditionalFormatting sheetConditionalFormatting) {
+        StringBuilder addSpecificCellToFormat = new StringBuilder();
+        String cellAddress = saveDataCell.getAddress().formatAsString();
+
+        int index;
+        while((index = addSpecificCellToFormat.indexOf(specificCellStandIn)) != -1) {
+            addSpecificCellToFormat.replace(index, index + specificCellStandIn.length(), cellAddress);
+        }
+
+        ConditionalFormattingRule conditionalFormattingRule = sheetConditionalFormatting.createConditionalFormattingRule(this.format);
+
+        PatternFormatting patternFormatting = conditionalFormattingRule.createPatternFormatting();
+        patternFormatting.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+        patternFormatting.setFillBackgroundColor(IndexedColors.RED.index);
+
+
+        sheetConditionalFormatting.addConditionalFormatting(getSingleCellRangeAddressArray(saveDataCell), conditionalFormattingRule);
     }
+
+    private CellRangeAddress[] getSingleCellRangeAddressArray(Cell cell) {
+        int row = cell.getRowIndex();
+        int col = cell.getColumnIndex();
+        CellRangeAddress saveDataCellRange = new CellRangeAddress(row, row, col, col);
+
+        return new CellRangeAddress[]{saveDataCellRange};
+    }
+
 }
