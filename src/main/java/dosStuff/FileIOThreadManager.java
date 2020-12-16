@@ -37,9 +37,7 @@ public class FileIOThreadManager {
 
 
     public synchronized File getFile() {
-
         try {
-
             Path saveDataFilePath = Path.of(fileAddress);
             Path tempFilePath = Files.createTempFile(null, null);
 

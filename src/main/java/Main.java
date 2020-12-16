@@ -14,10 +14,10 @@ public class Main {
     public static void main(String[] args) {
 
         FileHandler fileHandler = new FileHandler();
-        ColumnFormatsBuilder.setupFormatsFromFile(fileHandler.getFileManager(DataFileType.CELL_FORMATS));
-        ColumnFormats.printAll();
-        ColumnConditionalFormatsBuilder.setupConditionalFormatsFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS));
-        ColumnConditionalFormats.printAll();
+//        ColumnFormatsBuilder.setupFormatsFromFile(fileHandler.getFileManager(DataFileType.CELL_FORMATS));
+//        ColumnFormats.printAll();
+//        ColumnConditionalFormatsBuilder.setupConditionalFormatsFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS));
+//        ColumnConditionalFormats.printAll();
 //        List<Column> masterSheetColumns = ColumnBuilder.fromDataFile(fileHandler.getFileManager(DataFileType.MASTER_SHEET_LAYOUT));
 //        System.out.println("Master Sheet Columns: ");
 //        for (Column column: masterSheetColumns) {

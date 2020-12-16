@@ -1,10 +1,6 @@
 package dosStuff.fileCreators;
 
-import dosStuff.FileIOThreadManager;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -16,31 +12,25 @@ public class CellFormatsFileCreator extends FileCreator {
     private static final String CELL_FORMATS_FILE_COMMENT = "Lists the excel format codes used for each data types. Entries follow the format: (Name),(Format Code) with no spaces. See https://exceljet.net/custom-number-formats for a guide to creating number formats but note that spaces must be replaced with an underscore. To use an underscore within the code, add the escape character '\\ before the underscore.'";
 
     @Override
-    public void createDefaultFile(String fileAddress) {
+    public void createDefaultFile(String fileAddress) { //TODO.. comments
 
-        Workbook cellFormatsWorkbook = new XSSFWorkbook();
-        CreationHelper cellFormatsCreationHelper = cellFormatsWorkbook.getCreationHelper();
+        Row saveDataNameRow = saveDataSheet.createRow(0);
+        Row saveDataValueRow = saveDataSheet.createRow(1);
 
-        Sheet cellFormatsSheet = cellFormatsWorkbook.createSheet("Cell Formats");
-        Row saveDataRow = cellFormatsSheet.createRow(0);
+        DefaultCellFormatTypes formatType;
+        Cell nameCell;
+        Cell valueCell;
 
-        int i = 0;
-        for (DefaultCellFormatTypes formatType: DefaultCellFormatTypes.values()) {
-            Cell cell = saveDataRow.createCell(i);
-            cell.setCellValue(formatType.getName());
-            cell.setCellStyle(formatType.getCellStyle());
+        for (int i = 0; i<DefaultCellFormatTypes.values().length; i++) {
+            formatType = DefaultCellFormatTypes.values()[i];
+            nameCell = saveDataNameRow.createCell(i);
+            valueCell = saveDataValueRow.createCell(i);
+
+            formatType.setupSaveDataNameCell(nameCell);
+            formatType.setupSaveDataValueCell(valueCell, saveDataWorkbook.createCellStyle());
 
         }
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileAddress);
-            cellFormatsWorkbook.write(fileOutputStream);
-            fileOutputStream.close();
-
-            cellFormatsWorkbook.close();
-        } catch (Exception e) {
-            //todo...
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
+        super.resizeColumnsToFit();
+        super.writeWorkbookToFile(fileAddress);
     }
 }

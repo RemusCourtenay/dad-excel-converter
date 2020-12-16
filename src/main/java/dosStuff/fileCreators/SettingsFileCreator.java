@@ -18,7 +18,7 @@ public class SettingsFileCreator extends FileCreator {
 
     @Override
     public void createDefaultFile(String fileAddress) {
-        writeToFileWithComment(SETTINGS_FILE_COMMENT, SETTINGS_FILE_TEXT, fileAddress);
+        // writeToFileWithComment(SETTINGS_FILE_COMMENT, SETTINGS_FILE_TEXT, fileAddress);
     }
 }
 

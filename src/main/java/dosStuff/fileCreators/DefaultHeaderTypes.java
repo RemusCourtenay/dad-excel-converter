@@ -1,75 +1,88 @@
 package dosStuff.fileCreators;
 
-import static dosStuff.fileCreators.FileCreator.*;
+import org.apache.poi.ss.usermodel.*;
 
 /**
  * Enum representation of each default header.
  * @author Remus Courtenay - rcou199
  * @since 16/11/2020
  */
-public enum DefaultHeaderTypes {
-        FIRST_NAME(                     "First_Name",           STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL),
-        LAST_NAME(                      "Last_Name",            STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL),
-        ADDRESS_1(                      "Address1",             STRING_CELL,    ADDRESS_FORMAT,         NONE_CONDITIONAL), // Not used
-        ADDRESS_2(                      "Address2",             STRING_CELL,    ADDRESS_FORMAT,         NONE_CONDITIONAL), // Not used
-        ADDRESS_3(                      "Address3",             STRING_CELL,    ADDRESS_FORMAT,         NONE_CONDITIONAL), // Not used
-        ADDRESS_4(                      "Address4",             STRING_CELL,    ADDRESS_FORMAT,         PROPER_CONDITIONAL), // City
-        CITY(                           "City",                 STRING_CELL,    NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt
-        POST_CODE(                      "Post_Code",            NUMERIC_CELL,   POST_CODE_FORMAT,       VALID_POSTCODE_CONDITIONAL), // Not used
-        EMAIL_ADDRESS(                  "Email",                STRING_CELL,    EMAIL_FORMAT,           VALID_EMAIL_CONDITIONAL),
-        PHONE_NUMBER(                   "PhoneNo",              NUMERIC_CELL,   PHONE_NUMBER_FORMAT,    NONE_CONDITIONAL), // Not used
-        PHONE_NUMBER_2(                 "PhoneNo2",             NUMERIC_CELL,   PHONE_NUMBER_FORMAT,    NONE_CONDITIONAL), // Not used
-        GENDER(                         "Gender",               STRING_CELL,    GENDER_FORMAT,          UPPERCASE_CONDITIONAL),
-        SUPPORT_PERSON(                 "Info1",                STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL), // Support person
-        CELLPHONE_NUMBER(               "Info2",                NUMERIC_CELL,   PHONE_NUMBER_FORMAT,    VALID_PHONE_CONDITIONAL), // Cellphone number
-        REGISTRATION_ID(                "Info3",                NUMERIC_CELL,   ID_NUMBER_FORMAT,       VALID_REGISTRATION_ID_CONDITIONAL), // Registration ID
-        HEADERS_REGISTRATION_ID(        "Registration_ID",      NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt
-        REGISTRATION_TIME(              "Info4",                NUMERIC_CELL,   TIME_FORMAT,            NONE_CONDITIONAL), // Registration Time, maybe put check?
-        DISTANCE_UNIT(                  "Info5",                STRING_CELL,    DISTANCE_FORMAT,        DISTANCE_UNIT_CONDITIONAL), // KM or MILES?
-        DATE_OF_BIRTH(                  "DOB",                  NUMERIC_CELL,   DATE_FORMAT,            NONE_CONDITIONAL), // Date of birth, maybe put check?
-        AGE(                            "Age",                  NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // Not used
-        TEAM(                           "Team",                 STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        REGISTRATION_LICENSE_NUMBER(    "Reg/Licence_No",       NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // Not used
-        UCI_NUMBER(                     "UCI_No",               NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // Not used
-        RELAY_TEAM(                     "Relay_Team",           STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        RACE_NUMBER(                    "Race_No",              NUMERIC_CELL,   ID_NUMBER_FORMAT,       VALID_RACE_NUMBER_CONDITIONAL), // Race number
-        HEADERS_RACE_NUMBER(            "Race_Number",          NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt
-        TAG_NUMBER(                     "Tag_No",               STRING_CELL,    TAG_NUMBER_FORMAT,      VALID_TAG_NUMBER_CONDITIONAL),
-        EVENT(                          "Event",                STRING_CELL,    EVENT_FORMAT,           NONE_CONDITIONAL), // Name of sub-event, maybe put check?
-        DIVISION(                       "Division",             STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        WAVE(                           "Wave",                 STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        SEED(                           "Seed",                 STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        ESTIMATED_TIME(                 "EstTime",              STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        FINISH_RESULT(                  "Finish_Result",        STRING_CELL,    NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt, String or numeric?
-        RANK_OVERALL(                   "Rank_Overall",         NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt
-        RANK_GENDER(                    "Rank_Gender",          NUMERIC_CELL,   NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt
-        DIVISION_NAME(                  "Division_Name",        STRING_CELL,    NONE_FORMAT,            NONE_CONDITIONAL), // For headers.txt
-        MERCHANDISE(                    "Merchandise",          STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        QUANTITY(                       "Qty",                  STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        SIZE(                           "Size",                 STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        COMMENT(                        "Comment",              STRING_CELL,    TEXT_FORMAT,            NONE_CONDITIONAL), // Not used
-        ATHLETE_2_FIRST_NAME(           "Athlete2_First_Name",  STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL), // Not used
-        ATHLETE_2_LAST_NAME(            "Athlete2_Last_Name",   STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL), // Not used
-        ATHLETE_3_FIRST_NAME(           "Athlete3_First_Name",  STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL), // Not used
-        ATHLETE_3_LAST_NAME(            "Athlete3_Last_Name",   STRING_CELL,    TEXT_FORMAT,            PROPER_CONDITIONAL); // Not used
+public enum DefaultHeaderTypes implements DefaultSaveFileValues {
+        FIRST_NAME(                     "First Name", "Remus",             DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER),
+        LAST_NAME(                      "Last Name", "Courtenay",               DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER),
+        ADDRESS_1(                      "Address1",               DefaultCellFormatTypes.ADDRESS,         DefaultConditionalCellFormatTypes.NONE), // Not used
+        ADDRESS_2(                      "Address2",               DefaultCellFormatTypes.ADDRESS,         DefaultConditionalCellFormatTypes.NONE), // Not used
+        ADDRESS_3(                      "Address3",               DefaultCellFormatTypes.ADDRESS,         DefaultConditionalCellFormatTypes.NONE), // Not used
+        ADDRESS_4(                      "Address4", "Nelson",              DefaultCellFormatTypes.ADDRESS,         DefaultConditionalCellFormatTypes.PROPER), // City
+        CITY(                           "City",                   DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        POST_CODE(                      "Post Code", "7020",            DefaultCellFormatTypes.POST_CODE,       DefaultConditionalCellFormatTypes.VALID_POSTCODE), // Not used
+        EMAIL_ADDRESS(                  "Email", "remuscourtenay@gmail.com",                  DefaultCellFormatTypes.EMAIL,           DefaultConditionalCellFormatTypes.VALID_EMAIL),
+        PHONE_NUMBER(                   "PhoneNo",               DefaultCellFormatTypes.PHONE_NUMBER,    DefaultConditionalCellFormatTypes.NONE), // Not used
+        PHONE_NUMBER_2(                 "PhoneNo2",              DefaultCellFormatTypes.PHONE_NUMBER,    DefaultConditionalCellFormatTypes.NONE), // Not used
+        GENDER(                         "Gender", "MALE",                DefaultCellFormatTypes.GENDER,          DefaultConditionalCellFormatTypes.UPPERCASE),
+        SUPPORT_PERSON(                 "Info1", "Ian Courtenay",                  DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER), // Support person
+        CELLPHONE_NUMBER(               "Info2", "0211893736",                DefaultCellFormatTypes.PHONE_NUMBER,    DefaultConditionalCellFormatTypes.VALID_PHONE), // Cellphone number
+        REGISTRATION_ID(                "Info3", "898217506",                 DefaultCellFormatTypes.ID_NUMBER,       DefaultConditionalCellFormatTypes.VALID_REGISTRATION_ID), // Registration ID
+        HEADERS_REGISTRATION_ID(        "Registration ID",       DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        REGISTRATION_TIME(              "Info4", "26/06/2020  9:08:19 am",                 DefaultCellFormatTypes.TIME,            DefaultConditionalCellFormatTypes.NONE), // Registration Time, maybe put check?
+        DISTANCE_UNIT(                  "Info5", "KM",                  DefaultCellFormatTypes.DISTANCE,        DefaultConditionalCellFormatTypes.DISTANCE_UNIT), // KM or MILES?
+        DATE_OF_BIRTH(                  "DOB", "05/02/1999",                  DefaultCellFormatTypes.DATE,            DefaultConditionalCellFormatTypes.NONE), // Date of birth, maybe put check?
+        AGE(                            "Age",                   DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        TEAM(                           "Team",                   DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        REGISTRATION_LICENSE_NUMBER(    "Reg/Licence No",        DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        UCI_NUMBER(                     "UCI No",                DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        RELAY_TEAM(                     "Relay Team",             DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        RACE_NUMBER(                    "Race No", "250",              DefaultCellFormatTypes.ID_NUMBER,       DefaultConditionalCellFormatTypes.VALID_RACE_NUMBER), // Race number
+        HEADERS_RACE_NUMBER(            "Race Number",           DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        TAG_NUMBER(                     "Tag No", "058001ea67df",                DefaultCellFormatTypes.TAG_NUMBER,      DefaultConditionalCellFormatTypes.VALID_TAG_NUMBER),
+        EVENT(                          "Event", "2.5km Run",                  DefaultCellFormatTypes.EVENT,           DefaultConditionalCellFormatTypes.NONE), // Name of sub-event, maybe put check?
+        DIVISION(                       "Division",               DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        WAVE(                           "Wave",                   DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        SEED(                           "Seed",                   DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        ESTIMATED_TIME(                 "EstTime",                DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        FINISH_RESULT(                  "Finish Result",          DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt, String or numeric?
+        RANK_OVERALL(                   "Rank Overall",          DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        RANK_GENDER(                    "Rank Gender",           DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        DIVISION_NAME(                  "Division Name",          DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        MERCHANDISE(                    "Merchandise",            DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        QUANTITY(                       "Qty",                    DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        SIZE(                           "Size",                   DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        COMMENT(                        "Comment",                DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
+        ATHLETE_2_FIRST_NAME(           "Athlete2 First Name",    DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER), // Not used
+        ATHLETE_2_LAST_NAME(            "Athlete2 Last Name",     DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER), // Not used
+        ATHLETE_3_FIRST_NAME(           "Athlete3 First Name",    DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER), // Not used
+        ATHLETE_3_LAST_NAME(            "Athlete3 Last Name",     DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.PROPER); // Not useString name;
 
-        private final String title;
-        private final String cellType;
-        private final String cellFormat;
-        private final String conditionalCellFormat;
+        private final String name;
+        private final String exampleValue;
+        private final DefaultCellFormatTypes cellFormat;
+        private final DefaultConditionalCellFormatTypes conditionalCellFormat;
 
-        DefaultHeaderTypes(String title, String cellType, String cellFormat, String conditionalCellFormat) {
-
-                this.title = title;
-                this.cellType = cellType;
+        DefaultHeaderTypes(String name, String exampleValue, DefaultCellFormatTypes cellFormat, DefaultConditionalCellFormatTypes conditionalCellFormat) {
+                this.name = name;
+                this.exampleValue = exampleValue;
                 this.cellFormat = cellFormat;
                 this.conditionalCellFormat = conditionalCellFormat;
-
         }
 
-        /* -------------------------------- Getter Methods -------------------------------- */
+        DefaultHeaderTypes(String name, DefaultCellFormatTypes cellFormat, DefaultConditionalCellFormatTypes conditionalCellFormat) {
+                this(name, DEFAULT_EXAMPLE_VALUE, cellFormat, conditionalCellFormat);
+        }
 
-        public String[] getSaveData() {
-                return new String[] {title, cellType, cellFormat, conditionalCellFormat};
+        DefaultHeaderTypes(DefaultCellFormatTypes cellFormat, DefaultConditionalCellFormatTypes conditionalCellFormat) {
+                this(DEFAULT_NAME, cellFormat, conditionalCellFormat);
+        }
+
+        @Override
+        public void setupSaveDataNameCell(Cell nameCell) {
+                nameCell.setCellValue(this.name);
+        }
+
+        public void setupSaveDataValueCells(Cell formatNameCell, Cell conditionalFormatNameCell, Cell valueCell, CellStyle blankStyle, SheetConditionalFormatting sheetConditionalFormatting) {
+                cellFormat.setupSaveDataNameCell(formatNameCell);
+                cellFormat.setupSaveDataValueCell(valueCell, blankStyle, this.exampleValue);
+
+                conditionalCellFormat.setupSaveDataNameCell(conditionalFormatNameCell);
+                conditionalCellFormat.setupSaveDataCellConditionalFormatting(valueCell, sheetConditionalFormatting);
         }
 }

@@ -1,11 +1,6 @@
 package dosStuff.fileCreators;
 
-import dosStuff.FileIOThreadManager;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the condition cell formats file. Methods only
@@ -21,33 +16,24 @@ public class ConditionalCellFormatsFileCreator extends FileCreator {
 
     @Override
     public void createDefaultFile(String fileAddress) { // TODO... add comments and pull out shared method
-        Workbook cellConditionalFormatsWorkbook = new XSSFWorkbook();
-        CreationHelper cellFormatsCreationHelper = cellConditionalFormatsWorkbook.getCreationHelper();
+        SheetConditionalFormatting sheetConditionalFormatting = saveDataSheet.getSheetConditionalFormatting();
+        Row saveDataNameRow = saveDataSheet.createRow(0);
+        Row saveDataValueRow = saveDataSheet.createRow(1);
 
-        Sheet cellFormatsSheet = cellConditionalFormatsWorkbook.createSheet("Conditional Cell Formats");
-        SheetConditionalFormatting sheetConditionalFormatting = cellFormatsSheet.getSheetConditionalFormatting();
+        Cell nameCell;
+        Cell valueCell;
+        DefaultConditionalCellFormatTypes formatType;
 
-        ConditionalFormattingRule conditionalFormattingRule;
+        for (int i = 0; i < DefaultConditionalCellFormatTypes.values().length; i++) {
+            nameCell = saveDataNameRow.createCell(i);
+            valueCell = saveDataValueRow.createCell(i);
+            formatType = DefaultConditionalCellFormatTypes.values()[i];
 
-        PatternFormatting conditionalFormatPatternFill;
-        Row saveDataRow = cellFormatsSheet.createRow(0);
-
-        int i = 0;
-        for (DefaultConditionalCellFormatTypes conditionalCellFormat: DefaultConditionalCellFormatTypes.values()) {
-            Cell cell = saveDataRow.createCell(i);
-            conditionalCellFormat.setupSaveDataCell(cell, sheetConditionalFormatting);
-            i++;
+            formatType.setupSaveDataNameCell(nameCell);
+            formatType.setupSaveDataValueCell(valueCell, sheetConditionalFormatting);
         }
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileAddress);
-            cellConditionalFormatsWorkbook.write(fileOutputStream);
-            fileOutputStream.close();
 
-            cellConditionalFormatsWorkbook.close();
-        } catch (Exception e) {
-            //todo...
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
+        super.resizeColumnsToFit();
+        super.writeWorkbookToFile(fileAddress);
     }
 }
