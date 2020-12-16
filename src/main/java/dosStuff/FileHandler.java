@@ -44,11 +44,10 @@ public class FileHandler {
 
 
 
-    private Map<DataFileType, FileIOThreadManager> runFileSetup() {
+    private Map<DataFileType, FileIOThreadManager> runFileSetup() { // TODO... Comment
 
         makeMainDataFolder();
         FileIOThreadManager settingsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME, new SettingsFileCreator());
-        // FileIOThreadManager masterSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + MASTER_SHEET_LAYOUT_FILE_NAME, new MasterLayoutDataFileReader(), new MasterSheetLayoutFileCreator());
         FileIOThreadManager cellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME, new CellFormatsFileCreator());
         FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalCellFormatsFileCreator());
         FileIOThreadManager headerFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME, new HeadersFileCreator());
@@ -56,9 +55,7 @@ public class FileHandler {
         FileIOThreadManager sportscoreSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SPORTSCORE_SHEET_LAYOUT_FILE_NAME, new SpecificLayoutSaveFileCreator<DefaultSportscoreLayoutHeaders>(DefaultSportscoreLayoutHeaders.class));
 
         Map<DataFileType, FileIOThreadManager> fileManagers = new HashMap<>(DataFileType.getNumOfFiles());
-
         fileManagers.put(DataFileType.SETTINGS, settingsFileIOManager);
-//        fileManagers.put(DataFileType.MASTER_SHEET_LAYOUT, masterSheetLayoutFileIOManager);
         fileManagers.put(DataFileType.CELL_FORMATS, cellFormatsFileIOManager);
         fileManagers.put(DataFileType.CONDITIONAL_CELL_FORMATS, conditionalCellFormatsFileIOManager);
         fileManagers.put(DataFileType.HEADERS_SHEET_LAYOUT, headerFileIOManager);
