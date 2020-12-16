@@ -43,6 +43,7 @@ public enum DefaultHeaderTypes implements DefaultSaveFileValues {
         FINISH_RESULT(                  "Finish Result",          DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt, String or numeric?
         RANK_OVERALL(                   "Rank Overall",          DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
         RANK_GENDER(                    "Rank Gender",           DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
+        RANK_DIVISION(                  "Rank Division",        DefaultCellFormatTypes.NONE,              DefaultConditionalCellFormatTypes.NONE), // For Active Layout
         DIVISION_NAME(                  "Division Name",          DefaultCellFormatTypes.NONE,            DefaultConditionalCellFormatTypes.NONE), // For headers.txt
         MERCHANDISE(                    "Merchandise",            DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used
         QUANTITY(                       "Qty",                    DefaultCellFormatTypes.TEXT,            DefaultConditionalCellFormatTypes.NONE), // Not used

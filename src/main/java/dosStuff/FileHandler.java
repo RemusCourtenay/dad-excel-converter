@@ -29,6 +29,7 @@ public class FileHandler {
     protected static final String MASTER_SHEET_LAYOUT_FILE_NAME = "master-layout.xlsx";
     protected static final String CELL_FORMATS_FILE_NAME = "cell-formats.xlsx";
     protected static final String CONDITIONAL_CELL_FORMATS_FILE_NAME = "conditional-cell-formats.xlsx";
+    protected static final String ACTIVE_SHEET_LAYOUT_FILE_NAME = "active-sheet-layout.xlsx";
 
     private final Map<DataFileType, FileIOThreadManager> dataFiles;
 
@@ -50,6 +51,7 @@ public class FileHandler {
         FileIOThreadManager cellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CELL_FORMATS_FILE_NAME, new CellFormatsFileCreator());
         FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalCellFormatsFileCreator());
         FileIOThreadManager headerFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME, new HeadersFileCreator());
+        FileIOThreadManager activeSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + ACTIVE_SHEET_LAYOUT_FILE_NAME, new SpecificLayoutSaveFileCreator<DefaultActiveLayoutHeaders>(DefaultActiveLayoutHeaders.class));
 
         Map<DataFileType, FileIOThreadManager> fileManagers = new HashMap<>(DataFileType.getNumOfFiles());
 
@@ -58,6 +60,7 @@ public class FileHandler {
         fileManagers.put(DataFileType.CELL_FORMATS, cellFormatsFileIOManager);
         fileManagers.put(DataFileType.CONDITIONAL_CELL_FORMATS, conditionalCellFormatsFileIOManager);
         fileManagers.put(DataFileType.HEADERS_SHEET_LAYOUT, headerFileIOManager);
+        fileManagers.put(DataFileType.ACTIVE_SHEET_LAYOUT, activeSheetLayoutFileIOManager);
 
         ExecutorService setupExecutor = Executors.newCachedThreadPool();
 //        setupExecutor.submit(fileSetupAsTask(settingsFileIOManager));
@@ -65,6 +68,7 @@ public class FileHandler {
         setupExecutor.submit(fileSetupAsTask(cellFormatsFileIOManager));
         setupExecutor.submit(fileSetupAsTask(conditionalCellFormatsFileIOManager));
         setupExecutor.submit(fileSetupAsTask(headerFileIOManager));
+        setupExecutor.submit(fileSetupAsTask(activeSheetLayoutFileIOManager));
 
         setupExecutor.shutdown();
 

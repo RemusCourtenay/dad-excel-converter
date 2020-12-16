@@ -9,9 +9,10 @@ public enum DataFileType {
     HEADERS_SHEET_LAYOUT,
     CELL_FORMATS,
     CONDITIONAL_CELL_FORMATS,
-    SETTINGS;
+    SETTINGS,
+    ACTIVE_SHEET_LAYOUT;
 
-    private static final int numOfFiles = 5;
+    private static final int numOfFiles = 6;
 
     public static int getNumOfFiles() {
         return numOfFiles;
