@@ -30,6 +30,7 @@ public class FileHandler {
     protected static final String CELL_FORMATS_FILE_NAME = "cell-formats.xlsx";
     protected static final String CONDITIONAL_CELL_FORMATS_FILE_NAME = "conditional-cell-formats.xlsx";
     protected static final String ACTIVE_SHEET_LAYOUT_FILE_NAME = "active-sheet-layout.xlsx";
+    protected static final String SPORTSCORE_SHEET_LAYOUT_FILE_NAME = "sportscore-sheet-layout.xlsx";
 
     private final Map<DataFileType, FileIOThreadManager> dataFiles;
 
@@ -52,6 +53,7 @@ public class FileHandler {
         FileIOThreadManager conditionalCellFormatsFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME, new ConditionalCellFormatsFileCreator());
         FileIOThreadManager headerFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + HEADERS_FILE_NAME, new HeadersFileCreator());
         FileIOThreadManager activeSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + ACTIVE_SHEET_LAYOUT_FILE_NAME, new SpecificLayoutSaveFileCreator<DefaultActiveLayoutHeaders>(DefaultActiveLayoutHeaders.class));
+        FileIOThreadManager sportscoreSheetLayoutFileIOManager = new FileIOThreadManager(MAIN_DATA_FOLDER + SPORTSCORE_SHEET_LAYOUT_FILE_NAME, new SpecificLayoutSaveFileCreator<DefaultSportscoreLayoutHeaders>(DefaultSportscoreLayoutHeaders.class));
 
         Map<DataFileType, FileIOThreadManager> fileManagers = new HashMap<>(DataFileType.getNumOfFiles());
 
@@ -61,15 +63,10 @@ public class FileHandler {
         fileManagers.put(DataFileType.CONDITIONAL_CELL_FORMATS, conditionalCellFormatsFileIOManager);
         fileManagers.put(DataFileType.HEADERS_SHEET_LAYOUT, headerFileIOManager);
         fileManagers.put(DataFileType.ACTIVE_SHEET_LAYOUT, activeSheetLayoutFileIOManager);
+        fileManagers.put(DataFileType.SPORTSCORE_SHEET_LAYOUT, sportscoreSheetLayoutFileIOManager);
 
         ExecutorService setupExecutor = Executors.newCachedThreadPool();
-//        setupExecutor.submit(fileSetupAsTask(settingsFileIOManager));
-//        setupExecutor.submit(fileSetupAsTask(masterSheetLayoutFileIOManager));
-        setupExecutor.submit(fileSetupAsTask(cellFormatsFileIOManager));
-        setupExecutor.submit(fileSetupAsTask(conditionalCellFormatsFileIOManager));
-        setupExecutor.submit(fileSetupAsTask(headerFileIOManager));
-        setupExecutor.submit(fileSetupAsTask(activeSheetLayoutFileIOManager));
-
+        setupFiles(setupExecutor, fileManagers);
         setupExecutor.shutdown();
 
         try {
@@ -83,6 +80,13 @@ public class FileHandler {
         }
 
         return fileManagers;
+    }
+
+    private void setupFiles(ExecutorService executorService, Map<DataFileType, FileIOThreadManager> fileManagers) {
+        for (FileIOThreadManager fileManager: fileManagers.values()) {
+            executorService.submit(fileSetupAsTask(fileManager));
+        }
+
     }
 
     private Runnable fileSetupAsTask(FileIOThreadManager fileIOThreadManager) {
