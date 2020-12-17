@@ -1,10 +1,7 @@
 package dosStuff.fileCreators;
 
-import dosStuff.FileIOThreadManager;
+import dosStuff.fileCreators.defaultValues.DefaultHeaderTypes;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the headers text file. Methods only change header

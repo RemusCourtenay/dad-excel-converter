@@ -1,13 +1,10 @@
-package dosStuff.fileCreators;
+package dosStuff.fileCreators.defaultValues;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.model.StylesTable;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Enum representation of each default cell format.

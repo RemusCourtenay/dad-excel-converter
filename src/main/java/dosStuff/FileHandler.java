@@ -1,12 +1,9 @@
 package dosStuff;
 
 import dosStuff.fileCreators.*;
-import dosStuff.fileReaders.*;
+import dosStuff.fileCreators.defaultValues.DefaultActiveLayoutHeaders;
+import dosStuff.fileCreators.defaultValues.DefaultSportscoreLayoutHeaders;
 
-import javax.xml.crypto.Data;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

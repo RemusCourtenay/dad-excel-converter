@@ -5,7 +5,6 @@ package dosStuff;
  */
 
 public enum DataFileType {
-    MASTER_SHEET_LAYOUT,
     HEADERS_SHEET_LAYOUT,
     CELL_FORMATS,
     CONDITIONAL_CELL_FORMATS,
@@ -13,7 +12,7 @@ public enum DataFileType {
     ACTIVE_SHEET_LAYOUT,
     SPORTSCORE_SHEET_LAYOUT;
 
-    private static final int numOfFiles = 7;
+    private static final int numOfFiles = 6;
 
     public static int getNumOfFiles() {
         return numOfFiles;

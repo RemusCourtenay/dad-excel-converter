@@ -1,7 +1,6 @@
 package dosStuff;
 
 import dosStuff.fileCreators.FileCreator;
-import dosStuff.fileReaders.DataFileReader;
 
 import java.io.*;
 import java.nio.file.*;
@@ -16,9 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author Remus Courtenay - rcou199
  * @since 16/11/2020
  */
-public class FileIOThreadManager {
-
-    private static final int NUM_COMMENT_LINES = 1;
+public class FileIOThreadManager { // TODO... comment
 
     private final String fileAddress;
     private final FileCreator fileCreator;
