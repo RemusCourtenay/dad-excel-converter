@@ -1,3 +1,6 @@
+package fakeEnums;
+
+import dosStuff.FileIOThreadManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -5,9 +8,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class FakeEnumBuilder {
+public abstract class FakeEnumBuilder { // TODO... comment
 
-    protected static Workbook convertFileToWorkbook(File file) {
+    public abstract void setupEnumFromFile(FileIOThreadManager fileManager);
+
+    protected Workbook convertFileToWorkbook(File file) {
         Workbook saveFileWorkbook;
 
         try {

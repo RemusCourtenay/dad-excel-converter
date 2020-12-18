@@ -1,5 +1,8 @@
 import dosStuff.FileIOThreadManager;
-import org.apache.poi.ss.format.CellFormat;
+import fakeEnums.ColumnConditionalFormat;
+import fakeEnums.ColumnConditionalFormats;
+import fakeEnums.ColumnFormat;
+import fakeEnums.ColumnFormats;
 import org.apache.poi.ss.usermodel.CellType;
 
 import java.util.ArrayList;
@@ -39,14 +42,14 @@ public class ColumnBuilder {
                 columnFormat = ColumnFormats.valueOf(dataSet[2]);
             } catch (IllegalArgumentException exception) {
                 exception.printStackTrace();
-                throw new RuntimeException("Value: " + dataSet[2] + " is not a valid ColumnFormat");
+                throw new RuntimeException("Value: " + dataSet[2] + " is not a valid fakeEnums.ColumnFormat");
             }
 
             try {
                 columnConditionalFormat = ColumnConditionalFormats.valueOf(dataSet[3]);
             } catch (IllegalArgumentException exception) {
                 exception.printStackTrace();
-                throw new RuntimeException("Value: " + dataSet[3] + " in line: " + Arrays.toString(dataSet) + " is not a valid ColumnConditionalFormat");
+                throw new RuntimeException("Value: " + dataSet[3] + " in line: " + Arrays.toString(dataSet) + " is not a valid fakeEnums.ColumnConditionalFormat");
             }
 
             columns.add(new Column(headerText, cellType, columnFormat, columnConditionalFormat));

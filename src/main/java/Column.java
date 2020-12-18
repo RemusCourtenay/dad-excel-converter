@@ -1,3 +1,5 @@
+import fakeEnums.ColumnConditionalFormat;
+import fakeEnums.ColumnFormat;
 import org.apache.poi.ss.usermodel.CellType;
 
 /**
