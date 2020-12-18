@@ -8,34 +8,60 @@ import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 public class ColumnConditionalFormatsBuilder extends FakeEnumBuilder { // TODO... Comments
 
+    private static final int NUM_OF_SAVE_DATA_ROWS = 1;
+
     @Override
     public void setupEnumFromFile(FileIOThreadManager fileManager) {
-        Workbook saveDataWorkbook = convertFileToWorkbook(fileManager.getFile());
+        Sheet saveDataSheet = getSaveDataSheetFromFile(fileManager);
+        Row[] saveDataRows = getSaveDataRowsFromSheet(saveDataSheet, NUM_OF_SAVE_DATA_ROWS);
 
-        Sheet saveDataSheet = saveDataWorkbook.getSheetAt(0); // TODO... check sheet num
-        SheetConditionalFormatting saveDataConditionalFormatting = saveDataSheet.getSheetConditionalFormatting();
-        int numOfConditionalFormattings = saveDataConditionalFormatting.getNumConditionalFormattings();
+        Row saveDataNameRow = saveDataRows[0];
+        Iterator<Cell> nameCellIterator = saveDataNameRow.cellIterator();
+        Iterator<ConditionalFormatting> formattingIterator = getConditionalFormattingIteratorFromSheet(saveDataSheet);
 
-        List<FakeEnumValue> enumValues = new ArrayList<>(numOfConditionalFormattings);
+        List<FakeEnumValue> enumValues = new ArrayList<>(saveDataNameRow.getPhysicalNumberOfCells());
 
         ConditionalFormatting conditionalFormatting;
-        CellAddress cellAddress;
-        Cell cell;
+        Cell nameCell;
 
-        for (int i = 0; i < numOfConditionalFormattings; i++) {
-            conditionalFormatting = saveDataConditionalFormatting.getConditionalFormattingAt(i);
+        ColumnConditionalFormat conditionalFormat;
 
-            cellAddress = getSpecificCellAddress(conditionalFormatting);
-            cell = saveDataSheet.getRow(cellAddress.getRow()).getCell(cellAddress.getColumn());
+        while(allIteratorsHaveNext(nameCellIterator, formattingIterator)) {
+            nameCell = nameCellIterator.next();
+            conditionalFormatting = formattingIterator.next();
 
-            enumValues.add(new ColumnConditionalFormat(cell.getStringCellValue(), conditionalFormatting));
+            if (nameCell.getAddress() != getSpecificCellAddress(conditionalFormatting)) {
+                throw new RuntimeException(); // TODO...
+            }
+
+            conditionalFormat = new ColumnConditionalFormat(
+                    nameCell.getStringCellValue(),
+                    conditionalFormatting
+            );
+
+            enumValues.add(conditionalFormat);
         }
 
         new ColumnConditionalFormats(enumValues);
+    }
+
+    private Iterator<ConditionalFormatting> getConditionalFormattingIteratorFromSheet(Sheet saveDataSheet) {
+        SheetConditionalFormatting saveDataConditionalFormatting = saveDataSheet.getSheetConditionalFormatting();
+        int numOfConditionalFormattings = saveDataConditionalFormatting.getNumConditionalFormattings();
+
+        List<ConditionalFormatting> conditionalFormattingList = new ArrayList<>(numOfConditionalFormattings);
+
+        for (int i = 0; i < numOfConditionalFormattings; i++) {
+            conditionalFormattingList.add(saveDataConditionalFormatting.getConditionalFormattingAt(i));
+        }
+
+        return conditionalFormattingList.iterator();
     }
 
     private CellAddress getSpecificCellAddress(ConditionalFormatting formatting) {

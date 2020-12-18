@@ -14,21 +14,35 @@ import java.util.List;
 
 public class ColumnFormatsBuilder extends FakeEnumBuilder { // TODO... Comment
 
+    private static final int NUM_OF_SAVE_DATA_ROWS = 2;
+
     @Override
     public void setupEnumFromFile(FileIOThreadManager fileManager) {
-        Workbook saveFileWorkbook = convertFileToWorkbook(fileManager.getFile());
+        Row[] saveDataRows = getSaveDataRowsFromSheet(getSaveDataSheetFromFile(fileManager), NUM_OF_SAVE_DATA_ROWS);
 
-        Sheet saveFileSheet = saveFileWorkbook.getSheetAt(0); // TODO... check sheet num
-        Row saveFileTopRow = saveFileSheet.getRow(0); // TODO... check row num
-        Iterator<Cell> cellIterator = saveFileTopRow.cellIterator();
+        Row saveDataNameRow = saveDataRows[0];
+        Row saveDataFormatRow = saveDataRows[1];
 
-        List<FakeEnumValue> enumValues = new ArrayList<>(saveFileTopRow.getPhysicalNumberOfCells());
+        Iterator<Cell> nameCellIterator = saveDataNameRow.cellIterator();
+        Iterator<Cell> formatCellIterator = saveDataFormatRow.cellIterator();
 
-        Cell cell;
+        List<FakeEnumValue> enumValues = new ArrayList<>(saveDataNameRow.getPhysicalNumberOfCells());
 
-        while(cellIterator.hasNext()) {
-            cell = cellIterator.next();
-            enumValues.add(new ColumnFormat(cell.getStringCellValue(), cell.getCellStyle()));
+        Cell nameCell;
+        Cell formatCell;
+
+        ColumnFormat columnFormat;
+
+        while(allIteratorsHaveNext(nameCellIterator, formatCellIterator)) {
+            nameCell = nameCellIterator.next();
+            formatCell = formatCellIterator.next();
+
+            columnFormat = new ColumnFormat(
+                    nameCell.getStringCellValue(),
+                    formatCell.getCellStyle()
+            );
+
+            enumValues.add(columnFormat);
         }
 
         new ColumnFormats(enumValues);

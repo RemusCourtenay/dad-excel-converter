@@ -10,14 +10,12 @@ import org.apache.poi.ss.usermodel.CellType;
  */
 public class Column extends FakeEnumValue {
 
-    private CellType cellType;
     private ColumnFormat columnFormat;
     private ColumnConditionalFormat columnConditionalFormat;
 
-    public Column(String name, CellType cellType, ColumnFormat columnFormat, ColumnConditionalFormat columnConditionalFormat) {
+    public Column(String name, ColumnFormat columnFormat, ColumnConditionalFormat columnConditionalFormat) {
 
         super(name);
-        this.cellType = cellType;
         this.columnFormat = columnFormat;
         this.columnConditionalFormat = columnConditionalFormat;
 
