@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ColumnBuilder extends FakeEnumBuilder {
 
-    private static final int NUM_OF_SAVE_DATA_ROWS = 1;
+    private static final int NUM_OF_SAVE_DATA_ROWS = 3;
 
     @Override
     public void setupEnumFromFile(FileIOThreadManager fileManager) { // TODO... Comments
@@ -42,7 +42,7 @@ public class ColumnBuilder extends FakeEnumBuilder {
 
             name = nameCellIterator.next().getStringCellValue();
             columnFormatName = formatCellIterator.next().getStringCellValue();
-            columnConditionalFormatName = conditionalFormatCellIterator.next().getCellFormula();
+            columnConditionalFormatName = conditionalFormatCellIterator.next().getStringCellValue();
 
             column = new Column(
                     name,

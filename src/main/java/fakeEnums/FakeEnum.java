@@ -9,6 +9,12 @@ import java.util.Map;
 
 public abstract class FakeEnum {
 
+    protected static void printAll(Map<String, FakeEnumValue> enumValues) {
+        for (FakeEnumValue enumValue: enumValues.values()) {
+            System.out.println(enumValue);
+        }
+    }
+
     protected static FakeEnumValue valueOf(Map<String, FakeEnumValue> enumValues, String valueName) throws NullPointerException, IllegalArgumentException {
         FakeEnumValue valueData;
         if (valueName == null) {

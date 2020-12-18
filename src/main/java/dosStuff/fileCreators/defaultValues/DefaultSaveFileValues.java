@@ -13,6 +13,6 @@ public interface DefaultSaveFileValues {
     String DEFAULT_FORMAT = "General";
     DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
-    String DEFAULT_CONDITIONAL_FORMAT = null;
+    String DEFAULT_CONDITIONAL_FORMAT = "=FALSE";
     public void setupSaveDataNameCell(Cell nameCell);
 }

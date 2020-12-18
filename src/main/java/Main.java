@@ -2,6 +2,7 @@
 
 import dosStuff.DataFileType;
 import dosStuff.FileHandler;
+import fakeEnums.*;
 
 import java.util.List;
 
@@ -14,16 +15,13 @@ public class Main {
     public static void main(String[] args) {
 
         FileHandler fileHandler = new FileHandler();
-//        fakeEnums.ColumnFormatsBuilder.setupFormatsFromFile(fileHandler.getFileManager(DataFileType.CELL_FORMATS));
-//        fakeEnums.ColumnFormats.printAll();
-//        fakeEnums.ColumnConditionalFormatsBuilder.setupConditionalFormatsFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS));
-//        fakeEnums.ColumnConditionalFormats.printAll();
-//        List<fakeEnums.Column> masterSheetColumns = fakeEnums.ColumnBuilder.fromDataFile(fileHandler.getFileManager(DataFileType.MASTER_SHEET_LAYOUT));
-//        System.out.println("Master Sheet Columns: ");
-//        for (fakeEnums.Column column: masterSheetColumns) {
-//            System.out.println(column.getHeaderText());
-//        }
+        new ColumnFormatsBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.CELL_FORMATS));
+        new ColumnConditionalFormatsBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS));
+        new ColumnBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.HEADERS_SHEET_LAYOUT));
 
+        ColumnFormats.printAll();
+        ColumnConditionalFormats.printAll();
+        Columns.printAll();
     }
 
 

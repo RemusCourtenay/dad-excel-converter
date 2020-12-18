@@ -14,7 +14,7 @@ import java.util.concurrent.locks.Condition;
 
 public class ColumnConditionalFormatsBuilder extends FakeEnumBuilder { // TODO... Comments
 
-    private static final int NUM_OF_SAVE_DATA_ROWS = 1;
+    private static final int NUM_OF_SAVE_DATA_ROWS = 2;
 
     @Override
     public void setupEnumFromFile(FileIOThreadManager fileManager) {
@@ -22,22 +22,26 @@ public class ColumnConditionalFormatsBuilder extends FakeEnumBuilder { // TODO..
         Row[] saveDataRows = getSaveDataRowsFromSheet(saveDataSheet, NUM_OF_SAVE_DATA_ROWS);
 
         Row saveDataNameRow = saveDataRows[0];
+        Row saveDataFormatRow = saveDataRows[1];
         Iterator<Cell> nameCellIterator = saveDataNameRow.cellIterator();
+        Iterator<Cell> formatCellIterator = saveDataFormatRow.cellIterator();
         Iterator<ConditionalFormatting> formattingIterator = getConditionalFormattingIteratorFromSheet(saveDataSheet);
 
         List<FakeEnumValue> enumValues = new ArrayList<>(saveDataNameRow.getPhysicalNumberOfCells());
 
         ConditionalFormatting conditionalFormatting;
         Cell nameCell;
+        Cell formatCell;
 
         ColumnConditionalFormat conditionalFormat;
 
-        while(allIteratorsHaveNext(nameCellIterator, formattingIterator)) {
+        while(allIteratorsHaveNext(nameCellIterator, formatCellIterator, formattingIterator)) {
             nameCell = nameCellIterator.next();
+            formatCell = formatCellIterator.next();
             conditionalFormatting = formattingIterator.next();
 
-            if (nameCell.getAddress() != getSpecificCellAddress(conditionalFormatting)) {
-                throw new RuntimeException(); // TODO...
+            if (!formatCell.getAddress().equals(getSpecificCellAddress(conditionalFormatting))) {
+                throw new RuntimeException(formatCell.getAddress().formatAsString() + " does not equal " + getSpecificCellAddress(conditionalFormatting).formatAsString()); // TODO...
             }
 
             conditionalFormat = new ColumnConditionalFormat(

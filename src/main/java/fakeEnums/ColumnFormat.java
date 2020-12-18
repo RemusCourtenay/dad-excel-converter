@@ -14,4 +14,9 @@ public class ColumnFormat extends FakeEnumValue {
     public CellStyle getCellStyle() {
         return this.cellStyle;
     }
+
+    @Override
+    public String toString() {
+        return "Column Format - " + getName() + " : " + cellStyle.getDataFormatString();
+    }
 }

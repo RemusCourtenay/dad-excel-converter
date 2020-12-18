@@ -15,6 +15,10 @@ public class ColumnConditionalFormats extends FakeEnum { // TODO... Comments
         return ((ColumnConditionalFormat) valueOf(enumValues, enumValue));
     }
 
+    public static void printAll() {
+        printAll(enumValues);
+    }
+
     @Override
     protected boolean isInitialised() {
         return enumValues != null;

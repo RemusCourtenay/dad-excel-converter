@@ -21,5 +21,8 @@ public class Column extends FakeEnumValue {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "Column - " + getName() + " : " + columnFormat.getName() + " " + columnConditionalFormat.getName();
+    }
 }

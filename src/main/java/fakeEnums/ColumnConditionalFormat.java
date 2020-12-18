@@ -15,4 +15,9 @@ public class ColumnConditionalFormat extends FakeEnumValue {
     public ConditionalFormatting getFormatting() {
         return this.formatting;
     }
+
+    @Override
+    public String toString() {
+        return "Conditional Format - " + getName() + " : " + formatting.getRule(0).getFormula1();
+    }
 }

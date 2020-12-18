@@ -15,6 +15,10 @@ public class Columns extends FakeEnum { // TODO... Comments
         return (Column) valueOf(enumValues, enumValueName);
     }
 
+    public static void printAll() {
+        printAll(enumValues);
+    }
+
     @Override
     protected boolean isInitialised() {
         return enumValues != null;

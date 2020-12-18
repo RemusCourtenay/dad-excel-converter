@@ -23,6 +23,10 @@ public class ColumnFormats extends FakeEnum { // TODO... Comments
         return ((ColumnFormat) valueOf(enumValues, enumValue));
     }
 
+    public static void printAll() {
+        printAll(enumValues);
+    }
+
     @Override
     protected boolean isInitialised() {
         return enumValues != null;
