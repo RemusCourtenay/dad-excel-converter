@@ -22,6 +22,16 @@ public abstract class FakeEnum {
         }
     }
 
+    protected void storeData(Collection<FakeEnumValue> enumValueCollection) {
+
+        if (isInitialised()) {
+            throw new RuntimeException(); // TODO...
+        } else {
+            initialiseAs(convertDataToMap(enumValueCollection));
+        }
+
+    }
+
     protected static Map<String, FakeEnumValue> convertDataToMap(Collection<FakeEnumValue> enumValueCollection) {
         Map<String, FakeEnumValue> fakeEnumValues = new HashMap<>(enumValueCollection.size());
 
@@ -31,4 +41,8 @@ public abstract class FakeEnum {
 
         return fakeEnumValues;
     }
+
+    protected abstract boolean isInitialised();
+
+    protected abstract void initialiseAs(Map<String, FakeEnumValue> enumValuesMap);
 }

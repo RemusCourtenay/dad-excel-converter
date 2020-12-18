@@ -13,8 +13,7 @@ import java.util.List;
 
 public class ColumnBuilder extends FakeEnumBuilder {
 
-    private static final int NUM_COLUMN_FIELDS = 4;
-
+    @Override
     public void setupEnumFromFile(FileIOThreadManager fileManager) {
 
     }
