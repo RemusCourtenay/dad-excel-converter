@@ -2,7 +2,7 @@ package fakeEnums;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 
-class ColumnFormat extends FakeEnumValue {
+public class ColumnFormat extends FakeEnumValue {
 
     private final CellStyle cellStyle;
 

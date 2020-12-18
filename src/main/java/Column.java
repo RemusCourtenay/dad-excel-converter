@@ -20,7 +20,6 @@ public class Column {
         this.columnFormat = columnFormat;
         this.columnConditionalFormat = columnConditionalFormat;
 
-
     }
 
     public String getHeaderText() {
