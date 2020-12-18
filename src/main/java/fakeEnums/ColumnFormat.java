@@ -2,7 +2,16 @@ package fakeEnums;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 
-record ColumnFormat(
-        String name,
-        CellStyle cellStyle
-) {}
+class ColumnFormat extends FakeEnumValue {
+
+    private final CellStyle cellStyle;
+
+    protected ColumnFormat(String name, CellStyle cellStyle) {
+        super(name);
+        this.cellStyle = cellStyle;
+    }
+
+    public CellStyle getCellStyle() {
+        return this.cellStyle;
+    }
+}

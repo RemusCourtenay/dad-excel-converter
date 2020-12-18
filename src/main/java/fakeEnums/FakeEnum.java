@@ -1,10 +1,13 @@
-import java.util.Arrays;
+package fakeEnums;
+
+import org.apache.poi.ss.usermodel.Cell;
+
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 public abstract class FakeEnum {
-
 
     protected static FakeEnumValue valueOf(Map<String, FakeEnumValue> enumValues, String valueName) throws NullPointerException, IllegalArgumentException {
         FakeEnumValue valueData;
@@ -17,5 +20,15 @@ public abstract class FakeEnum {
         } else {
             return valueData;
         }
+    }
+
+    protected static Map<String, FakeEnumValue> convertDataToMap(Collection<FakeEnumValue> enumValueCollection) {
+        Map<String, FakeEnumValue> fakeEnumValues = new HashMap<>(enumValueCollection.size());
+
+        for (FakeEnumValue enumValue: enumValueCollection) {
+            fakeEnumValues.put(enumValue.getName(), enumValue);
+        }
+
+        return fakeEnumValues;
     }
 }
