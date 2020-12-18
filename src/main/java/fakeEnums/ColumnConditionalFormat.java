@@ -1,17 +1,18 @@
 package fakeEnums;
 
+import org.apache.poi.ss.usermodel.ConditionalFormatting;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 
 class ColumnConditionalFormat extends FakeEnumValue {
 
-    private final ConditionalFormattingRule formattingRule;
+    private final ConditionalFormatting formatting;
 
-    protected ColumnConditionalFormat(String name, ConditionalFormattingRule formattingRule) {
+    protected ColumnConditionalFormat(String name, ConditionalFormatting formatting) {
         super(name);
-        this.formattingRule = formattingRule;
+        this.formatting = formatting;
     }
 
-    public ConditionalFormattingRule getFormattingRule() {
-        return this.formattingRule;
+    public ConditionalFormatting getFormatting() {
+        return this.formatting;
     }
 }
