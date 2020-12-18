@@ -18,9 +18,9 @@ public class Main {
 //        fakeEnums.ColumnFormats.printAll();
 //        fakeEnums.ColumnConditionalFormatsBuilder.setupConditionalFormatsFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS));
 //        fakeEnums.ColumnConditionalFormats.printAll();
-//        List<Column> masterSheetColumns = ColumnBuilder.fromDataFile(fileHandler.getFileManager(DataFileType.MASTER_SHEET_LAYOUT));
+//        List<fakeEnums.Column> masterSheetColumns = fakeEnums.ColumnBuilder.fromDataFile(fileHandler.getFileManager(DataFileType.MASTER_SHEET_LAYOUT));
 //        System.out.println("Master Sheet Columns: ");
-//        for (Column column: masterSheetColumns) {
+//        for (fakeEnums.Column column: masterSheetColumns) {
 //            System.out.println(column.getHeaderText());
 //        }
 
