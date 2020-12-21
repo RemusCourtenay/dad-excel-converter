@@ -4,6 +4,7 @@ import dosStuff.DataFileType;
 import dosStuff.FileHandler;
 import fakeEnums.*;
 import programInterfaces.ActiveWorksInterface;
+import programInterfaces.SportsCoreInterface;
 
 import java.util.List;
 
@@ -25,5 +26,6 @@ public class Main {
         Columns.printAll();
 
         new ActiveWorksInterface(fileHandler.getFileManager(DataFileType.ACTIVE_SHEET_LAYOUT).getFile());
+        new SportsCoreInterface(fileHandler.getFileManager(DataFileType.SPORTSCORE_SHEET_LAYOUT).getFile());
     }
 }

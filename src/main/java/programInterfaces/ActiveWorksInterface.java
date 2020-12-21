@@ -30,14 +30,7 @@ public class ActiveWorksInterface extends ProgramInterface {
     }
 
     @Override
-    protected Workbook loadGeneratedWorkbook(List<Column> layout) throws IOException, InvalidFormatException {
-        File generatedFile = WORKBOOK_PATH.toFile();
-        Workbook generatedWorkbook;
-
-        if (generatedFile.exists() && isCorrectFormat(generatedWorkbook = new XSSFWorkbook(generatedFile), layout)) {
-            return generatedWorkbook;
-        } else {
-            return makeNewWorkbookFromSaveData(generatedFile, layout, WORKBOOK_PATH);
-        }
+    protected Path getWorkbookPath() {
+        return WORKBOOK_PATH;
     }
 }

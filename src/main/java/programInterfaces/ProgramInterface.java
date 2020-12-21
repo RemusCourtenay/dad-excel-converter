@@ -65,7 +65,17 @@ public abstract class ProgramInterface { // TODO... Comment
         return workbookLayout;
     }
 
-    protected abstract Workbook loadGeneratedWorkbook(List<Column> layout) throws IOException, InvalidFormatException;
+    protected Workbook loadGeneratedWorkbook(List<Column> layout) throws IOException, InvalidFormatException {
+        Path workbookPath = getWorkbookPath();
+        File generatedFile = workbookPath.toFile();
+        Workbook generatedWorkbook;
+
+        if (generatedFile.exists() && isCorrectFormat(generatedWorkbook = new XSSFWorkbook(generatedFile), layout)) {
+            return generatedWorkbook;
+        } else {
+            return makeNewWorkbookFromSaveData(generatedFile, layout, workbookPath);
+        }
+    }
 
     protected Workbook makeNewWorkbookFromSaveData(File generatedFile, List<Column> layout, Path workbookPath) throws IOException, InvalidFormatException {
         createBlankFile(generatedFile);
@@ -91,6 +101,8 @@ public abstract class ProgramInterface { // TODO... Comment
 
         return generatedWorkbook;
     }
+
+    protected abstract Path getWorkbookPath();
 
     protected void createBlankFile(File file) throws IOException {
         if (file.exists()) {
