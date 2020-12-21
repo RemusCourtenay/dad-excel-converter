@@ -23,7 +23,7 @@ public class Main {
         ColumnFormats.printAll();
         ColumnConditionalFormats.printAll();
         Columns.printAll();
+
+        new ActiveWorksInterface(fileHandler.getFileManager(DataFileType.ACTIVE_SHEET_LAYOUT).getFile());
     }
-
-
 }

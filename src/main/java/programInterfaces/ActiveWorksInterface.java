@@ -1,6 +1,7 @@
 package programInterfaces;
 
 import dosStuff.DOSCommandHandler;
+import fakeEnums.Column;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * Implementation of ProgramInterface that specifically handles data coming from and going to the ActiveWorks program.
@@ -23,19 +25,19 @@ public class ActiveWorksInterface extends ProgramInterface {
     private static final String WORKBOOK_OUT_NAME = "active-works-generated.xlsx";
     private static final Path WORKBOOK_PATH = Paths.get(PROGRAM_INTERFACE_FOLDER_NAME + WORKBOOK_OUT_NAME);
 
-    public ActiveWorksInterface(Workbook saveDataWorkbook) {
-        super(saveDataWorkbook);
+    public ActiveWorksInterface(File saveDataFile) {
+        super(saveDataFile);
     }
 
     @Override
-    protected Workbook loadSaveDataWorkbook(Workbook saveDataWorkbook) throws IOException, InvalidFormatException {
+    protected Workbook loadGeneratedWorkbook(List<Column> layout) throws IOException, InvalidFormatException {
         File generatedFile = WORKBOOK_PATH.toFile();
         Workbook generatedWorkbook;
 
-        if (generatedFile.exists() && isCorrectFormat(generatedWorkbook = new XSSFWorkbook(generatedFile), saveDataWorkbook)) {
+        if (generatedFile.exists() && isCorrectFormat(generatedWorkbook = new XSSFWorkbook(generatedFile), layout)) {
             return generatedWorkbook;
         } else {
-            return makeNewWorkbookFromSaveData(generatedFile, saveDataWorkbook);
+            return makeNewWorkbookFromSaveData(generatedFile, layout, WORKBOOK_PATH);
         }
     }
 }

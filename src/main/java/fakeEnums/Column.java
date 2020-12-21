@@ -1,8 +1,6 @@
 package fakeEnums;
 
-import fakeEnums.ColumnConditionalFormat;
-import fakeEnums.ColumnFormat;
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.*;
 
 /**
  * @author Remus Courtenay - rcou199
@@ -24,5 +22,10 @@ public class Column extends FakeEnumValue {
     @Override
     public String toString() {
         return "Column - " + getName() + " : " + columnFormat.getName() + " " + columnConditionalFormat.getName();
+    }
+
+    public void applyFormat(Cell cell, CellStyle cellStyle, SheetConditionalFormatting sheetConditionalFormatting) {
+        columnFormat.applyCellStyle(cellStyle, cell);
+        columnConditionalFormat.applyConditionalFormatting(sheetConditionalFormatting, cell.getAddress());
     }
 }

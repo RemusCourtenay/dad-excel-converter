@@ -1,5 +1,6 @@
 package fakeEnums;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 public class ColumnFormat extends FakeEnumValue {
@@ -11,8 +12,9 @@ public class ColumnFormat extends FakeEnumValue {
         this.cellStyle = cellStyle;
     }
 
-    public CellStyle getCellStyle() {
-        return this.cellStyle;
+    public void applyCellStyle(CellStyle cellStyle, Cell cell) {
+        cellStyle.cloneStyleFrom(this.cellStyle);
+        cell.setCellStyle(cellStyle);
     }
 
     @Override
