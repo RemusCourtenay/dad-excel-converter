@@ -3,10 +3,12 @@ package fakeEnums;
 import dosStuff.FileIOThreadManager;
 import fakeEnums.ColumnConditionalFormats;
 import fakeEnums.FakeEnumBuilder;
+import helpers.WorkbookHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,9 +19,9 @@ public class ColumnConditionalFormatsBuilder extends FakeEnumBuilder { // TODO..
     private static final int NUM_OF_SAVE_DATA_ROWS = 2;
 
     @Override
-    public void setupEnumFromFile(FileIOThreadManager fileManager) {
-        Sheet saveDataSheet = getSaveDataSheetFromFile(fileManager);
-        Row[] saveDataRows = getSaveDataRowsFromSheet(saveDataSheet, NUM_OF_SAVE_DATA_ROWS);
+    public void setupEnumFromFile(File saveDataFile) { // TODO... Move into abstract class
+        Sheet saveDataSheet = WorkbookHelper.getSaveDataSheetFromFile(saveDataFile);
+        Row[] saveDataRows = WorkbookHelper.getSaveDataRowsFromSheet(saveDataSheet, NUM_OF_SAVE_DATA_ROWS);
 
         Row saveDataNameRow = saveDataRows[0];
         Row saveDataFormatRow = saveDataRows[1];
@@ -35,7 +37,7 @@ public class ColumnConditionalFormatsBuilder extends FakeEnumBuilder { // TODO..
 
         ColumnConditionalFormat conditionalFormat;
 
-        while(allIteratorsHaveNext(nameCellIterator, formatCellIterator, formattingIterator)) {
+        while(WorkbookHelper.allIteratorsHaveNext(nameCellIterator, formatCellIterator, formattingIterator)) {
             nameCell = nameCellIterator.next();
             formatCell = formatCellIterator.next();
             conditionalFormatting = formattingIterator.next();

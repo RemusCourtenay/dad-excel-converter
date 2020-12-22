@@ -1,14 +1,9 @@
 package dosStuff;
 
-import dosStuff.fileCreators.FileCreator;
+import dosStuff.fileCreators.SaveDataFileCreator;
 
 import java.io.*;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -17,28 +12,27 @@ import java.util.concurrent.TimeUnit;
  */
 public class FileIOThreadManager { // TODO... comment
 
-    private final String fileAddress;
-    private final FileCreator fileCreator;
+    private final Path filePath;
+    private final SaveDataFileCreator saveDataFileCreator;
 
 
-    public FileIOThreadManager(String fileAddress, FileCreator fileCreator) {
-        this.fileAddress = fileAddress;
-        this.fileCreator = fileCreator;
+    public FileIOThreadManager(Path filePath, SaveDataFileCreator saveDataFileCreator) {
+        this.filePath = filePath;
+        this.saveDataFileCreator = saveDataFileCreator;
     }
 
-    public synchronized void setupFile() {
-        if (!BatchFileHandler.fileExists(fileAddress)) {
-            fileCreator.createDefaultFile(fileAddress);
+    protected synchronized void setupFile() {
+        if (!filePath.toFile().exists()) {
+            saveDataFileCreator.createDefaultFile(filePath);
         }
     }
 
 
     public synchronized File getFile() {
         try {
-            Path saveDataFilePath = Path.of(fileAddress);
             Path tempFilePath = Files.createTempFile(null, null);
 
-            Files.copy(saveDataFilePath, tempFilePath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(filePath, tempFilePath, StandardCopyOption.REPLACE_EXISTING);
 
             File tempFile = tempFilePath.toFile();
             tempFile.deleteOnExit();

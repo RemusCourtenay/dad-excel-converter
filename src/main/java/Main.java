@@ -17,9 +17,9 @@ public class Main {
     public static void main(String[] args) { // TODO... Comment
 
         FileHandler fileHandler = new FileHandler();
-        new ColumnFormatsBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.CELL_FORMATS));
-        new ColumnConditionalFormatsBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS));
-        new ColumnBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.HEADERS_SHEET_LAYOUT));
+        new ColumnFormatsBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.CELL_FORMATS).getFile());
+        new ColumnConditionalFormatsBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.CONDITIONAL_CELL_FORMATS).getFile());
+        new ColumnBuilder().setupEnumFromFile(fileHandler.getFileManager(DataFileType.HEADERS_SHEET_LAYOUT).getFile());
 
         ColumnFormats.printAll();
         ColumnConditionalFormats.printAll();

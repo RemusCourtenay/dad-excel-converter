@@ -1,7 +1,10 @@
 package dosStuff.fileCreators;
 
 import dosStuff.fileCreators.defaultValues.DefaultHeaderTypes;
+import helpers.WorkbookHelper;
 import org.apache.poi.ss.usermodel.*;
+
+import java.nio.file.Path;
 
 /**
  * Extension of abstract FileCreator class that specifically creates the headers text file. Methods only change header
@@ -10,7 +13,7 @@ import org.apache.poi.ss.usermodel.*;
  * @author Remus Courtenay - rcou199
  * @since 11/11/2020
  */
-public class HeadersFileCreator extends FileCreator {
+public class HeadersFileCreator extends SaveDataFileCreator {
 
     // Top level comment in header file explaining how to edit it.
 //    private static final String HEADERS_FILE_COMMENT =
@@ -26,7 +29,7 @@ public class HeadersFileCreator extends FileCreator {
     public HeadersFileCreator() {} // TODO... add title to superclass constructor
 
     @Override
-    public void createDefaultFile(String fileAddress) {
+    public void createDefaultFile(Path filePath) {
         SheetConditionalFormatting sheetConditionalFormatting = saveDataSheet.getSheetConditionalFormatting();
         Row saveDataNameRow = saveDataSheet.createRow(0);
         Row saveDataFormatNameRow = saveDataSheet.createRow(1);
@@ -55,7 +58,7 @@ public class HeadersFileCreator extends FileCreator {
                     sheetConditionalFormatting);
         }
 
-        super.resizeColumnsToFit();
-        super.writeWorkbookToFile(fileAddress);
+        WorkbookHelper.resizeColumnsToFit(saveDataSheet);
+        WorkbookHelper.writeWorkbookToFile(filePath, saveDataWorkbook);
     }
 }

@@ -12,11 +12,9 @@ public class Column extends FakeEnumValue {
     private ColumnConditionalFormat columnConditionalFormat;
 
     public Column(String name, ColumnFormat columnFormat, ColumnConditionalFormat columnConditionalFormat) {
-
         super(name);
         this.columnFormat = columnFormat;
         this.columnConditionalFormat = columnConditionalFormat;
-
     }
 
     @Override

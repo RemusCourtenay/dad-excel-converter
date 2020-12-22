@@ -1,11 +1,13 @@
 package dosStuff.fileCreators;
 
-import dosStuff.fileCreators.defaultValues.DefaultSaveFileValues;
 import dosStuff.fileCreators.defaultValues.DefaultSpecificLayoutValues;
+import helpers.WorkbookHelper;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-public class SpecificLayoutSaveFileCreator <saveFileType extends DefaultSpecificLayoutValues> extends FileCreator {
+import java.nio.file.Path;
+
+public class SpecificLayoutSaveFileCreator <saveFileType extends DefaultSpecificLayoutValues> extends SaveDataFileCreator {
 
     private final Class<saveFileType> saveFileValuesClass;
 
@@ -14,7 +16,7 @@ public class SpecificLayoutSaveFileCreator <saveFileType extends DefaultSpecific
     };
 
     @Override
-    public void createDefaultFile(String fileAddress) {
+    public void createDefaultFile(Path filePath) {
         Row saveDataNameRow = saveDataSheet.createRow(0);
         Row saveDataConvertedNameRow = saveDataSheet.createRow(1);
 
@@ -37,7 +39,7 @@ public class SpecificLayoutSaveFileCreator <saveFileType extends DefaultSpecific
 
         }
 
-        super.resizeColumnsToFit();
-        super.writeWorkbookToFile(fileAddress);
+        WorkbookHelper.resizeColumnsToFit(saveDataSheet);
+        WorkbookHelper.writeWorkbookToFile(filePath, saveDataWorkbook);
     }
 }

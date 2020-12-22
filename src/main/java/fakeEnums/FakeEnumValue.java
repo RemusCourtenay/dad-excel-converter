@@ -8,7 +8,7 @@ public abstract class FakeEnumValue{
         this.name = name;
     }
 
-    public String getName() {
+    public final String getName() {
         return this.name;
     }
 

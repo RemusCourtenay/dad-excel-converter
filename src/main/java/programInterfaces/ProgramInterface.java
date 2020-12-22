@@ -2,6 +2,7 @@ package programInterfaces;
 
 import fakeEnums.Column;
 import fakeEnums.Columns;
+import helpers.WorkbookHelper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,6 +27,8 @@ public abstract class ProgramInterface { // TODO... Comment
     protected static final String PROGRAM_INTERFACE_FOLDER_NAME = "generated-files\\";
     protected static final File PROGRAM_INTERFACE_FOLDER = new File(PROGRAM_INTERFACE_FOLDER_NAME);
 
+    protected static final int NUM_SAVE_DATA_ROWS = 2;
+
     static {
         try {
             PROGRAM_INTERFACE_FOLDER.mkdir();
@@ -37,11 +40,11 @@ public abstract class ProgramInterface { // TODO... Comment
 
     private final Workbook generatedWorkbook;
 
-    private final List<Column> interfaceLayout;
+    private final List<ConvertedColumn> interfaceLayout;
 
     public ProgramInterface(File saveDataFile) {
         try {
-            interfaceLayout = loadSaveData(new XSSFWorkbook(saveDataFile));
+            interfaceLayout = loadSaveData(saveDataFile);
             generatedWorkbook = loadGeneratedWorkbook(interfaceLayout);
         } catch (IOException | InvalidFormatException exception) {
             exception.printStackTrace();
@@ -49,23 +52,41 @@ public abstract class ProgramInterface { // TODO... Comment
         }
     }
 
-    protected List<Column> loadSaveData(Workbook saveDataWorkbook) {
-        Sheet saveDataSheet = saveDataWorkbook.getSheetAt(0);
-        Row saveDataRow = saveDataSheet.getRow(0); // TODO...
-        Iterator<Cell> saveDataCellIterator = saveDataRow.cellIterator();
+    protected List<ConvertedColumn> loadSaveData(File saveDataFile) {
 
-        List<Column> workbookLayout = new ArrayList<>(saveDataRow.getPhysicalNumberOfCells());
+        Row[] saveDataRows = WorkbookHelper.getSaveDataRowsFromSheet(
+                WorkbookHelper.getSaveDataSheetFromFile(saveDataFile),
+                NUM_SAVE_DATA_ROWS
+        );
 
-        Cell saveDataCell;
-        while(saveDataCellIterator.hasNext()) {
-            saveDataCell = saveDataCellIterator.next();
-            workbookLayout.add(Columns.valueOf(saveDataCell.getStringCellValue()));
+        Row saveDataColumnNameRow = saveDataRows[0];
+        Row saveDataConvertedNameRow = saveDataRows[1];
+
+        Iterator<Cell> saveDataColumnNameCellIterator = saveDataColumnNameRow.cellIterator();
+        Iterator<Cell> saveDataConvertedNameCellIterator = saveDataConvertedNameRow.cellIterator();
+
+        List<ConvertedColumn> workbookLayout = new ArrayList<>(WorkbookHelper.getNumberOfColumns(saveDataRows));
+
+        Cell saveDataColumnNameCell;
+        Cell saveDataConvertedNameCell;
+
+        Column saveDataColumn;
+        String convertedName;
+
+        while(WorkbookHelper.allIteratorsHaveNext(saveDataColumnNameCellIterator, saveDataConvertedNameCellIterator)) {
+            saveDataColumnNameCell = saveDataColumnNameCellIterator.next();
+            saveDataConvertedNameCell = saveDataConvertedNameCellIterator.next();
+
+            saveDataColumn = Columns.valueOf(saveDataColumnNameCell.getStringCellValue());
+            convertedName = saveDataConvertedNameCell.getStringCellValue();
+
+            workbookLayout.add(new ConvertedColumn(convertedName, saveDataColumn));
         }
 
         return workbookLayout;
     }
 
-    protected Workbook loadGeneratedWorkbook(List<Column> layout) throws IOException, InvalidFormatException {
+    protected Workbook loadGeneratedWorkbook(List<ConvertedColumn> layout) throws IOException, InvalidFormatException {
         Path workbookPath = getWorkbookPath();
         File generatedFile = workbookPath.toFile();
         Workbook generatedWorkbook;
@@ -73,12 +94,12 @@ public abstract class ProgramInterface { // TODO... Comment
         if (generatedFile.exists() && isCorrectFormat(generatedWorkbook = new XSSFWorkbook(generatedFile), layout)) {
             return generatedWorkbook;
         } else {
-            return makeNewWorkbookFromSaveData(generatedFile, layout, workbookPath);
+            return makeNewWorkbookFromSaveData(layout, workbookPath);
         }
     }
 
-    protected Workbook makeNewWorkbookFromSaveData(File generatedFile, List<Column> layout, Path workbookPath) throws IOException, InvalidFormatException {
-        createBlankFile(generatedFile);
+    protected Workbook makeNewWorkbookFromSaveData (List<ConvertedColumn> layout, Path workbookPath) throws IOException, InvalidFormatException {
+        WorkbookHelper.makeEmptyPath(workbookPath);
         Workbook generatedWorkbook = new XSSFWorkbook();
         Sheet generatedSheet = generatedWorkbook.createSheet();
         SheetConditionalFormatting generatedSheetConditionalFormatting = generatedSheet.getSheetConditionalFormatting();
@@ -87,40 +108,27 @@ public abstract class ProgramInterface { // TODO... Comment
         Cell generatedCell;
         CellStyle generatedCellStyle;
         ConditionalFormatting generatedConditionalFormatting;
-        Column saveDataColumn;
+        ConvertedColumn saveDataColumn;
 
         for (int i = 0; i < layout.size(); i++) {
             generatedCell = generatedRow.createCell(i);
             generatedCellStyle = generatedWorkbook.createCellStyle();
 
             saveDataColumn = layout.get(i);
-            generatedCell.setCellValue(saveDataColumn.getName());
+            generatedCell.setCellValue(saveDataColumn.name());
         }
-
-        writeWorkbookToFile(generatedWorkbook, workbookPath);
+        WorkbookHelper.resizeColumnsToFit(generatedSheet);
+        WorkbookHelper.writeWorkbookToFile(workbookPath, generatedWorkbook);
 
         return generatedWorkbook;
     }
 
     protected abstract Path getWorkbookPath();
 
-    protected void createBlankFile(File file) throws IOException {
-        if (file.exists()) {
-            if (!file.delete()) {
-                throw new IOException(); // TODO...
-            }
-        }
-    }
 
-    protected boolean isCorrectFormat(Workbook generatedWorkbook, List<Column> layout) {
+
+    protected boolean isCorrectFormat(Workbook generatedWorkbook, List<ConvertedColumn> layout) {
         return false; // TODO...
-    }
-
-    protected void writeWorkbookToFile(Workbook workbook, Path filePath) throws IOException{
-        FileOutputStream outputStream = new FileOutputStream(filePath.toString());
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
     }
 
 }
