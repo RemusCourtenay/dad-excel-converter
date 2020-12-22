@@ -5,6 +5,7 @@ import dosStuff.FileHandler;
 import fakeEnums.*;
 import programInterfaces.ActiveWorksInterface;
 import programInterfaces.SportsCoreInterface;
+import programInterfaces.TimingMachineInterface;
 
 import java.util.List;
 
@@ -27,5 +28,6 @@ public class Main {
 
         new ActiveWorksInterface(fileHandler.getFileManager(DataFileType.ACTIVE_SHEET_LAYOUT).getFile());
         new SportsCoreInterface(fileHandler.getFileManager(DataFileType.SPORTSCORE_SHEET_LAYOUT).getFile());
+        new TimingMachineInterface(fileHandler.getFileManager(DataFileType.TIMING_MACHINE_SHEET_LAYOUT).getFile());
     }
 }
