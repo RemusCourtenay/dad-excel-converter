@@ -3,8 +3,10 @@ package dosStuff;
 import dosStuff.fileCreators.*;
 import dosStuff.fileCreators.defaultValues.DefaultActiveLayoutHeaders;
 import dosStuff.fileCreators.defaultValues.DefaultSportscoreLayoutHeaders;
+import dosStuff.fileCreators.defaultValues.DefaultTimingMachineLayoutHeaders;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class FileHandler {
     protected static final String CONDITIONAL_CELL_FORMATS_FILE_NAME = "conditional-cell-formats.xlsx";
     protected static final String ACTIVE_SHEET_LAYOUT_FILE_NAME = "active-sheet-layout.xlsx";
     protected static final String SPORTSCORE_SHEET_LAYOUT_FILE_NAME = "sportscore-sheet-layout.xlsx";
+    protected static final String TIMING_MACHINE_SHEET_LAYOUT_FILE_NAME = "timing-machine-sheet-layout.xlsx";
 
     protected static final Path SETTINGS_FILE_PATH = Path.of(MAIN_DATA_FOLDER + SETTINGS_FILE_NAME);
     protected static final Path HEADER_FILE_PATH = Path.of(MAIN_DATA_FOLDER + HEADERS_FILE_NAME);
@@ -37,7 +40,7 @@ public class FileHandler {
     protected static final Path CONDITIONAL_CELL_FORMATS_FILE_PATH = Path.of(MAIN_DATA_FOLDER + CONDITIONAL_CELL_FORMATS_FILE_NAME);
     protected static final Path ACTIVE_SHEET_LAYOUT_FILE_PATH = Path.of(MAIN_DATA_FOLDER + ACTIVE_SHEET_LAYOUT_FILE_NAME);
     protected static final Path SPORTSCORE_SHEET_LAYOUT_FILE_PATH = Path.of(MAIN_DATA_FOLDER + SPORTSCORE_SHEET_LAYOUT_FILE_NAME);
-
+    protected static final Path TIMING_MACHINE_SHEET_LAYOUT_FILE_PATH = Paths.get(MAIN_DATA_FOLDER + TIMING_MACHINE_SHEET_LAYOUT_FILE_NAME);
 
     private final Map<DataFileType, FileIOThreadManager> dataFiles;
 
@@ -60,6 +63,7 @@ public class FileHandler {
         FileIOThreadManager headerFileIOManager = new FileIOThreadManager(HEADER_FILE_PATH, new HeadersFileCreator());
         FileIOThreadManager activeSheetLayoutFileIOManager = new FileIOThreadManager(ACTIVE_SHEET_LAYOUT_FILE_PATH, new SpecificLayoutSaveFileCreator<DefaultActiveLayoutHeaders>(DefaultActiveLayoutHeaders.class));
         FileIOThreadManager sportscoreSheetLayoutFileIOManager = new FileIOThreadManager(SPORTSCORE_SHEET_LAYOUT_FILE_PATH, new SpecificLayoutSaveFileCreator<DefaultSportscoreLayoutHeaders>(DefaultSportscoreLayoutHeaders.class));
+        FileIOThreadManager timingMachineLayoutFileIOManager = new FileIOThreadManager(TIMING_MACHINE_SHEET_LAYOUT_FILE_PATH, new SpecificLayoutSaveFileCreator<DefaultTimingMachineLayoutHeaders>(DefaultTimingMachineLayoutHeaders.class));
 
         Map<DataFileType, FileIOThreadManager> fileManagers = new HashMap<>(DataFileType.getNumOfFiles());
         fileManagers.put(DataFileType.SETTINGS, settingsFileIOManager);
@@ -68,6 +72,7 @@ public class FileHandler {
         fileManagers.put(DataFileType.HEADERS_SHEET_LAYOUT, headerFileIOManager);
         fileManagers.put(DataFileType.ACTIVE_SHEET_LAYOUT, activeSheetLayoutFileIOManager);
         fileManagers.put(DataFileType.SPORTSCORE_SHEET_LAYOUT, sportscoreSheetLayoutFileIOManager);
+        fileManagers.put(DataFileType.TIMING_MACHINE_SHEET_LAYOUT, timingMachineLayoutFileIOManager);
 
         ExecutorService setupExecutor = Executors.newCachedThreadPool();
         setupFiles(setupExecutor, fileManagers);
